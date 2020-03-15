@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Visualizing Facebook Posts from 9 U.S. Political Pages</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Merriweather:ital,wght@0,400;0,700;0,900;1,400&display=swap" rel="stylesheet">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    </head>
+<body>
+    <div class="container">
+        <h1>Visualizing Facebook Posts from 9 U.S. Political Pages</h1>
+        <p class="subtitle">By Luce Liu, Sherry Xie, Amy Zhu</p>
+        <p>We're three UBC students who are interested in exploring patterns concerning truthfulness
+        and user engagement amongst political Facebook posts. The Facebooks posts explored here are sourced from nine
+        American political pages over the course of a week in September 2016. Six of the pages are hyperpartisan,
+        and three are considered mainstream.</p>
+        <p>The truthfulness ratings were provided by Buzzfeed News, as part of their analysis on the topic which you can read <a href="https://www.buzzfeednews.com/article/craigsilverman/partisan-fb-pages-analysis">here</a>.
+        You can explore the dataset <a href="https://www.kaggle.com/mrisdal/fact-checking-facebook-politics-pages/data#">here</a>.</p>
+        <h2>How accurate are each Page's posts?</h2>
+        <div>
+            <svg id="bubbleVis"></svg>
+        </div>
+    </div>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+    <script src="js/bubbleVis.js"></script>
+    <script src="js/index.js"></script>
+</body>
+</html>

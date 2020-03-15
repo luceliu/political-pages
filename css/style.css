@@ -1,0 +1,42 @@
+
+/* Add or change the styles for all tasks in this css file */
+
+html {
+  font-family: "Merriweather",Helvetica,serif;
+  margin: 0px;
+  font-size: calc(1em + 1vw);
+  background-color: #FDFDFD;
+}
+
+h1, h2 {
+  font-family: "Merriweather",serif;
+  font-weight: 900;
+  font-size: 1.7em;
+  margin-top: 2em;
+  color: #3B3A3C;
+}
+
+h2 {
+  font-size: 1.2em;
+}
+
+p {
+  margin-top: 32px;
+  font-family: "Archivo", sans-serif;
+  font-weight: 400;
+  font-size: 0.7em;
+  color: #3B3A3B;
+  max-width: 580px;
+}
+
+.subtitle {
+  margin-top: -24px;
+  color: #8D9097;
+  font-size: 0.6em;
+  margin-bottom: 90px;
+}
+
+.container { 
+  max-width: 24em;
+  margin: auto;
+}
