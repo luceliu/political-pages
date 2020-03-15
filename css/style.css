@@ -24,9 +24,10 @@ p {
   margin-top: 32px;
   font-family: "Archivo", sans-serif;
   font-weight: 400;
-  font-size: 0.7em;
-  color: #3B3A3B;
+  font-size: 0.65em;
+  color: #5E6064;
   max-width: 580px;
+  line-height: 130%
 }
 
 .subtitle {
