@@ -17,8 +17,11 @@ Promise.all([
     // Initialize bubble vis
     let postBubbles = new bubbleVis({ 
       parentElement: '#bubbleVis',
-      colorValue: d => d[Rating],
-      pageValue: d => d[Page],
+      data: data,
+      idValue: d => d.post_id,
+      colorValue: d => d.Rating,
+      zValue: d => d.engagement_count,
+      pageValue: d => d.page,
       selectedCategory: 'left'
     });
   
