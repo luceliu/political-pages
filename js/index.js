@@ -13,6 +13,12 @@ Promise.all([
         }
       }
     });
+
+    // Initialize color legend
+    let categoryLegend = new colorLegend({ 
+        parentElement: '#color-legend',
+        squareSize: 18
+    });
   
     // Initialize bubble vis
     let postBubbles = new bubbleVis({ 

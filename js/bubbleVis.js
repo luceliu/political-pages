@@ -22,7 +22,7 @@ class bubbleVis {
   initVis() {
     let vis = this;
 
-    vis.forceStrength = 0.03;
+    vis.forceStrength = 0.2;
     vis.bubbles = null;
     vis.nodes = [];
 
@@ -31,16 +31,16 @@ class bubbleVis {
       y: vis.config.containerHeight / 2 };
 
     function charge(d) {
-      return -Math.pow(d.radius, 2.0) * vis.forceStrength;
+      return -Math.pow(d.radius, 2.08) * vis.forceStrength;
     }
+
 
     vis.simulation = d3.forceSimulation()
       .velocityDecay(0.2)
       .force('x', d3.forceX().strength(vis.forceStrength).x(vis.center.x))
       .force('y', d3.forceY().strength(vis.forceStrength).y(vis.center.y))
-      // .force('charge', d3.forceManyBody().strength(charge))
-      .force('collision', d3.forceCollide().radius(d => d.radius + 1));
-      // .on('tick', vis.ticked);
+      .force('charge', d3.forceManyBody().strength(charge))
+      .on('tick', () => vis.ticked(vis));
 
     vis.simulation.stop();
 
@@ -52,7 +52,7 @@ class bubbleVis {
 
     vis.zScale = d3.scalePow()
     .exponent(0.5)
-    .range([2, 85])
+    .range([2, 80])
     .domain([0, maxValue]);
   }
 
@@ -84,10 +84,8 @@ class bubbleVis {
       .attr('r', d => d.radius);
 
     vis.simulation.nodes(vis.nodes)
-      .on('tick', () => vis.ticked(vis))
       .restart();
 
-    //console.log(vis.bubbles);
   }
 
   createNodes() {

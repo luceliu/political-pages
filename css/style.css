@@ -42,8 +42,42 @@ p {
   margin: auto;
 }
 
+/** Color Legend **/ 
+#color-legend .tick {
+  font-family: "Archivo", sans-serif;
+  font-size: 0.5rem;
+  font-weight: 500;
+  fill: #5E6064;
+}
+
+#color-legend {
+  background-color: white;
+  padding: 18px;
+  -webkit-box-shadow: 13px 17px 52px -12px rgba(0,0,0,0.25);
+  -moz-box-shadow: 13px 17px 52px -12px rgba(0,0,0,0.25);
+  box-shadow: 13px 17px 52px -12px rgba(0,0,0,0.25);
+  border-radius: 8px;
+  height: 102px;
+  width: 210px;
+}
+
+.color-legend-container {
+  display: flex; 
+  flex-direction: row;
+  align-items: flex-start;
+}
+
+.footnote {
+  font-size: 0.5rem;
+  fill: #8D9097;
+  margin-top: 16px;
+  margin-left: 32px;  
+  max-width: 300px;
+}
+
 /** Bubble Vis **/
 #bubbleVis {
   width: 1000px;
   height: 870px;
+  margin-left: -2rem;
 }
