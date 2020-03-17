@@ -23,6 +23,7 @@ class tooltip {
             tooltip.tt.style('width', tooltip.width);
         }
 
+        // hidet tooltip to begin with
         tooltip.hideTooltip();
     }
 
@@ -30,6 +31,9 @@ class tooltip {
         let tooltip = this;
         tooltip.tt.style('opacity', 0);
     }
+
+    // assign colour to text inside the tooltip dynamically
+    // by passing in the resulting color from your colorScale given the data
 
     showTooltip(content, event, dynamicColor) {
         let tooltip = this;
