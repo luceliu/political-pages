@@ -79,5 +79,50 @@ p {
 #bubbleVis {
   width: 1000px;
   height: 870px;
-  margin-left: -2.6rem;
+  margin-left: -2.6 rem;
+}
+
+.bubble:hover {
+  cursor: pointer;
+}
+
+/** Tooltip **/ 
+
+.tooltip {
+  background-color: white;
+	opacity: .9;
+	padding: 20px;
+	width: 300px;
+  z-index: 100;
+  border-radius: 16px;
+  -webkit-box-shadow: 9px 10px 33px 0px rgba(0,0,0,0.4);
+  -moz-box-shadow: 9px 10px 33px 0px rgba(0,0,0,0.4);
+  box-shadow: 9px 10px 33px 0px rgba(0,0,0,0.4);
+}
+
+.tooltip .header {
+  font-family: Archivo, Helvetica, sans-serif;
+  font-size: 0.7em;
+  color: #3B3A3C;
+  font-weight: 800;
+  margin-top: 0px;
+  margin-bottom: 8px;
+}
+
+.tooltip .attr {
+  font-family: Archivo, Helvetica, sans-serif;
+  color: #8D9097;
+  font-size: 0.3em;
+  margin-top: 10px;
+  margin-bottom: 0px;
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+.tooltip .value {
+  font-family: Archivo, Helvetica, sans-serif;
+  font-weight: bold;
+  font-size: 0.5em;
+  color: #3B3A3C;
+  margin: 0 0 0 0;
 }

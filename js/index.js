@@ -27,8 +27,10 @@ Promise.all([
       idValue: d => d.post_id,
       colorValue: d => d.Rating,
       zValue: d => d.engagement_count,
-      pageValue: d => d.page,
-      selectedCategory: 'left'
+      pageValue: d => d.Page,
+      selectedCategory: 'left',
+      linkValue: d => d['Post URL'],
+      formatValue: d => d['Post Type']
     });
   
     postBubbles.render();  

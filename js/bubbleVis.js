@@ -8,13 +8,15 @@ class bubbleVis {
     }
 
     this.data = _config.data;
-    this.xValue = _config.pageValue;
+    this.pageValue = _config.pageValue;
     this.idValue = _config.idValue;
     this.colorValue = _config.colorValue; 
     this.zValue = _config.zValue;
     this.selectedCategory = _config.selectedCategory;
     this.svg = d3.select(this.config.parentElement);
     this.chart = this.svg.append('g');
+    this.formatValue = _config.formatValue;
+    this.linkValue = _config.linkValue;
 
     this.initVis();
   }
@@ -22,7 +24,7 @@ class bubbleVis {
   initVis() {
     let vis = this;
 
-    let tt = new tooltip('bubble_tooltip', 180);
+    vis.tt = new tooltip('bubble_tooltip', 180);
 
     vis.forceStrength = 0.2;
     vis.bubbles = null;
@@ -48,6 +50,10 @@ class bubbleVis {
     vis.colorScale = d3.scaleOrdinal()
       .domain(['no factual content', 'mostly false', 'mixture of true and false', 'mostly true'])
       .range(['#634265', '#E05E5E', '#D3DCE7', '#67D99B']);
+
+    vis.formatScale = d3.scaleOrdinal()
+    .domain(['link', 'video', 'photo'])
+    .range(['🔗', '⏯️', '🖼️']);
       
     const maxValue = d3.max(vis.data, vis.zValue);
 
@@ -76,7 +82,10 @@ class bubbleVis {
       .attr('r', 0)
       .attr('fill', d => vis.colorScale(d.color))
       .on('mouseover', (d, i, nodes) => vis.setHover(d, vis, nodes[i]))
-      .on('mouseout', (d, i, nodes) => vis.removeHover(d, vis, nodes[i]));
+      .on('mouseout', (d, i, nodes) => vis.removeHover(d, vis, nodes[i]))
+      .on('click', d => {
+        window.open(d.link, '_blank')
+      });
 
     vis.bubbles = vis.bubbles.merge(bubbleElements);
 
@@ -98,8 +107,10 @@ class bubbleVis {
         itemID: vis.idValue(d),
         radius: vis.zScale(vis.zValue(d)),
         zValue: vis.zValue(d),
-        category: vis.xValue(d),
         color: vis.colorValue(d),
+        format: vis.formatValue(d),
+        page: vis.pageValue(d),
+        link: vis.linkValue(d),
         x: Math.random() * 900,
         y: Math.random() * 800
       }
@@ -119,15 +130,41 @@ class bubbleVis {
     let c = d3.hsl(vis.colorScale(d.color));
     c.s += 0.1;
     c.l -= 0.25;
+
     d3.select(circle)
       .attr('stroke', c)
       .attr('stroke-width', 4);
+
+
+    let dynamicFormatEmoji = vis.formatScale(d.format);
+
+    const content = '<p class="header">' +
+    dynamicFormatEmoji + ' ' + d.format +
+    '</p>' +
+    '<p class="attr">Rating</p><p class="value dynamic-color">' +
+    d.color +
+    '</p>' +
+    '<p class="attr">Engagement Count</p><p class="value">' +
+    d.zValue +
+    '</p>' + 
+    '<p class="attr">Page</p><p class="value">' +
+    d.page + 
+    '</p>';
+
+    let dynamicColor = d3.hsl(vis.colorScale(d.color));
+
+    if(d.color != 'no factual content') {
+      dynamicColor.s += 0.1;
+      dynamicColor.l -= 0.15;
+    }
+
+    vis.tt.showTooltip(content, d3.event, dynamicColor);
   }
 
   removeHover(d, vis, circle) {
     d3.select(circle)
       .attr('stroke','none')
       .attr('stroke-width', 0);
-    // tt.hideTooltip();
+    vis.tt.hideTooltip();
   }
 }
