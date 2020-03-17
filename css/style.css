@@ -58,7 +58,7 @@ p {
   box-shadow: 13px 17px 52px -12px rgba(0,0,0,0.25);
   border-radius: 8px;
   height: 102px;
-  width: 210px;
+  width: 240px;
 }
 
 .color-legend-container {
@@ -79,5 +79,5 @@ p {
 #bubbleVis {
   width: 1000px;
   height: 870px;
-  margin-left: -3rem;
+  margin-left: -2.6rem;
 }

@@ -22,6 +22,8 @@ class bubbleVis {
   initVis() {
     let vis = this;
 
+    let tt = new tooltip('bubble_tooltip', 180);
+
     vis.forceStrength = 0.2;
     vis.bubbles = null;
     vis.nodes = [];
@@ -33,7 +35,6 @@ class bubbleVis {
     function charge(d) {
       return -Math.pow(d.radius, 2.08) * vis.forceStrength;
     }
-
 
     vis.simulation = d3.forceSimulation()
       .velocityDecay(0.2)
@@ -73,15 +74,16 @@ class bubbleVis {
     var bubbleElements = vis.bubbles.enter().append('circle')
       .classed('bubble', true)
       .attr('r', 0)
-      .attr('fill', d => vis.colorScale(d.color));
-      // .on('mouseover', showDetail)
-      // .on('mouseout', hideDetail);
+      .attr('fill', d => vis.colorScale(d.color))
+      .on('mouseover', (d, i, nodes) => vis.setHover(d, vis, nodes[i]))
+      .on('mouseout', (d, i, nodes) => vis.removeHover(d, vis, nodes[i]));
 
     vis.bubbles = vis.bubbles.merge(bubbleElements);
 
-    vis.bubbles.transition()
-      .duration(2000)
-      .attr('r', d => d.radius);
+    vis.bubbles
+      .transition()
+        .duration(2000)
+        .attr('r', d => d.radius);
 
     vis.simulation.nodes(vis.nodes)
       .restart();
@@ -93,9 +95,9 @@ class bubbleVis {
 
     var nodes = vis.data.map(function (d) {
       return {
-        id: vis.idValue(d),
+        itemID: vis.idValue(d),
         radius: vis.zScale(vis.zValue(d)),
-        value: vis.zValue(d),
+        zValue: vis.zValue(d),
         category: vis.xValue(d),
         color: vis.colorValue(d),
         x: Math.random() * 900,
@@ -111,5 +113,21 @@ class bubbleVis {
     vis.bubbles
       .attr('cx', d => d.x)
       .attr('cy', d => d.y);
+  }
+
+  setHover(d, vis, circle) {
+    let c = d3.hsl(vis.colorScale(d.color));
+    c.s += 0.1;
+    c.l -= 0.25;
+    d3.select(circle)
+      .attr('stroke', c)
+      .attr('stroke-width', 4);
+  }
+
+  removeHover(d, vis, circle) {
+    d3.select(circle)
+      .attr('stroke','none')
+      .attr('stroke-width', 0);
+    // tt.hideTooltip();
   }
 }
