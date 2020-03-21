@@ -34,6 +34,11 @@ Promise.all([
     });
   
     postBubbles.render();  
+
+    let pageRankings = new circleJuxtaposeVis({
+      parentElement: '#falseToAllPostsRanking',
+      data: data,
+    })
     
   });
   
