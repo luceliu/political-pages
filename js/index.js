@@ -39,6 +39,8 @@ Promise.all([
       parentElement: '#falseToAllPostsRanking',
       data: data,
     })
+
+    pageRankings.render();
     
   });
   
