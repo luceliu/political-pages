@@ -24,7 +24,7 @@ p {
   margin-top: 32px;
   font-family: "Archivo", sans-serif;
   font-weight: 400;
-  font-size: 24px;
+  font-size: 22px;
   color: #5E6064;
   max-width: 580px;
   line-height: 130%
@@ -67,24 +67,24 @@ p {
 }
 
 .color-legend-container {
+  margin-top: 48px;
   display: flex; 
-  flex-direction: row;
+  flex-direction: column;
   align-items: flex-start;
 }
 
 .footnote {
-  font-size: 18px;
+  font-size: 16px;
   fill: #8D9097;
   margin-top: 16px;
-  margin-left: 32px;  
-  max-width: 300px;
+  max-width: 280px;
 }
 
 /** Bubble Vis **/
 #bubbleVis {
-  width: 100vw;
+  width: 80vw;
   height: 800px;
-  padding-top: 100px;
+  margin-left: -9.5vw;
 }
 
 .bubble:hover {
@@ -92,10 +92,18 @@ p {
 }
 
 .category {
-  font-size: 0.55em;
+  font-size: 0.45em;
   font-family: Archivo, Helvetica, sans-serif;
   text-transform: uppercase;
   fill: #8D9097;
+}
+
+.right-column {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  right: 3vw;
+  z-index: 100;
 }
 
 /** Tooltip **/ 
@@ -141,13 +149,17 @@ p {
 /** Tabs **/ 
 
 .tabs {
-  margin-top: 72px;
+  margin-top: 24px;
+  display: flex;
+  flex-direction: column;
+  width: 270px;
 }
 
 .tabs button {
   font-family: Archivo, Helvetica, sans-serif;
+  text-align: left;
   font-weight: 500;
-  font-size: 22px;
+  font-size: 18px;
   background-color: inherit;
   color: #3B3A3C;
   padding: 16px;  

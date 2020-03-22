@@ -3,7 +3,7 @@ class bubbleVis {
   constructor(_config) {
     this.config = {
       parentElement: _config.parentElement,
-      containerWidth: _config.containerWidth || 1280,
+      containerWidth: _config.containerWidth || 900,
       containerHeight: _config.containerHeight || 800,
     }
 
@@ -26,25 +26,37 @@ class bubbleVis {
 
     vis.tt = new tooltip('bubble_tooltip', 180);
 
-    vis.forceStrength = 0.2;
+    vis.forceStrength = 0.15;
     vis.bubbles = null;
     vis.nodes = [];
 
     vis.center = {
       x: vis.config.containerWidth / 2,
-      y: vis.config.containerHeight / 2
+      y: 1.3 * vis.config.containerHeight / 4
     };
 
     vis.politicalCenters = {
-      'left': { x: vis.config.containerWidth / 3, y: vis.config.containerHeight / 2 },
-      'mainstream': { x: vis.config.containerWidth / 2, y: vis.config.containerHeight / 2 },
-      'right': { x: 2 * vis.config.containerWidth / 3, y: vis.config.containerHeight / 2 }
+      'left': { x: vis.config.containerWidth / 3, y: vis.config.containerHeight / 3 + 24},
+      'mainstream': { x: vis.config.containerWidth / 2, y: vis.config.containerHeight / 3 },
+      'right': { x: 2 * vis.config.containerWidth / 3, y: vis.config.containerHeight / 3 }
     }
 
     vis.categoryLabelCenters = {
       'left': vis.config.containerWidth / 3 - 30,
-      'mainstream': vis.config.containerWidth / 2 + 110,
-      'right': 2 * vis.config.containerWidth / 3 + 150
+      'mainstream': vis.config.containerWidth / 2 + 60,
+      'right': 2 * vis.config.containerWidth / 3 + 80
+    }
+
+    vis.pageCenters = {
+      'The Other 98%': { x: vis.config.containerWidth / 3, y: vis.config.containerHeight / 3 - 80 },
+      'Addicting Info': { x: vis.config.containerWidth / 3, y: vis.config.containerHeight / 2 - 100 },
+      'Occupy Democrats': { x: vis.config.containerWidth / 3, y: 2 * vis.config.containerHeight / 3 - 100},
+      'Politico': { x: vis.config.containerWidth / 2, y: vis.config.containerHeight / 3 - 100 },
+      'CNN Politics': { x: vis.config.containerWidth / 2, y: vis.config.containerHeight / 2 - 100 },
+      'ABC News Politics': { x: vis.config.containerWidth / 2, y: 2 * vis.config.containerHeight / 3 - 100 },
+      'Eagle Rising': { x: 2 * vis.config.containerWidth / 3, y: vis.config.containerHeight / 3 - 100 },
+      'Right Wing News': { x: 2 * vis.config.containerWidth / 3, y: vis.config.containerHeight / 2 - 100 },
+      'Freedom Daily': { x: 2 * vis.config.containerWidth / 3, y: 2 * vis.config.containerHeight / 3 - 100 },
     }
 
     function charge(d) {
@@ -52,7 +64,7 @@ class bubbleVis {
     }
 
     vis.simulation = d3.forceSimulation()
-      .velocityDecay(0.2)
+      .velocityDecay(0.18)
       .force('x', d3.forceX().strength(vis.forceStrength).x(vis.center.x))
       .force('y', d3.forceY().strength(vis.forceStrength).y(vis.center.y))
       .force('charge', d3.forceManyBody().strength(charge))
@@ -72,7 +84,7 @@ class bubbleVis {
 
     vis.zScale = d3.scalePow()
     .exponent(0.5)
-    .range([2, 72])
+    .range([2, 40])
     .domain([0, maxValue]);
   }
 
@@ -145,8 +157,6 @@ class bubbleVis {
     c.s += 0.1;
     c.l -= 0.25;
 
-    vis.bubblePoliticalPosition(d, vis);
-
     d3.select(circle)
       .attr('stroke', c)
       .attr('stroke-width', 4);
@@ -154,7 +164,7 @@ class bubbleVis {
     let dynamicFormatEmoji = vis.formatScale(d.format);
 
     const content = '<p class="header">' +
-    dynamicFormatEmoji + ' ' + d.format +
+    d.page +
     '</p>' +
     '<p class="attr">Rating</p><p class="value dynamic-color">' +
     d.color +
@@ -162,8 +172,8 @@ class bubbleVis {
     '<p class="attr">Engagement Count</p><p class="value">' +
     d.zValue +
     '</p>' + 
-    '<p class="attr">Page</p><p class="value">' +
-    d.page + 
+    '<p class="attr">Format</p><p class="value">' +
+    dynamicFormatEmoji + ' ' + d.format +
     '</p>';
 
     let dynamicColor = d3.hsl(vis.colorScale(d.color));
@@ -186,22 +196,47 @@ class bubbleVis {
   // Provides a x-value for each bubble for splitting
   // by political category
 
-  bubblePoliticalPosition(d, vis) {
+  bubblePoliticalXPosition(d, vis) {
     return vis.politicalCenters[d.category].x;
+  }
+
+  bubblePoliticalYPosition(d, vis) {
+    return vis.politicalCenters[d.category].y;
+  }
+
+  bubblePageXPosition(d, vis) {
+    return vis.pageCenters[d.page].x;
+  }
+  bubblePageYPosition(d, vis) {
+    return vis.pageCenters[d.page].y;
   }
 
   updateLayout(layout) {
     let vis = this;
     if(layout === 'political-layout') {
-      vis.simulation.force('x', d3.forceX().strength(vis.forceStrength)
-        .x((d) => vis.bubblePoliticalPosition(d, vis)));
+      vis.simulation
+      .force('x', d3.forceX().strength(vis.forceStrength)
+        .x((d) => vis.bubblePoliticalXPosition(d, vis)))
+      .force('y', d3.forceY().strength(vis.forceStrength)
+        .y((d) => vis.bubblePoliticalYPosition(d, vis)));
       vis.simulation.alpha(1).restart();
       vis.renderLabels(layout);
     } else if (layout === 'all-layout') {
-      vis.simulation.force('x', d3.forceX().strength(vis.forceStrength)
-        .x(vis.center.x));
+      vis.simulation
+      .force('x', d3.forceX().strength(vis.forceStrength)
+        .x(vis.center.x))
+      .force('y', d3.forceY().strength(vis.forceStrength)
+        .y(vis.center.y));
       vis.simulation.alpha(1).restart();
       vis.hideLabels();
+    } else {
+      vis.simulation
+      .force('x', d3.forceX().strength(vis.forceStrength)
+        .x(d => vis.bubblePageXPosition(d, vis)))
+      .force('y', d3.forceY().strength(vis.forceStrength)
+        .y(d => vis.bubblePageYPosition(d, vis)));
+      vis.simulation.alpha(1).restart();
+      vis.renderLabels(layout);
     }
   }
 
@@ -216,20 +251,24 @@ class bubbleVis {
         .attr('class', 'category')
         .attr('color', '#8D9097')
         .attr('x', d => vis.categoryLabelCenters[d])
-        .attr('y', 40)
+        .attr('y', 64)
         .attr('text-anchor', 'middle')
         .text(d => d)
         .transition().duration(300)
         .attr( 'fill-opacity', 1);
+    } else {
+      vis.svg.selectAll('.category')
+      .transition().duration(300)
+      .attr( 'fill-opacity', 0)
+      .remove();
     }
   }
 
   hideLabels() {
     let vis = this;
     vis.svg.selectAll('.category')
-    .transition().duration(300)
-    .attr( 'fill-opacity', 0)
-    .remove();
+      .transition().duration(300)
+      .attr( 'fill-opacity', 0)
+      .remove();
   }
-  
 }
