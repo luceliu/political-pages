@@ -23,17 +23,29 @@ Promise.all([
     // Initialize bubble vis
     let postBubbles = new bubbleVis({ 
       parentElement: '#bubbleVis',
+      containerWidth: document.getElementsByClassName("vis-container")[0].clientWidth,
       data: data,
       idValue: d => d.post_id,
       colorValue: d => d.Rating,
       zValue: d => d.engagement_count,
       pageValue: d => d.Page,
-      selectedCategory: 'left',
       linkValue: d => d['Post URL'],
-      formatValue: d => d['Post Type']
+      formatValue: d => d['Post Type'],
+      politicalValue: d => d.Category
     });
   
     postBubbles.render();  
+
+    // Event listeners for layout tabs
+    d3.select('#layout-tabs')
+      .selectAll('.tab')
+        .on('click', (d, i, nodes) => {
+          const selectedButton = nodes[i]
+          d3.selectAll('.tab').classed('active', false);
+          d3.select(selectedButton).classed('active', true);
+          const layoutId = d3.select(selectedButton).attr('id');
+          postBubbles.update(layoutId);
+      });
     
   });
   

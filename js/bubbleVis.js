@@ -3,8 +3,8 @@ class bubbleVis {
   constructor(_config) {
     this.config = {
       parentElement: _config.parentElement,
-      containerWidth: _config.containerWidth || 1000,
-      containerHeight: _config.containerHeight || 870,
+      containerWidth: _config.containerWidth || 1280,
+      containerHeight: _config.containerHeight || 800,
     }
 
     this.data = _config.data;
@@ -12,11 +12,11 @@ class bubbleVis {
     this.idValue = _config.idValue;
     this.colorValue = _config.colorValue; 
     this.zValue = _config.zValue;
-    this.selectedCategory = _config.selectedCategory;
     this.svg = d3.select(this.config.parentElement);
     this.chart = this.svg.append('g');
     this.formatValue = _config.formatValue;
     this.linkValue = _config.linkValue;
+    this.politicalValue = _config.politicalValue;
 
     this.initVis();
   }
@@ -32,7 +32,20 @@ class bubbleVis {
 
     vis.center = {
       x: vis.config.containerWidth / 2,
-      y: vis.config.containerHeight / 2 };
+      y: vis.config.containerHeight / 2
+    };
+
+    vis.politicalCenters = {
+      'left': { x: vis.config.containerWidth / 3, y: vis.config.containerHeight / 2 },
+      'mainstream': { x: vis.config.containerWidth / 2, y: vis.config.containerHeight / 2 },
+      'right': { x: 2 * vis.config.containerWidth / 3, y: vis.config.containerHeight / 2 }
+    }
+
+    vis.categoryLabelCenters = {
+      'left': vis.config.containerWidth / 3 - 30,
+      'mainstream': vis.config.containerWidth / 2 + 110,
+      'right': 2 * vis.config.containerWidth / 3 + 150
+    }
 
     function charge(d) {
       return -Math.pow(d.radius, 2.08) * vis.forceStrength;
@@ -63,10 +76,10 @@ class bubbleVis {
     .domain([0, maxValue]);
   }
 
-  update() {
+  update(layoutID) {
     let vis = this;
-
-    vis.render();
+    
+    vis.updateLayout(layoutID);
   }
 
   render() {
@@ -111,6 +124,7 @@ class bubbleVis {
         format: vis.formatValue(d),
         page: vis.pageValue(d),
         link: vis.linkValue(d),
+        category: vis.politicalValue(d),
         x: Math.random() * 900,
         y: Math.random() * 800
       }
@@ -131,10 +145,11 @@ class bubbleVis {
     c.s += 0.1;
     c.l -= 0.25;
 
+    vis.bubblePoliticalPosition(d, vis);
+
     d3.select(circle)
       .attr('stroke', c)
       .attr('stroke-width', 4);
-
 
     let dynamicFormatEmoji = vis.formatScale(d.format);
 
@@ -167,4 +182,54 @@ class bubbleVis {
       .attr('stroke-width', 0);
     vis.tt.hideTooltip();
   }
+
+  // Provides a x-value for each bubble for splitting
+  // by political category
+
+  bubblePoliticalPosition(d, vis) {
+    return vis.politicalCenters[d.category].x;
+  }
+
+  updateLayout(layout) {
+    let vis = this;
+    if(layout === 'political-layout') {
+      vis.simulation.force('x', d3.forceX().strength(vis.forceStrength)
+        .x((d) => vis.bubblePoliticalPosition(d, vis)));
+      vis.simulation.alpha(1).restart();
+      vis.renderLabels(layout);
+    } else if (layout === 'all-layout') {
+      vis.simulation.force('x', d3.forceX().strength(vis.forceStrength)
+        .x(vis.center.x));
+      vis.simulation.alpha(1).restart();
+      vis.hideLabels();
+    }
+  }
+
+  renderLabels(layout) {
+    let vis = this;
+    if (layout === 'political-layout') {
+      const categories = d3.keys(vis.categoryLabelCenters);
+      const categoryLabels = vis.svg.selectAll('.category')
+        .data(categories);
+      
+      categoryLabels.enter().append('text')
+        .attr('class', 'category')
+        .attr('color', '#8D9097')
+        .attr('x', d => vis.categoryLabelCenters[d])
+        .attr('y', 40)
+        .attr('text-anchor', 'middle')
+        .text(d => d)
+        .transition().duration(300)
+        .attr( 'fill-opacity', 1);
+    }
+  }
+
+  hideLabels() {
+    let vis = this;
+    vis.svg.selectAll('.category')
+    .transition().duration(300)
+    .attr( 'fill-opacity', 0)
+    .remove();
+  }
+  
 }
