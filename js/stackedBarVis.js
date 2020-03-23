@@ -13,6 +13,7 @@ class stackedBarVis {
 
       initVis() {
           let vis = this;
+          console.log(vis.data);
       }
 
       update() {

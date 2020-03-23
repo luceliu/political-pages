@@ -41,7 +41,7 @@ Promise.all([
     })
     
     let truthPercentage = new stackedBarVis({
-      parentElement: '#stackedbarvis',
+      parentElement: '#stackedBarVis',
       data: data,
     })
   });
