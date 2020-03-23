@@ -10,25 +10,16 @@ class circleJuxtaposeVis {
             containerHeight: _config.containerHeight || 870,
         }
 
-        this.config.margin = _config.margin || { top: 10, bottom: 10, right: 0, left: 0 }
+        this.config.margin = _config.margin || { top: 30, bottom: 20, right: 0, left: 0 }
 
         this.data = _config.data;
-        // this.pageValue = _config.pageValue;
-        // this.idValue = _config.idValue;
-        // this.colorValue = _config.colorValue; 
-        // this.zValue = _config.zValue;
-        // this.selectedCategory = _config.selectedCategory;
-
-        // this.chart = this.svg.append('g');
-        // this.formatValue = _config.formatValue;
-        // this.linkValue = _config.linkValue;
 
         this.width = this.config.containerWidth - this.config.margin.left - this.config.margin.right;
         this.height = this.config.containerHeight - this.config.margin.top - this.config.margin.bottom;
 
         d3.select(this.config.parentElement)
-        .attr('height', this.config.containerHeight)
-        .attr('width', this.config.containerWidth);  
+            .attr('height', this.config.containerHeight)
+            .attr('width', this.config.containerWidth);
 
         this.chart = d3.select(this.config.parentElement).append('g')
             .attr('transform', `translate(${this.config.margin.left},${this.config.margin.top})`)
@@ -72,19 +63,26 @@ class circleJuxtaposeVis {
             .range([0, vis.width])
             .padding(0.2);
 
-        let arrayOfObjSummary = (arr, func) => 
-            func(...arr.map(d => func(...Object.values(d).filter(a => !isNaN(a)))));
-    
+        let arrayOfObjSummary = (arr, funcArray, funcObj) =>
+            funcArray(...arr.map(d => funcObj(...Object.values(d).filter(a => !isNaN(a)))));
+
 
         vis.yScale = d3.scaleBand()
             .domain(vis.postMap.map(d => d.name))
             .range([0, vis.height])
             .padding(0.2);
 
-        vis.radiusScale = d3.scaleLinear()
-        .domain([arrayOfObjSummary(vis.postMap, Math.min), 
-            arrayOfObjSummary(vis.postMap, Math.max)])
-        .range([10, 40]);
+        // stand-in for now (domain across all values)
+        vis.postRadiusScale = d3.scaleSqrt()
+            .domain([arrayOfObjSummary(vis.postMap, Math.min, Math.min),
+            arrayOfObjSummary(vis.postMap, Math.max, Math.max)])
+            .range([5, 30]);
+
+        vis.totalRadiusScale = d3.scaleSqrt()
+            .domain([arrayOfObjSummary(vis.postMap, Math.min, (...args) => args.reduce((sum, cur) => sum + cur)),
+            arrayOfObjSummary(vis.postMap, Math.max,
+                (...args) => args.reduce((sum, cur) => sum + cur))])
+            .range([10, 40]);
 
         vis.update();
     }
@@ -93,16 +91,27 @@ class circleJuxtaposeVis {
         // no reorganization currently needed
         let vis = this;
         vis.sortKey = "mostly false";
-        vis.postMap.sort((a, b) => b[vis.sortKey] - a[vis.sortKey]);
-        console.log(vis.postMap);
+        vis.postMap = vis.postMap.sort((a, b) => b[vis.sortKey] - a[vis.sortKey]);
+
+        // change scale based on sort key
+        vis.postRadiusScale.domain(
+            [Math.min(...vis.postMap.map(d => d[vis.sortKey])),
+            Math.max(...vis.postMap.map(d => d[vis.sortKey]))]
+        );
+
+        vis.yScale.domain(vis.postMap.map(d => d.name));
     }
 
     render() {
         // set up groups
         let vis = this;
 
+        console.log(vis.postMap);
+
         // TODO determine the best highlighting idiom
+        // TODO add numbers 
         let onMouseover = (d, i) => {
+            console.log(d)
             vis.selectedPage = d;
         }
 
@@ -113,30 +122,36 @@ class circleJuxtaposeVis {
         let group = vis.chart.append('g');
 
         let groups = group.selectAll('g')
-            .data(vis.postMap);
+            .data(vis.postMap)
+            .on('mouseover', onMouseover)
+            .on('mouseout', onMouseout);
 
         let groupsEnter = groups.enter().append('g')
-        .on('mouseover', onMouseover)
-        .on('mouseout', onMouseout);
         groups = groups.merge(groupsEnter);
 
-        console.log(groups);
+        let backgroundRect = groups.selectAll('rect').data(d => [d]);
+        backgroundRect.enter().merge(backgroundRect)
+            .append('rect')
+            .attr('width', vis.width)
+            .attr('height', vis.yScale.bandwidth())
+            .transition()
+            .attr('y', d => vis.yScale(d.name) + vis.yScale.bandwidth() / 2)
+            .attr('fill', d => (d === vis.selectedPage && vis.selectedPage != null) ? 'gray' : 'none')
 
         // create elements 
         let postCircle = groups.selectAll('.post-circle').data(d => [d]);
-        console.log(vis.radiusScale.domain());
-        console.log(vis.postMap.map(d => d[vis.sortKey]));
+
         postCircle.enter().merge(postCircle)
             .append('circle')
             .attr('fill', 'orange')
             .attr('class', 'post-circle')
             .transition()
             .attr('cx', vis.xScale(0))
-            .attr('cy', d => vis.yScale(d.name))
-            .attr('r', d => vis.radiusScale(d[vis.sortKey]));
+            .attr('r', d => vis.postRadiusScale(d[vis.sortKey]))
+            // TODO in-progress: this is very janky; there must be a better way to get value
+            .attr('cy', function(d) { return vis.yScale(d.name)
+                - (vis.totalRadiusScale(Object.values(d).filter(a => !isNaN(a)).reduce((sum, cur) => sum + cur)) / 2) });
 
-        console.log(postCircle);
-        // TODO radius scale
         let totalCircle = groups.selectAll('.total-circle').data(d => [d]);
 
         totalCircle.enter().merge(totalCircle)
@@ -145,8 +160,11 @@ class circleJuxtaposeVis {
             .attr('class', 'total-circle')
             .transition()
             .attr('cx', vis.xScale(2))
-            .attr('cy', d => vis.yScale(d.name))
-            .attr('r', d => vis.radiusScale(d[vis.sortKey]));
+            .attr('r', d => vis.totalRadiusScale(Object.values(d).filter(a => !isNaN(a)).reduce((sum, cur) => sum + cur)))
+            // TODO in-progress: this is very janky; there must be a better way to get value
+            //.attr('cy', function(d) { console.log(d3.select(this).node().r.animVal.value); return vis.yScale(d.name)});
+            .attr('cy', function(d) { return vis.yScale(d.name)
+            - (vis.totalRadiusScale(Object.values(d).filter(a => !isNaN(a)).reduce((sum, cur) => sum + cur)) / 2) });
 
         let names = groups.selectAll('.name-label')
             .data(d => [d]);
@@ -160,9 +178,11 @@ class circleJuxtaposeVis {
             // TODO janky way of setting the placement of text
             //.each(function(d) { d.nameWidth = this.getBBox().width })
             //.attr('transform', function(d) { `translate(${-d.nameWidth / 2}, 0)` });
-            .each(function(d) { d3.select(this)
-                .attr('transform', `translate(${-this.getBBox().width / 2}, 0)`) });
-            
+            .each(function (d) {
+                d3.select(this)
+                .attr('transform', `translate(${-this.getBBox().width / 2}, 0)`)
+            });
+
         // TODO come up aith better position inheritance
 
 

@@ -76,9 +76,19 @@ p {
 }
 
 /** Circle Juxtapose Vis **/
+/* TODO fix structure */
 
 #falseToAllPostsRanking .name-label {
   text-align: center;
+  font-size: 0.75rem;
+}
+
+#falseToAllPostsRanking rect:hover {
+  fill: gray;
+}
+
+#falseToAllPostsRanking g:hover {
+  background-color: gray;
 }
 
 /** Bubble Vis **/
