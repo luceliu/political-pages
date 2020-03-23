@@ -21,16 +21,23 @@
         You can explore the dataset <a href="https://www.kaggle.com/mrisdal/fact-checking-facebook-politics-pages/data#">here</a>.</p>
         <h2>How accurate are each Page's posts?</h2>
         <h2>Does false content get more engagement?</h2>
+    </div>
+    <div class="right-column">
+        <div class="tabs" id="layout-tabs">
+            <button class="tab active" id="all-layout">All posts</button>
+            <button class="tab" id="political-layout">Posts by political category</button>
+            <button class="tab" id="page-layout">Posts by page</button>
+        </div>
         <div class="color-legend-container">
             <svg id="color-legend"></svg>
             <p class="footnote">* Posts that were satirical or opinion-driven, or that otherwise lacked a factual claim were rated "no factual content" (<a href="https://www.buzzfeednews.com/article/craigsilverman/partisan-fb-pages-analysis">Buzzfeed News</a>)</p>
         </div>
-        <div class="vis">
-            <svg id="bubbleVis"></svg>
-        </div>
-        <div class="vis">
-            <svg id="falseToAllPostsRanking"></svg>
-        </div>
+    </div>
+    <div class=vis-container>
+        <svg id="bubbleVis"></svg>
+    </div>
+    <div class="vis">
+        <svg id="falseToAllPostsRanking"></svg>
     </div>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
