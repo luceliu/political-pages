@@ -7,12 +7,13 @@ class circleJuxtaposeVis {
         this.config = {
             parentElement: _config.parentElement,
             containerWidth: _config.containerWidth || 1000,
-            containerHeight: _config.containerHeight || 870,
+            containerHeight: _config.containerHeight || 950,
         }
 
-        this.config.margin = _config.margin || { top: 30, bottom: 20, right: 0, left: 0 }
+        this.config.margin = _config.margin || { top: 40, bottom: 20, right: 0, left: 0 }
 
         this.data = _config.data;
+        this.postMap = _config.postMap;
 
         this.width = this.config.containerWidth - this.config.margin.left - this.config.margin.right;
         this.height = this.config.containerHeight - this.config.margin.top - this.config.margin.bottom;
@@ -31,29 +32,6 @@ class circleJuxtaposeVis {
 
     initVis() {
         let vis = this;
-        let processData = data => {
-            // collect total posts for the page
-            // collect each type of post for the page
-
-            let names = [...new Set(data.map(d => d.Page))]
-            let ratings = [... new Set(data.map(d => d.Rating))]
-            let map = names.map(n => {
-                let obj = {};
-                ratings.forEach(r => obj[r] = 0);
-                obj.name = n;
-                return obj;
-            })
-
-            console.log(map);
-            return data.reduce((map, current) => {
-                let page = map.find(d => d.name == current.Page);
-                page[current.Rating]++;
-                return map;
-            }, map)
-        }
-
-        vis.postMap = processData(vis.data);
-        console.log(vis.postMap)
 
         // create two kinds of scales 
         // one for placement of total posts and one for fake
@@ -65,7 +43,6 @@ class circleJuxtaposeVis {
 
         let arrayOfObjSummary = (arr, funcArray, funcObj) =>
             funcArray(...arr.map(d => funcObj(...Object.values(d).filter(a => !isNaN(a)))));
-
 
         vis.yScale = d3.scaleBand()
             .domain(vis.postMap.map(d => d.name))
@@ -79,9 +56,8 @@ class circleJuxtaposeVis {
             .range([5, 30]);
 
         vis.totalRadiusScale = d3.scaleSqrt()
-            .domain([arrayOfObjSummary(vis.postMap, Math.min, (...args) => args.reduce((sum, cur) => sum + cur)),
-            arrayOfObjSummary(vis.postMap, Math.max,
-                (...args) => args.reduce((sum, cur) => sum + cur))])
+            .domain([Math.min(...vis.postMap.map(d => d.total)),
+            Math.max(...vis.postMap.map(d => d.total))])
             .range([10, 40]);
 
         vis.update();
@@ -150,7 +126,7 @@ class circleJuxtaposeVis {
             .attr('r', d => vis.postRadiusScale(d[vis.sortKey]))
             // TODO in-progress: this is very janky; there must be a better way to get value
             .attr('cy', function(d) { return vis.yScale(d.name)
-                - (vis.totalRadiusScale(Object.values(d).filter(a => !isNaN(a)).reduce((sum, cur) => sum + cur)) / 2) });
+                - (vis.postRadiusScale(d[vis.sortKey]) / 2) });
 
         let totalCircle = groups.selectAll('.total-circle').data(d => [d]);
 
@@ -160,11 +136,11 @@ class circleJuxtaposeVis {
             .attr('class', 'total-circle')
             .transition()
             .attr('cx', vis.xScale(2))
-            .attr('r', d => vis.totalRadiusScale(Object.values(d).filter(a => !isNaN(a)).reduce((sum, cur) => sum + cur)))
+            .attr('r', d => vis.totalRadiusScale(d.total))
             // TODO in-progress: this is very janky; there must be a better way to get value
             //.attr('cy', function(d) { console.log(d3.select(this).node().r.animVal.value); return vis.yScale(d.name)});
             .attr('cy', function(d) { return vis.yScale(d.name)
-            - (vis.totalRadiusScale(Object.values(d).filter(a => !isNaN(a)).reduce((sum, cur) => sum + cur)) / 2) });
+            - (vis.totalRadiusScale(d.total) / 2) });
 
         let names = groups.selectAll('.name-label')
             .data(d => [d]);
