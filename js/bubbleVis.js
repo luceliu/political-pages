@@ -301,5 +301,9 @@ class bubbleVis {
       .transition().duration(300)
       .attr( 'fill-opacity', 0)
       .remove();
+    vis.svg.selectAll('.page')
+    .transition().duration(300)
+    .attr( 'fill-opacity', 0)
+    .remove();
   }
 }
