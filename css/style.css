@@ -102,6 +102,13 @@ p {
   cursor: pointer;
 }
 
+/* Stacked Bar Vis */
+#stackedBarVis {
+  width: 1000px;
+  height: 870px;
+  border: 2px solid black;
+}
+
 /** Tooltip **/ 
 
 .tooltip {
