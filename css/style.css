@@ -91,12 +91,13 @@ p {
   cursor: pointer;
 }
 
-.category {
+.category, .page {
   font-size: 0.45em;
   font-family: Archivo, Helvetica, sans-serif;
   text-transform: uppercase;
   fill: #8D9097;
 }
+
 
 .right-column {
   display: flex;

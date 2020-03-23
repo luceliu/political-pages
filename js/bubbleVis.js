@@ -48,15 +48,27 @@ class bubbleVis {
     }
 
     vis.pageCenters = {
-      'The Other 98%': { x: vis.config.containerWidth / 3, y: vis.config.containerHeight / 3 - 80 },
-      'Addicting Info': { x: vis.config.containerWidth / 3, y: vis.config.containerHeight / 2 - 100 },
-      'Occupy Democrats': { x: vis.config.containerWidth / 3, y: 2 * vis.config.containerHeight / 3 - 100},
-      'Politico': { x: vis.config.containerWidth / 2, y: vis.config.containerHeight / 3 - 100 },
-      'CNN Politics': { x: vis.config.containerWidth / 2, y: vis.config.containerHeight / 2 - 100 },
-      'ABC News Politics': { x: vis.config.containerWidth / 2, y: 2 * vis.config.containerHeight / 3 - 100 },
-      'Eagle Rising': { x: 2 * vis.config.containerWidth / 3, y: vis.config.containerHeight / 3 - 100 },
-      'Right Wing News': { x: 2 * vis.config.containerWidth / 3, y: vis.config.containerHeight / 2 - 100 },
-      'Freedom Daily': { x: 2 * vis.config.containerWidth / 3, y: 2 * vis.config.containerHeight / 3 - 100 },
+      'The Other 98%': { x: vis.config.containerWidth / 3, y: vis.config.containerHeight / 3 - 40 },
+      'Addicting Info': { x: vis.config.containerWidth / 3, y: vis.config.containerHeight / 2 - 60 },
+      'Occupy Democrats': { x: vis.config.containerWidth / 3, y: 2 * vis.config.containerHeight / 3 - 60},
+      'Politico': { x: vis.config.containerWidth / 2, y: vis.config.containerHeight / 3 - 60 },
+      'CNN Politics': { x: vis.config.containerWidth / 2, y: vis.config.containerHeight / 2 - 60 },
+      'ABC News Politics': { x: vis.config.containerWidth / 2, y: 2 * vis.config.containerHeight / 3 - 60 },
+      'Eagle Rising': { x: 2 * vis.config.containerWidth / 3, y: vis.config.containerHeight / 3 - 60 },
+      'Right Wing News': { x: 2 * vis.config.containerWidth / 3, y: vis.config.containerHeight / 2 - 60 },
+      'Freedom Daily': { x: 2 * vis.config.containerWidth / 3, y: 2 * vis.config.containerHeight / 3 - 60 },
+    }
+
+    vis.pageLabelCenters = {
+      'The Other 98%': { x: vis.config.containerWidth / 3 - 40, y: vis.config.containerHeight / 3 - 220 },
+      'Addicting Info': { x: vis.config.containerWidth / 3 - 40, y: vis.config.containerHeight / 2 - 140 },
+      'Occupy Democrats': { x: vis.config.containerWidth / 3 - 40, y: 2 * vis.config.containerHeight / 3 - 156},
+      'Politico': { x: vis.config.containerWidth / 2 + 40, y: vis.config.containerHeight / 3 - 220 },
+      'CNN Politics': { x: vis.config.containerWidth / 2 + 40, y: vis.config.containerHeight / 2 - 140 },
+      'ABC News Politics': { x: vis.config.containerWidth / 2 + 60, y: 2 * vis.config.containerHeight / 3 - 50 },
+      'Eagle Rising': { x: 2 * vis.config.containerWidth / 3 + 80, y: vis.config.containerHeight / 3 - 180 },
+      'Right Wing News': { x: 2 * vis.config.containerWidth / 3 + 80, y: vis.config.containerHeight / 2 - 140 },
+      'Freedom Daily': { x: 2 * vis.config.containerWidth / 3 + 80, y: 2 * vis.config.containerHeight / 3 - 65 },
     }
 
     function charge(d) {
@@ -243,6 +255,11 @@ class bubbleVis {
   renderLabels(layout) {
     let vis = this;
     if (layout === 'political-layout') {
+      vis.svg.selectAll('.page')
+      .transition().duration(300)
+      .attr( 'fill-opacity', 0)
+      .remove();
+
       const categories = d3.keys(vis.categoryLabelCenters);
       const categoryLabels = vis.svg.selectAll('.category')
         .data(categories);
@@ -261,6 +278,20 @@ class bubbleVis {
       .transition().duration(300)
       .attr( 'fill-opacity', 0)
       .remove();
+
+      const pages = d3.keys(vis.pageLabelCenters);
+      const pageLabels = vis.svg.selectAll('.page')
+        .data(pages);
+      
+      pageLabels.enter().append('text')
+        .attr('class', 'page')
+        .attr('color', '#8D9097')
+        .attr('x', d => vis.pageLabelCenters[d].x)
+        .attr('y', d => vis.pageLabelCenters[d].y)
+        .attr('text-anchor', 'middle')
+        .text(d => d)
+        .transition().duration(300)
+        .attr( 'fill-opacity', 1);
     }
   }
 
