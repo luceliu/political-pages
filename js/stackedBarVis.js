@@ -56,7 +56,6 @@ class stackedBarVis {
             .call(d3.axisLeft(vis.yScale).tickSizeInner(0))
             .call(g => g.select(".domain").remove());
 
-
           vis.colorScale = d3.scaleOrdinal()
             .domain(truthRankings)
             .range(["#67D99B", "#D3DCE7", "#E05E5E", "#634265"])
@@ -110,7 +109,7 @@ class stackedBarVis {
                 .append("rect")
                 .attr("width", d => vis.widthScale(d[1] - d[0]))
                 .attr("height", 28)
-                .attr('y', (p, i) => vis.yScale(pageTitles[i])) // giving completely bogus y values???
+                .attr('y', (p, i) => vis.yScale(pageTitles[i])) 
                 .attr('x', p => vis.xScale(p[0])) // changed from p[1] to p[0]
                 .style("fill", vis.colorScale(d))
             })

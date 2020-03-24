@@ -168,6 +168,9 @@ font-weight: 500;
 font-size: 16px;
   color: #8F8F8F;
 }
+.x-axis .tick line {
+  color: #D9D9D9;
+}
 .x-axis g:nth-child(2n) text {
   visibility: hidden;
 }
