@@ -45,6 +45,15 @@ p {
 .vis-container {
   margin: auto;
   max-width: 100vw;
+  padding-left: 4vw;
+  padding-right: 4vw;
+}
+
+.bubble-container {
+  margin: auto;
+  max-width: 100vw;
+  max-height: 90vh;  width: 80vw;
+  height: 800px;
 }
 
 /** Color Legend **/ 
@@ -120,6 +129,50 @@ p {
   position: absolute;
   right: 3vw;
   z-index: 100;
+}
+
+/* Stacked Bar Vis */
+#stackedBarVis {
+  width: 70%;
+  height: 520px;
+  margin-top: -24px;
+  margin-bottom: 24px;
+}
+
+.vis-title {
+  font-size: 0.7em;
+  font-family: Archivo, Helvetica, sans-serif;
+  font-weight: 500;
+  max-width: 36vw;
+  color: #3B3A3C;
+  margin: 0;
+}
+
+.axis-label {
+  font-family: Archivo, Helvetica, sans-serif;
+  font-size: 18px;
+  color: #5D5D5D;
+}
+
+.y-axis .tick {
+  font-family: Archivo;
+font-style: normal;
+font-weight: 500;
+font-size: 18px;
+color: #3B3A3B;
+}
+.x-axis .tick {
+  font-family: Archivo;
+font-style: normal;
+font-weight: 500;
+font-size: 16px;
+  color: #8F8F8F;
+}
+.x-axis .tick line {
+  color: #D9D9D9;
+}
+.x-axis g:nth-child(2n) text {
+  visibility: hidden;
 }
 
 /** Tooltip **/ 
