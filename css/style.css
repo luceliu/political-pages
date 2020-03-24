@@ -133,7 +133,7 @@ p {
 
 /* Stacked Bar Vis */
 #stackedBarVis {
-  width: 50%;
+  width: 70%;
   height: 520px;
   margin-top: -24px;
   margin-bottom: 24px;
@@ -152,6 +152,17 @@ p {
   font-family: Archivo, Helvetica, sans-serif;
   font-size: 18px;
   color: #5D5D5D;
+}
+
+.all-bars {
+  padding-left: 50px;
+}
+.y-axis .tick {
+  font-family: Archivo;
+font-style: normal;
+font-weight: 500;
+font-size: 14px;
+color: #3B3A3B;
 }
 
 /** Tooltip **/ 

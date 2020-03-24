@@ -2,10 +2,10 @@ class stackedBarVis {
     constructor(_config) {
         this.config = {
           parentElement: _config.parentElement,
-          containerWidth: _config.containerWidth || 400,
+          containerWidth: _config.containerWidth || 500,
           containerHeight: _config.containerHeight || 470,
         }
-        this.config.margin = _config.margin || { top: 40, bottom: 40, right: 0, left: 0 }
+        this.config.margin = _config.margin || { top: 40, bottom: 40, right: 0, left: 140 }
         this.data = _config.data;
         this.perPageData = _config.postMap;
         this.initVis();
@@ -47,9 +47,14 @@ class stackedBarVis {
 
           console.log('test: ', vis.yScale("Eagle Rising")) // not giving a valid y value??
 
-          vis.yAxis = d3.axisLeft(vis.yScale)
-            .tickSizeInner(4)
-            .tickPadding(10);
+          // vis.yAxis = d3.axisLeft(vis.yScale)
+          //   .tickSizeInner(4)
+          //   .tickPadding(10);
+
+          vis.yAxis = g.append('g')
+            .attr('class', 'y-axis')
+            .call(d3.axisLeft(vis.yScale).tickSizeInner(0))
+
 
           vis.colorScale = d3.scaleOrdinal()
             .domain(truthRankings)
@@ -63,19 +68,6 @@ class stackedBarVis {
             .attr('class', 'x-axis-g')
             .attr('transform', `translate(0,${vis.height})`)
             .call(vis.xAxis);
-
-          const yAxisG = g.append('g')
-            .attr('class', 'y-axis-g')
-            .call(vis.yAxis);
-
-          yAxisG.append('text')
-          .attr('class', 'axis-label')
-          .attr('y', 40)
-          .attr('x', -vis.height / 2)
-          .attr('fill', 'black')
-          .attr('transform', `rotate(-90)`)
-          .attr('text-anchor', 'middle')
-          .text("Blahblahbalha");
 
           xAxisG.append('text')
           .attr('class', 'axis-label')
@@ -100,7 +92,8 @@ class stackedBarVis {
 
           const series = truthfulnessStack(percentages);
           console.log('series: ', series)
-          const bars = g.append('g');
+          const bars = g.append('g')
+            .attr('class', 'all-bars')
           bars.selectAll("rect")
             .data(truthfulnessStack(percentages))
             .enter()
