@@ -11,7 +11,7 @@ html {
 h1, h2 {
   font-family: "Merriweather",serif;
   font-weight: 900;
-  font-size: 1.7em;
+  font-size: 1.9em;
   margin-top: 2em;
   color: #3B3A3C;
 }
@@ -24,7 +24,7 @@ p {
   margin-top: 32px;
   font-family: "Archivo", sans-serif;
   font-weight: 400;
-  font-size: 0.65em;
+  font-size: 22px;
   color: #5E6064;
   max-width: 580px;
   line-height: 130%
@@ -33,7 +33,7 @@ p {
 .subtitle {
   margin-top: -24px;
   color: #8D9097;
-  font-size: 0.6em;
+  font-size: 22px;
   margin-bottom: 90px;
 }
 
@@ -42,10 +42,15 @@ p {
   margin: auto;
 }
 
+.vis-container {
+  margin: auto;
+  max-width: 100vw;
+}
+
 /** Color Legend **/ 
 #color-legend .tick {
   font-family: "Archivo", sans-serif;
-  font-size: 0.5rem;
+  font-size: 17px;
   font-weight: 500;
   fill: #5E6064;
 }
@@ -62,17 +67,17 @@ p {
 }
 
 .color-legend-container {
+  margin-top: 48px;
   display: flex; 
-  flex-direction: row;
+  flex-direction: column;
   align-items: flex-start;
 }
 
 .footnote {
-  font-size: 0.5rem;
+  font-size: 16px;
   fill: #8D9097;
   margin-top: 16px;
-  margin-left: 32px;  
-  max-width: 300px;
+  max-width: 280px;
 }
 
 /** Circle Juxtapose Vis **/
@@ -93,13 +98,28 @@ p {
 
 /** Bubble Vis **/
 #bubbleVis {
-  width: 1000px;
-  height: 870px;
-  margin-left: -2.6 rem;
+  width: 80vw;
+  height: 800px;
+  margin-left: -9.5vw;
 }
 
 .bubble:hover {
   cursor: pointer;
+}
+
+.category, .page {
+  font-size: 0.45em;
+  font-family: Archivo, Helvetica, sans-serif;
+  text-transform: uppercase;
+  fill: #8D9097;
+}
+
+.right-column {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  right: 3vw;
+  z-index: 100;
 }
 
 /* Stacked Bar Vis */
@@ -113,7 +133,6 @@ p {
 
 .tooltip {
   background-color: white;
-	opacity: .9;
 	padding: 20px;
 	width: 300px;
   z-index: 100;
@@ -148,4 +167,63 @@ p {
   font-size: 0.5em;
   color: #3B3A3C;
   margin: 0 0 0 0;
+}
+
+/** Tabs **/ 
+
+.tabs {
+  margin-top: 24px;
+  display: flex;
+  flex-direction: column;
+  width: 270px;
+}
+
+.tabs button {
+  font-family: Archivo, Helvetica, sans-serif;
+  text-align: left;
+  font-weight: 500;
+  font-size: 18px;
+  background-color: inherit;
+  color: #3B3A3C;
+  padding: 16px;  
+  border: none;
+  cursor: pointer;
+  opacity: 0.6;
+  border-radius: 4px;
+  position:relative;
+}
+
+.tabs button:hover {
+  background-color: #f3f6f9;  
+}
+
+.tabs button:after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background:#33353c;
+  height: 4px;
+  border-radius: 0px 0px 4px 4px;
+  width: 0;
+}
+
+.tabs button:hover:after, .tabs .active:after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #33353c;
+  height: 4px;
+  border-radius: 0px 0px 4px 4px;
+  width: 100%;
+  transition: width .3s;
+}
+
+.tabs .active { 
+  background-color: #f3f6f9;
+  opacity: 1;
+  outline: none;
 }

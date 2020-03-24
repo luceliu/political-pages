@@ -42,7 +42,7 @@ class tooltip {
             .html(content)
             .style("display", "inline")
             .style("left", (d3.event.pageX) + "px")		
-            .style("top", (d3.event.pageY - 28) + "px");
+            .style("top", (d3.event.pageY + 24) + "px");
 
         d3.selectAll(".tooltip .dynamic-color")
             .style("color", dynamicColor);
