@@ -5,7 +5,7 @@ class stackedBarVis {
           containerWidth: _config.containerWidth || 500,
           containerHeight: _config.containerHeight || 470,
         }
-        this.config.margin = _config.margin || { top: 40, bottom: 40, right: 0, left: 140 }
+        this.config.margin = _config.margin || { top: 40, bottom: 40, right: 0, left: 160 }
         this.data = _config.data;
         this.perPageData = _config.postMap;
         this.initVis();
@@ -54,6 +54,7 @@ class stackedBarVis {
           vis.yAxis = g.append('g')
             .attr('class', 'y-axis')
             .call(d3.axisLeft(vis.yScale).tickSizeInner(0))
+            .call(g => g.select(".domain").remove());
 
 
           vis.colorScale = d3.scaleOrdinal()
@@ -65,9 +66,10 @@ class stackedBarVis {
             .range([0, vis.width])
 
           const xAxisG = g.append('g')
-            .attr('class', 'x-axis-g')
-            .attr('transform', `translate(0,${vis.height})`)
-            .call(vis.xAxis);
+            .attr('class', 'x-axis')
+            .attr('transform', `translate(10,${vis.height})`)
+            .call(vis.xAxis.tickSizeInner(-vis.height).ticks(12))
+            .call(g => g.select(".domain").remove())
 
           xAxisG.append('text')
           .attr('class', 'axis-label')
@@ -94,6 +96,7 @@ class stackedBarVis {
           console.log('series: ', series)
           const bars = g.append('g')
             .attr('class', 'all-bars')
+            .attr('transform', 'translate(10, 0)')
           bars.selectAll("rect")
             .data(truthfulnessStack(percentages))
             .enter()

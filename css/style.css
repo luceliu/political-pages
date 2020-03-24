@@ -154,15 +154,22 @@ p {
   color: #5D5D5D;
 }
 
-.all-bars {
-  padding-left: 50px;
-}
 .y-axis .tick {
   font-family: Archivo;
 font-style: normal;
 font-weight: 500;
-font-size: 14px;
+font-size: 18px;
 color: #3B3A3B;
+}
+.x-axis .tick {
+  font-family: Archivo;
+font-style: normal;
+font-weight: 500;
+font-size: 16px;
+  color: #8F8F8F;
+}
+.x-axis g:nth-child(2n) text {
+  visibility: hidden;
 }
 
 /** Tooltip **/ 
