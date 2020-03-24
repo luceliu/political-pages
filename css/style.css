@@ -82,18 +82,35 @@ p {
 
 /** Circle Juxtapose Vis **/
 /* TODO fix structure */
+#falseToAllPostsRanking {
+  font-family: Archivo, Helvetica, sans-serif; 
+}
 
 #falseToAllPostsRanking .name-label {
+  font-family: Archivo, Helvetica, sans-serif;
   text-align: center;
-  font-size: 0.75rem;
+  font-size: 18px;
+  vertical-align: center;
+  pointer-events: none;
+}
+
+#falseToAllPostsRanking rect {
+  transition: 0.2s ease-in-out;
 }
 
 #falseToAllPostsRanking rect:hover {
-  fill: gray;
+  fill: lightgray;
 }
 
-#falseToAllPostsRanking g:hover {
-  background-color: gray;
+.key-text {  
+  font-family: Archivo, Helvetica, sans-serif;
+  text-align: center;
+  font-size: 18px;
+}
+
+.total-circle, .post-circle {
+  stroke: white;
+  stroke-width: 10px;
 }
 
 /** Bubble Vis **/

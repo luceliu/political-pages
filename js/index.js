@@ -81,7 +81,20 @@ Promise.all([
           d3.selectAll('.tab').classed('active', false);
           d3.select(selectedButton).classed('active', true);
           const layoutId = d3.select(selectedButton).attr('id');
+          pageRankings.se
           postBubbles.update(layoutId);
+      });
+
+      d3.select('#circle-layout-tabs')
+      .selectAll('.tab')
+        .on('click', (d, i, nodes) => {
+          const selectedButton = nodes[i];
+          d3.selectAll('.tab').classed('active', false);
+          d3.select(selectedButton).classed('active', true);
+          console.log(d3.select(selectedButton).node().innerText.toLowerCase());
+          pageRankings.sortKey = d3.select(selectedButton).node().innerText.toLowerCase();
+          pageRankings.update();
+          pageRankings.render();
       });
     
   });

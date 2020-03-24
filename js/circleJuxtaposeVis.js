@@ -33,12 +33,15 @@ class circleJuxtaposeVis {
     initVis() {
         let vis = this;
 
+        vis.frontTextPadding = 140;
+        vis.backTextPadding = 100;
+
         // create two kinds of scales 
         // one for placement of total posts and one for fake
         // and one y-scale for the number of sites (9)
         vis.xScale = d3.scaleBand()
             .domain([0, 1, 2])
-            .range([0, vis.width])
+            .range([0, vis.width - vis.frontTextPadding + vis.backTextPadding])
             .padding(0.2);
 
         let arrayOfObjSummary = (arr, funcArray, funcObj) =>
@@ -60,13 +63,49 @@ class circleJuxtaposeVis {
             Math.max(...vis.postMap.map(d => d.total))])
             .range([10, 40]);
 
+            // TODO - get this from somewhere else
+        vis.colourScale = d3.scaleOrdinal()
+        .domain(['no factual content', 'mostly false', 'mixture of true and false', 'mostly true'])
+        .range(['#634265', '#E05E5E', '#D3DCE7', '#67D99B']);
+
+        vis.sortKey = "mostly false";
+
+        vis.totalkey = vis.chart.append("text");
+        vis.totalkey
+        .attr('class', 'key-text')
+        .attr('x', vis.width - vis.backTextPadding)
+        .attr('y', 0)
+        .text("Total posts");
+
+        vis.sortKeyPre = vis.chart.append("text");
+        vis.sortKeyPre
+        .attr('class', 'key-text')
+        .text("Posts rated as")
+        .attr('x', 0)
+        .attr('y', 0)
+
+        vis.sortKeyText = vis.chart.append("text");
+        vis.sortKeyText
+        .attr('class', 'key-text')
+        .text(vis.sortKey)
+        .attr('x', 0)
+        // TODO lots of magic numbers related to pixels
+        .attr('y', 20)
+        
+        vis.group = vis.chart.append('g');
+        vis.group.attr('transform', `translate(${vis.frontTextPadding}, 0)`);
+
         vis.update();
     }
 
     update() {
         // no reorganization currently needed
         let vis = this;
-        vis.sortKey = "mostly false";
+
+        vis.sortKeyText
+        .transition()
+        .text(vis.sortKey);
+
         vis.postMap = vis.postMap.sort((a, b) => b[vis.sortKey] - a[vis.sortKey]);
 
         // change scale based on sort key
@@ -76,15 +115,13 @@ class circleJuxtaposeVis {
         );
 
         vis.yScale.domain(vis.postMap.map(d => d.name));
+        console.log(vis.yScale.domain());
     }
 
     render() {
         // set up groups
         let vis = this;
 
-        console.log(vis.postMap);
-
-        // TODO determine the best highlighting idiom
         // TODO add numbers 
         let onMouseover = (d, i) => {
             console.log(d)
@@ -95,72 +132,113 @@ class circleJuxtaposeVis {
             vis.selectedPage = null;
         }
 
-        let group = vis.chart.append('g');
-
-        let groups = group.selectAll('g')
-            .data(vis.postMap)
-            .on('mouseover', onMouseover)
-            .on('mouseout', onMouseout);
+        let groups = vis.group.selectAll('g')
+            .data(vis.postMap);
 
         let groupsEnter = groups.enter().append('g')
         groups = groups.merge(groupsEnter);
 
-        let backgroundRect = groups.selectAll('rect').data(d => [d]);
-        backgroundRect.enter().merge(backgroundRect)
-            .append('rect')
-            .attr('width', vis.width)
-            .attr('height', vis.yScale.bandwidth())
+        let names = groups.selectAll('.name-label')
+            .data(d => [d]);
+
+        names.enter()
+            .append('text')
+            .attr('class', 'name-label')
+            .text(d => d.name)
+            .each(function (d) {
+                d.textWidth = this.getBBox().width;
+                d.textHeight = this.getBBox().height;
+            })
+            .attr('x', vis.xScale(1))
+            .attr('y', d => vis.yScale(d.name))
+            .merge(names)
             .transition()
-            .attr('y', d => vis.yScale(d.name) + vis.yScale.bandwidth() / 2)
-            .attr('fill', d => (d === vis.selectedPage && vis.selectedPage != null) ? 'gray' : 'none')
+            .text(d => d.name)
+            .each(function (d) {
+                console.log(d)
+                d3.select(this)
+                    .attr('transform', `translate(${-d.textWidth / 2}, 0)`)
+            });
+            // TODO janky way of setting the placement of text
+            //.each(function(d) { d.nameWidth = this.getBBox().width })
+            //.attr('transform', function(d) { `translate(${-d.nameWidth / 2}, 0)` });
+            
+
+        let line = groups.selectAll('.line').data(d => [d]);
+        line.enter()
+            .append('rect')
+            .attr('class', 'line')
+            // span the whole line 
+            .attr('width', vis.xScale(2) - vis.xScale(0))
+            .attr('height', 2)
+            .attr('fill', 'lightgray')
+            .merge(line)
+            .transition()
+            .attr('x', d => vis.xScale(0))
+            .attr('y', d => vis.yScale(d.name) - d.textHeight / 2)
 
         // create elements 
         let postCircle = groups.selectAll('.post-circle').data(d => [d]);
 
-        postCircle.enter().merge(postCircle)
+        let circleStroke = 10;
+        postCircle.enter()
             .append('circle')
-            .attr('fill', 'orange')
             .attr('class', 'post-circle')
+            .merge(postCircle)
             .transition()
+            .attr('fill', d => vis.colourScale(vis.sortKey))
             .attr('cx', vis.xScale(0))
-            .attr('r', d => vis.postRadiusScale(d[vis.sortKey]))
+            .attr('r', d => vis.postRadiusScale(d[vis.sortKey]) + circleStroke /2)
             // TODO in-progress: this is very janky; there must be a better way to get value
-            .attr('cy', function(d) { return vis.yScale(d.name)
-                - (vis.postRadiusScale(d[vis.sortKey]) / 2) });
+            .attr('cy', function (d) {
+                // d.postCirclePosY = vis.yScale(d.name)
+                //     - (vis.postRadiusScale(d[vis.sortKey]) / 2);
+                //return d.postCirclePosY;
+                return vis.yScale(d.name) - d.textHeight / 2;
+            });
 
         let totalCircle = groups.selectAll('.total-circle').data(d => [d]);
 
-        totalCircle.enter().merge(totalCircle)
+        totalCircle.enter()
             .append('circle')
-            .attr('fill', 'red')
+            .attr('fill', 'cornflowerblue')
             .attr('class', 'total-circle')
+            .merge(totalCircle)
             .transition()
             .attr('cx', vis.xScale(2))
-            .attr('r', d => vis.totalRadiusScale(d.total))
-            // TODO in-progress: this is very janky; there must be a better way to get value
-            //.attr('cy', function(d) { console.log(d3.select(this).node().r.animVal.value); return vis.yScale(d.name)});
-            .attr('cy', function(d) { return vis.yScale(d.name)
-            - (vis.totalRadiusScale(d.total) / 2) });
-
-        let names = groups.selectAll('.name-label')
-            .data(d => [d]);
-        names.enter().merge(names)
-            .append('text')
-            .text(d => d.name)
-            .attr('class', 'name-label')
-            .transition()
-            .attr('x', vis.xScale(1))
-            .attr('y', d => vis.yScale(d.name))
-            // TODO janky way of setting the placement of text
-            //.each(function(d) { d.nameWidth = this.getBBox().width })
-            //.attr('transform', function(d) { `translate(${-d.nameWidth / 2}, 0)` });
-            .each(function (d) {
-                d3.select(this)
-                .attr('transform', `translate(${-this.getBBox().width / 2}, 0)`)
+            .attr('r', d => vis.totalRadiusScale(d.total) + circleStroke /2)
+            .attr('cy', function (d) {
+                // d.totalCirclePosY = vis.yScale(d.name)
+                //     - (vis.totalRadiusScale(d.total) / 2);
+                //return d.totalCirclePosY;
+                return vis.yScale(d.name) - d.textHeight / 2;
             });
+
+        // add lines and backgrounds    
+        // and add backgrounds to each circle        
+        let backgroundRect = groups.selectAll('.background-rect').data(d => [d]);
+        backgroundRect.enter()
+            .append('rect')
+            .attr('class', 'background-rect')
+            .attr('rx', 5)
+            .attr('ry', 5)
+            // width of text box... or a set width
+            .merge(backgroundRect)
+            .attr('width', d => d.textWidth * 1.2)
+            .attr('height', d => d.textHeight * 1.4)
+            .attr('y', d => vis.yScale(d.name) - d.textHeight)
+            .attr('x', d => vis.xScale(1) - d.textWidth / 2 - (d.textWidth * 0.2 / 2))
+            .attr('fill', d => (d === vis.selectedPage && vis.selectedPage != null) ? 'gray' : 'white')
+
+        groups.selectAll('.name-label').each(function(d) {
+            d3.select(this).raise();
+        });
 
         // TODO come up aith better position inheritance
 
+        vis.totalkey
+        .transition()
+        .attr('x', vis.group.node().getBBox().width + vis.backTextPadding + 10);
 
     }
 }
