@@ -53,7 +53,8 @@ Promise.all([
     // Initialize bubble vis
     let postBubbles = new bubbleVis({ 
       parentElement: '#bubbleVis',
-      containerWidth: document.getElementsByClassName("vis-container")[0].clientWidth,
+      containerWidth: document.getElementsByClassName("bubble-container")[0].clientWidth,
+      containerHeight: document.getElementsByClassName("bubble-container")[0].clientHeight,
       data: data,
       idValue: d => d.post_id,
       colorValue: d => d.Rating,
@@ -73,6 +74,7 @@ Promise.all([
     })
 
     pageRankings.render();
+
     // Event listeners for layout tabs
     d3.select('#layout-tabs')
       .selectAll('.tab')
@@ -97,5 +99,10 @@ Promise.all([
           pageRankings.render();
       });
     
+    let truthPercentage = new stackedBarVis({
+      parentElement: '#stackedBarVis',
+      data: data,
+      postMap: perPageData,
+    })
   });
   
