@@ -19,25 +19,33 @@
         and three are considered mainstream.</p>
         <p>The truthfulness ratings were provided by Buzzfeed News, as part of their analysis on the topic which you can read <a href="https://www.buzzfeednews.com/article/craigsilverman/partisan-fb-pages-analysis">here</a>.
         You can explore the dataset <a href="https://www.kaggle.com/mrisdal/fact-checking-facebook-politics-pages/data#">here</a>.</p>
-        <h2>How accurate are each Page's posts?</h2>
-        <div class="vis">
-            <svg id="stackedBarVis"></svg>
-        </div>
         <h2>Does false content get more engagement?</h2>
     </div>
     <div class="right-column">
-        <div class="tabs" id="layout-tabs">
-            <button class="tab active" id="all-layout">All posts</button>
-            <button class="tab" id="political-layout">Posts by political category</button>
-            <button class="tab" id="page-layout">Posts by page</button>
+            <div class="tabs" id="layout-tabs">
+                <button class="tab active" id="all-layout">All posts</button>
+                <button class="tab" id="political-layout">Posts by political category</button>
+                <button class="tab" id="page-layout">Posts by page</button>
+            </div>
+            <div class="color-legend-container">
+                <svg id="color-legend"></svg>
+                <p class="footnote">* Posts that were satirical or opinion-driven, or that otherwise lacked a factual claim were rated "no factual content" (<a href="https://www.buzzfeednews.com/article/craigsilverman/partisan-fb-pages-analysis">Buzzfeed News</a>)</p>
+            </div>
         </div>
-        <div class="color-legend-container">
-            <svg id="color-legend"></svg>
-            <p class="footnote">* Posts that were satirical or opinion-driven, or that otherwise lacked a factual claim were rated "no factual content" (<a href="https://www.buzzfeednews.com/article/craigsilverman/partisan-fb-pages-analysis">Buzzfeed News</a>)</p>
+        <div class=bubble-container>
+            <svg id="bubbleVis"></svg>
         </div>
     </div>
-    <div class=vis-container>
-        <svg id="bubbleVis"></svg>
+    <div class="container">
+        <h2>How accurate are each Page's posts?</h2>
+    </div>
+    <div class="vis-container">
+
+            <h3 class="vis-title">
+                Percentage of Page's total posts by truth rating
+            </h3>
+ 
+        <svg id="stackedBarVis"></svg>
     </div>
     <div class="vis">
         <svg id="falseToAllPostsRanking"></svg>

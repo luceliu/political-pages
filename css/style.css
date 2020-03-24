@@ -45,6 +45,15 @@ p {
 .vis-container {
   margin: auto;
   max-width: 100vw;
+  padding-left: 4vw;
+  padding-right: 4vw;
+}
+
+.bubble-container {
+  margin: auto;
+  max-width: 100vw;
+  max-height: 90vh;  width: 80vw;
+  height: 800px;
 }
 
 /** Color Legend **/ 
@@ -124,9 +133,18 @@ p {
 
 /* Stacked Bar Vis */
 #stackedBarVis {
-  width: 1000px;
-  height: 870px;
-  border: 2px solid black;
+  width: 50%;
+  height: 480px;
+  margin-top: -24px;
+}
+
+.vis-title {
+  font-size: 0.7em;
+  font-family: Archivo, Helvetica, sans-serif;
+  font-weight: 500;
+  max-width: 36vw;
+  color: #3B3A3C;
+  margin: 0;
 }
 
 /** Tooltip **/ 
