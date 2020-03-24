@@ -5,7 +5,7 @@ class stackedBarVis {
           containerWidth: _config.containerWidth || 500,
           containerHeight: _config.containerHeight || 470,
         }
-        this.config.margin = _config.margin || { top: 40, bottom: 40, right: 0, left: 160 }
+        this.config.margin = _config.margin || { top: 40, bottom: 50, right: 0, left: 160 }
         this.data = _config.data;
         this.perPageData = _config.postMap;
         this.initVis();
@@ -18,15 +18,27 @@ class stackedBarVis {
 
           const truthRankings = ["mostly true", "mixture of true and false", "mostly false", "no factual content"];
 
-          console.log(vis.perPageData);
           const svg = d3.select('svg#stackedBarVis');
           const g = svg.append('g')
             .attr('transform', `translate(${vis.config.margin.left},${vis.config.margin.top})`);
         
-          g.append('text')
+          const titleOffset = 40;
+          const titleG = g.append('g')
             .attr('class', 'vis-title')
-            .attr('y', -10)
-            .attr('x', 0)
+            .text("Percentage of page's total posts by truth rating")
+            .style('fill', '#434244')
+            .style('font-size', '24px')
+            .attr('text-anchor', 'middle')
+            .attr('width', '200px');
+
+          titleG.append('text')
+            .text("Percentage of page's total posts by")
+            .attr('x', vis.width/2)
+
+          titleG.append('text')
+            .text("truthfulness rating")
+            .attr('y', titleOffset-10)
+            .attr('x', vis.width/2)
 
           const formatter = d3.format(".0%");
 
@@ -38,21 +50,15 @@ class stackedBarVis {
             .tickFormat(formatter)
 
           const pageTitles = vis.perPageData.map(page => page.name)
-          console.log('pageTitles: ', pageTitles);
 
           vis.yScale = d3.scaleBand()
             .domain(pageTitles)
             .range([0, vis.height])
             .padding(0.3);
 
-          console.log('test: ', vis.yScale("Eagle Rising")) // not giving a valid y value??
-
-          // vis.yAxis = d3.axisLeft(vis.yScale)
-          //   .tickSizeInner(4)
-          //   .tickPadding(10);
-
           vis.yAxis = g.append('g')
             .attr('class', 'y-axis')
+            .attr('transform', `translate(0, ${titleOffset})`)
             .call(d3.axisLeft(vis.yScale).tickSizeInner(0))
             .call(g => g.select(".domain").remove());
 
@@ -66,7 +72,7 @@ class stackedBarVis {
 
           const xAxisG = g.append('g')
             .attr('class', 'x-axis')
-            .attr('transform', `translate(10,${vis.height})`)
+            .attr('transform', `translate(10,${vis.height+titleOffset})`)
             .call(vis.xAxis.tickSizeInner(-vis.height).ticks(12))
             .call(g => g.select(".domain").remove())
 
@@ -88,21 +94,15 @@ class stackedBarVis {
             p['name'] = page['name']
             return p;
           })
-
-          console.log('percentages: ', percentages)
-
-          const series = truthfulnessStack(percentages);
-          console.log('series: ', series)
           const bars = g.append('g')
             .attr('class', 'all-bars')
-            .attr('transform', 'translate(10, 0)')
+            .attr('transform', `translate(10,${titleOffset})`)
           bars.selectAll("rect")
             .data(truthfulnessStack(percentages))
             .enter()
             .append('g')
             .attr('class', 'bar')
             .each(function(d) {
-              console.log('d: ', d)
               d3.select(this).selectAll("rect")
                 .data(d)
                 .enter()
