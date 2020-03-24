@@ -40,9 +40,11 @@ class stackedBarVis {
 
           const pageTitles = vis.perPageData.map(page => page.name)
           console.log('pageTitles: ', pageTitles);
-          vis.yScale = d3.scaleOrdinal()
+
+          vis.yScale = d3.scaleBand()
             .domain(pageTitles)
             .range([0, vis.height])
+            .padding(0.2);
 
           console.log('test: ', vis.yScale("Eagle Rising")) // not giving a valid y value??
 
@@ -56,7 +58,7 @@ class stackedBarVis {
 
           vis.widthScale = d3.scaleLinear()
             .domain([0,1])
-            .range([vis.width, 0])
+            .range([0, vis.width])
 
           const xAxisG = g.append('g')
             .attr('class', 'x-axis-g')
@@ -111,10 +113,10 @@ class stackedBarVis {
                 .data(d)
                 .enter()
                 .append("rect")
-                .attr("width", d => vis.widthScale(d[0]) - vis.widthScale(d[1]))
+                .attr("width", d => vis.widthScale(d[1] - d[0]))
                 .attr("height", 40)
                 .attr('y', (p, i) => vis.yScale(pageTitles[i])) // giving completely bogus y values???
-                .attr('x', p => vis.xScale(p[1]))
+                .attr('x', p => vis.xScale(p[0])) // changed from p[1] to p[0]
                 .style("fill", vis.colorScale(d))
             })
       }
