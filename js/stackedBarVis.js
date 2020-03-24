@@ -2,7 +2,7 @@ class stackedBarVis {
     constructor(_config) {
         this.config = {
           parentElement: _config.parentElement,
-          containerWidth: _config.containerWidth || 500,
+          containerWidth: _config.containerWidth || 400,
           containerHeight: _config.containerHeight || 470,
         }
         this.config.margin = _config.margin || { top: 40, bottom: 40, right: 0, left: 0 }
@@ -79,11 +79,11 @@ class stackedBarVis {
 
           xAxisG.append('text')
           .attr('class', 'axis-label')
-          .attr('y', 0)
+          .attr('y', 50)
           .attr('x', vis.width / 2)
           .attr('fill', 'black')
           .attr('text-anchor', 'middle')
-          .text("Hellllloooooo");
+          .text("Percentage of page’s total posts");
 
           const truthfulnessStack = d3.stack().keys(truthRankings)
           const percentages = vis.perPageData.map(function(page) {

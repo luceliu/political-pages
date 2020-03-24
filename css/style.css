@@ -134,8 +134,9 @@ p {
 /* Stacked Bar Vis */
 #stackedBarVis {
   width: 50%;
-  height: 480px;
+  height: 520px;
   margin-top: -24px;
+  margin-bottom: 24px;
 }
 
 .vis-title {
@@ -145,6 +146,12 @@ p {
   max-width: 36vw;
   color: #3B3A3C;
   margin: 0;
+}
+
+.axis-label {
+  font-family: Archivo, Helvetica, sans-serif;
+  font-size: 18px;
+  color: #5D5D5D;
 }
 
 /** Tooltip **/ 
