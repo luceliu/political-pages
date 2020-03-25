@@ -106,6 +106,16 @@ Promise.all([
       postMap: perPageData,
     })
 
+    let pageSelect1 = new pageSelect({
+      precedingElementId: "span-1",
+      select_id: "page-select-1"
+    })
+
+    let pageSelect2 = new pageSelect({
+      precedingElementId: "span-2",
+      select_id: "page-select-2"
+    })
+
     let pageScatterplot1 = new engagementByPageViz({
       parentElement: "#engagementCountByPage1",
       data: data,
