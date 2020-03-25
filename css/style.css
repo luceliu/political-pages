@@ -106,10 +106,11 @@ p {
 #falseToAllPostsRanking rect {
   transition: 0.2s ease-in-out;
 }
-
+/*
 #falseToAllPostsRanking rect:hover {
   fill: lightgray;
 }
+*/
 
 .key-text {  
   font-family: Archivo, Helvetica, sans-serif;
@@ -154,6 +155,7 @@ p {
   height: 520px;
   margin-top: -24px;
   margin-bottom: 24px;
+  float: left;
 }
 
 .vis-title {

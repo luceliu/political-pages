@@ -41,15 +41,16 @@
     </div>
     <div class="vis-container">
         <svg id="stackedBarVis"></svg>
+        <div class="tabs" id="circle-layout-tabs">
+            <button class="tab active">Mostly false</button>
+            <button class="tab">Mixture of true and false</button>
+            <button class="tab">Mostly true</button>
+            <button class="tab">No factual content</button>
+        </div>
     </div>
     <div class="vis-container">
-        <div class="tabs" id="circle-layout-tabs">
-            <button class="tab active" id="all-layout">Mostly false</button>
-            <button class="tab" id="political-layout">Mixture of true and false</button>
-            <button class="tab" id="page-layout">Mostly true</button>
-            <button class="tab" id="page-layout">No factual content</button>
-        </div>
-        <svg id="falseToAllPostsRanking"></svg>
+        <svg id="falseToAllPostsRanking" class="right-column"></svg>
+        
     </div>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>

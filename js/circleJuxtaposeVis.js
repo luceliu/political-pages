@@ -6,14 +6,18 @@ class circleJuxtaposeVis {
     constructor(_config) {
         this.config = {
             parentElement: _config.parentElement,
-            containerWidth: _config.containerWidth || 1000,
-            containerHeight: _config.containerHeight || 950,
+            containerWidth: _config.containerWidth || 1100,
+            containerHeight: _config.containerHeight || 830,
         }
 
         this.config.margin = _config.margin || { top: 40, bottom: 20, right: 0, left: 0 }
 
         this.data = _config.data;
         this.postMap = _config.postMap;
+        this.duration = _config.duration || 700;
+
+        this.onMouseover = _config.onMouseover;
+        this.onMouseout = _config.onMouseout;
 
         this.width = this.config.containerWidth - this.config.margin.left - this.config.margin.right;
         this.height = this.config.containerHeight - this.config.margin.top - this.config.margin.bottom;
@@ -33,7 +37,7 @@ class circleJuxtaposeVis {
     initVis() {
         let vis = this;
 
-        vis.frontTextPadding = 140;
+        vis.frontTextPadding = 170;
         vis.backTextPadding = 100;
 
         // create two kinds of scales 
@@ -73,7 +77,7 @@ class circleJuxtaposeVis {
         vis.totalkey = vis.chart.append("text");
         vis.totalkey
         .attr('class', 'key-text')
-        .attr('x', vis.width - vis.backTextPadding)
+        .attr('x', 930) // todo another magic number...
         .attr('y', 0)
         .text("Total posts");
 
@@ -122,18 +126,9 @@ class circleJuxtaposeVis {
         // set up groups
         let vis = this;
 
-        // TODO add numbers 
-        let onMouseover = (d, i) => {
-            console.log(d)
-            vis.selectedPage = d;
-        }
-
-        let onMouseout = (d, i) => {
-            vis.selectedPage = null;
-        }
-
+        let id = function(d) { return d.name; }
         let groups = vis.group.selectAll('g')
-            .data(vis.postMap);
+            .data(vis.postMap, id);
 
         let groupsEnter = groups.enter().append('g')
         groups = groups.merge(groupsEnter);
@@ -149,10 +144,10 @@ class circleJuxtaposeVis {
                 d.textWidth = this.getBBox().width;
                 d.textHeight = this.getBBox().height;
             })
+            .merge(names)
+            .transition().duration(vis.duration)
             .attr('x', vis.xScale(1))
             .attr('y', d => vis.yScale(d.name))
-            .merge(names)
-            .transition()
             .text(d => d.name)
             .each(function (d) {
                 console.log(d)
@@ -173,7 +168,7 @@ class circleJuxtaposeVis {
             .attr('height', 2)
             .attr('fill', 'lightgray')
             .merge(line)
-            .transition()
+            //.transition().duration(vis.duration)
             .attr('x', d => vis.xScale(0))
             .attr('y', d => vis.yScale(d.name) - d.textHeight / 2)
 
@@ -185,7 +180,7 @@ class circleJuxtaposeVis {
             .append('circle')
             .attr('class', 'post-circle')
             .merge(postCircle)
-            .transition()
+            .transition().duration(vis.duration)
             .attr('fill', d => vis.colourScale(vis.sortKey))
             .attr('cx', vis.xScale(0))
             .attr('r', d => vis.postRadiusScale(d[vis.sortKey]) + circleStroke /2)
@@ -204,7 +199,7 @@ class circleJuxtaposeVis {
             .attr('fill', 'cornflowerblue')
             .attr('class', 'total-circle')
             .merge(totalCircle)
-            .transition()
+            .transition().duration(vis.duration)
             .attr('cx', vis.xScale(2))
             .attr('r', d => vis.totalRadiusScale(d.total) + circleStroke /2)
             .attr('cy', function (d) {
@@ -222,13 +217,16 @@ class circleJuxtaposeVis {
             .attr('class', 'background-rect')
             .attr('rx', 5)
             .attr('ry', 5)
+            .on("mouseover", vis.onMouseover)
+            .on("mouseout", vis.onMouseout)
             // width of text box... or a set width
             .merge(backgroundRect)
+            //.transition().duration(vis.duration)
             .attr('width', d => d.textWidth * 1.2)
             .attr('height', d => d.textHeight * 1.4)
             .attr('y', d => vis.yScale(d.name) - d.textHeight)
             .attr('x', d => vis.xScale(1) - d.textWidth / 2 - (d.textWidth * 0.2 / 2))
-            .attr('fill', d => (d === vis.selectedPage && vis.selectedPage != null) ? 'gray' : 'white')
+            .attr('fill', d => (d.name === vis.selectedPage && vis.selectedPage != null) ? '#d3d3d3' : 'white')
 
         groups.selectAll('.name-label').each(function(d) {
             d3.select(this).raise();
@@ -236,9 +234,9 @@ class circleJuxtaposeVis {
 
         // TODO come up aith better position inheritance
 
-        vis.totalkey
-        .transition()
-        .attr('x', vis.group.node().getBBox().width + vis.backTextPadding + 10);
+        // vis.totalkey
+        // .transition()
+        // .attr('x', vis.group.node().getBBox().width + vis.backTextPadding + 10);
 
     }
 }

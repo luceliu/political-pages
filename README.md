@@ -6,7 +6,7 @@
 
 
 ## Vision
-We decided to pivot away from our novel square glyph chart, as its narrative seemed too similar to the bubble chart's. The old goals of comparing truthfulness across different political leanings, and across different post types, remain. We also want to explicitly explore the interplay between engagement and truthfulness at an overview scale, and we've chosen a new visualization, which lists each page with two circles size-coded to represent the number of posts of a certain Rating against all posts for that Page. These pages are then ranked by the Rating count descending. We feel that this effectively conveys the relationship between truthfulness rating and engagement.
+We decided to pivot away from our novel square glyph chart, as its narrative seemed too similar to the bubble chart's. The old goals of comparing truthfulness across different political leanings, and across different post types, remain. We also want to explicitly explore the interplay between post quantity and truthfulness at an overview scale, and we've chosen a new visualization, which lists each page with two circles size-coded to represent the number of posts of a certain Rating against all posts for that Page. These pages are then ranked by the Rating count descending. We feel that this more saliently conveys the relationship between how much each page posts and how much is truthful.
 
 > Say something else about whether "your visualization enable the tasks you set out to facilitate or successfully communicate the story you want to tell?"
 

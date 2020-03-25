@@ -67,10 +67,29 @@ Promise.all([
   
     postBubbles.render();  
 
-    let pageRankings = new circleJuxtaposeVis({
+    let pageRankings, truthPercentage;
+
+    let onMouseover = (d) => {
+      console.log(d)
+      pageRankings.selectedPage = d.name;
+      truthPercentage.selectedPage = d.name;
+      pageRankings.render();
+      truthPercentage.render();
+  }
+  
+  let onMouseout = (d) => {
+      pageRankings.selectedPage = null;
+      truthPercentage.selectedPage = null;
+      pageRankings.render();
+      truthPercentage.render();
+  }
+
+    pageRankings = new circleJuxtaposeVis({
       parentElement: '#falseToAllPostsRanking',
       data: data,
       postMap: perPageData,
+      onMouseout: onMouseout,
+      onMouseover: onMouseover,
     })
 
     pageRankings.render();
@@ -99,10 +118,18 @@ Promise.all([
           pageRankings.render();
       });
     
-    let truthPercentage = new stackedBarVis({
+    truthPercentage = new stackedBarVis({
       parentElement: '#stackedBarVis',
       data: data,
       postMap: perPageData,
     })
+
+    
+    pageRankings.onMouseover = onMouseover;
+    pageRankings.onMouseout = onMouseout;
+    truthPercentage.onMouseover = onMouseover;
+    truthPercentage.onMouseout = onMouseout;
+  
   });
+  
   
