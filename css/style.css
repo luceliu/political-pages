@@ -197,8 +197,114 @@ font-size: 16px;
 .x-axis .tick line {
   color: #D9D9D9;
 }
-.x-axis g:nth-child(2n) text {
+#stackedBarVis .x-axis g:nth-child(2n) text {
   visibility: hidden;
+}
+
+/* Small Multiples Pages Viz */
+#small-multiples-pages {
+  width: 80vw;
+  height: 500px;
+  /* border: 2px solid green; */
+  margin: 0 auto;
+  text-align: left;
+}
+#small-multiples-pages h3 {
+  max-width: 100%;
+  font-size: 32px;
+  margin-bottom: 10px;
+  /* margin: 0 auto; */
+}
+#small-multiples-pages span {
+  font-family: Archivo;
+font-style: normal;
+font-weight: bold;
+font-size: 24px;
+color: #434244;
+}
+#small-multiples-pages div {
+  margin-top: 10px;
+  display: flex;
+  height: 100%;
+}
+#engagementCountByPage1, #engagementCountByPage2 {
+  width: 50%;
+  height: 80%;
+}
+
+.scatterplot .y-axis .tick {
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.scatterplot .x-axis .tick {
+  font-size: 14px;
+  font-weight: normal;
+  color: #434244;
+}
+
+.all-circles circle {
+  fill: rgba(122, 153, 232, 0.8);
+  opacity: 0.5
+}
+.scatterplot text.chartTitle {
+  font-family: Archivo;
+font-style: normal;
+font-weight: bold;
+font-size: 24px;
+line-height: 26px;
+fill: #434244;
+}
+
+#page-select-1, #page-select-2 {
+  font-family: Archivo;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 24px;
+  color: #434244;
+  line-height: 30px;
+  margin: 0 10px;
+  padding: 10px 16px 10px 16px;
+  box-sizing: border-box;
+  border: 1px solid #979797;
+  border-radius: 5px;
+  min-width: 270px;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  appearance: none;
+  background-color: #fff;
+  position: relative;
+}
+
+#small-multiples-pages select {
+  background-image:
+    linear-gradient(45deg, transparent 50%, gray 50%),
+    linear-gradient(135deg, gray 50%, transparent 50%);
+  background-position:
+    calc(100% - 20px) calc(1em - 3px),
+    calc(100% - 15px) calc(1em - 3px),
+    calc(100% - 2.5em) 0.2em;
+  background-size:
+    5px 5px,
+    5px 5px,
+    5px 1.5em;
+  background-repeat: no-repeat;
+}
+
+#small-multiples-pages select:focus {
+  background-image:
+    linear-gradient(45deg, rgba(122, 153, 232, 0.8) 50%, transparent 50%),
+    linear-gradient(135deg, transparent 50%, rgba(122, 153, 232, 0.8) 50%);
+  background-position:
+    calc(100% - 15px) 0.8em,
+    calc(100% - 20px) 0.8em,
+    calc(100% - 2.5em) 0.5em;
+  background-size:
+    5px 5px,
+    5px 5px,
+    1px 1.5em;
+  background-repeat: no-repeat;
+  outline: 0;
 }
 
 /** Tooltip **/ 

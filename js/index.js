@@ -32,7 +32,8 @@ Promise.all([
           return map;
       }, map)
 
-      console.log(perPageData);
+      console.log('data: ', data);
+      console.log('perPageData: ', perPageData);
 
       perPageData.forEach(d =>
         d.total = Object.values(d).filter(a => !isNaN(a)).reduce((sum, cur) => sum + cur)
@@ -128,6 +129,77 @@ Promise.all([
       containerHeight: document.getElementById("stackedBarVis").clientHeight,
     })
 
+    let pageSelect1 = new pageSelect({
+      precedingElementId: "span-1",
+      select_id: "page-select-1",
+      selectedPage: "Addicting Info"
+    })
+
+    let pageSelect2 = new pageSelect({
+      precedingElementId: "span-2",
+      select_id: "page-select-2",
+      selectedPage: "Politico"
+    })
+
+
+    // Group data by page
+    // <"Politico", [...]>
+    const processGroupedData = data => {
+      const groupedData = new Map();
+      let maxCount = 0;
+      data.forEach(function(post) {
+      if (!groupedData.has(post.Page)) {
+        groupedData.set(post.Page, []);
+      }
+      const pagePosts = groupedData.get(post.Page);
+      const newPost = {};
+      newPost.category = post.Category;
+      newPost.page = post.Page;
+      newPost.rating = post.Rating;
+      newPost.engCount = post.engagement_count;
+      if (newPost.engCount > maxCount) {
+        maxCount = newPost.engCount;
+      }
+      pagePosts.push(newPost);
+      groupedData.set(post.Page, pagePosts);
+    })
+
+      return [groupedData, maxCount];
+
+    }
+
+    const processedData = processGroupedData(data);
+    groupedData = processedData[0];
+    maxEngCount = processedData[1];
+    console.log('maxEngCount', maxEngCount);
+    console.log('groupedData: ', groupedData);
+    let pageScatterplot1 = new engagementByPageViz({
+      parentElement: "#engagementCountByPage1",
+      data: groupedData.get(pageSelect1.selectedPage),
+      maxCount: maxEngCount
+    })
+    
+    let pageScatterplot2 = new engagementByPageViz({
+      parentElement: "#engagementCountByPage2",
+      data: groupedData.get(pageSelect2.selectedPage),
+      maxCount: maxEngCount
+    })
+
+    // Event listeners for handling page selections
+    const select1 = document.getElementById('page-select-1');
+    select1.addEventListener('change', function(){
+      pageScatterplot1.data = groupedData.get(this.value);
+      pageScatterplot1.update();
+    });
+
+    const select2 = document.getElementById('page-select-2');
+    select2.addEventListener('change', function(){
+      pageScatterplot2.data = groupedData.get(this.value);
+      pageScatterplot2.update();
+    });
+
+    pageScatterplot1.render();
+    pageScatterplot2.render();
     
     pageRankings.onMouseover = onMouseover;
     pageRankings.onMouseout = onMouseout;
