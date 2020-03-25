@@ -53,8 +53,10 @@ Promise.all([
     // Initialize bubble vis
     let postBubbles = new bubbleVis({ 
       parentElement: '#bubbleVis',
-      containerWidth: document.getElementsByClassName("bubble-container")[0].clientWidth,
-      containerHeight: document.getElementsByClassName("bubble-container")[0].clientHeight,
+      // containerWidth: document.getElementsByClassName("bubble-container")[0].clientWidth,
+      // containerHeight: document.getElementsByClassName("bubble-container")[0].clientHeight,
+      containerWidth: document.getElementById("bubbleVis").clientWidth,
+      containerHeight: document.getElementById("bubbleVis").clientHeight,
       data: data,
       idValue: d => d.post_id,
       colorValue: d => d.Rating,
@@ -62,7 +64,7 @@ Promise.all([
       pageValue: d => d.Page,
       linkValue: d => d['Post URL'],
       formatValue: d => d['Post Type'],
-      politicalValue: d => d.Category
+      politicalValue: d => d.Category,
     });
   
     postBubbles.render();  
@@ -75,7 +77,7 @@ Promise.all([
 
     pageRankings.render();
 
-    // Event listeners for layout tabs
+    // Event listeners for bubble vis layout tabs
     d3.select('#layout-tabs')
       .selectAll('.tab')
         .on('click', (d, i, nodes) => {
@@ -83,10 +85,10 @@ Promise.all([
           d3.selectAll('.tab').classed('active', false);
           d3.select(selectedButton).classed('active', true);
           const layoutId = d3.select(selectedButton).attr('id');
-          pageRankings.se
           postBubbles.update(layoutId);
       });
 
+    // Event listeners for page ranking viz 
       d3.select('#circle-layout-tabs')
       .selectAll('.tab')
         .on('click', (d, i, nodes) => {

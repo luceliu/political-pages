@@ -32,13 +32,13 @@ class bubbleVis {
 
     vis.center = {
       x: vis.config.containerWidth / 2,
-      y: 1.3 * vis.config.containerHeight / 4
+      y: 1.25 * vis.config.containerHeight / 3
     };
 
     vis.politicalCenters = {
-      'left': { x: vis.config.containerWidth / 3, y: vis.config.containerHeight / 3 + 24},
-      'mainstream': { x: vis.config.containerWidth / 2, y: vis.config.containerHeight / 3 },
-      'right': { x: 2 * vis.config.containerWidth / 3, y: vis.config.containerHeight / 3 }
+      'left': { x: vis.config.containerWidth / 3, y: 1.3 * vis.config.containerHeight / 3},
+      'mainstream': { x: vis.config.containerWidth / 2, y: 1.25 * vis.config.containerHeight / 3 },
+      'right': { x: 2 * vis.config.containerWidth / 3, y: 1.2 * vis.config.containerHeight / 3 }
     }
 
     vis.categoryLabelCenters = {
@@ -48,27 +48,27 @@ class bubbleVis {
     }
 
     vis.pageCenters = {
-      'The Other 98%': { x: vis.config.containerWidth / 3, y: vis.config.containerHeight / 3 - 40 },
-      'Addicting Info': { x: vis.config.containerWidth / 3, y: vis.config.containerHeight / 2 - 60 },
-      'Occupy Democrats': { x: vis.config.containerWidth / 3, y: 2 * vis.config.containerHeight / 3 - 60},
-      'Politico': { x: vis.config.containerWidth / 2, y: vis.config.containerHeight / 3 - 60 },
-      'CNN Politics': { x: vis.config.containerWidth / 2, y: vis.config.containerHeight / 2 - 60 },
-      'ABC News Politics': { x: vis.config.containerWidth / 2, y: 2 * vis.config.containerHeight / 3 - 60 },
-      'Eagle Rising': { x: 2 * vis.config.containerWidth / 3, y: vis.config.containerHeight / 3 - 60 },
-      'Right Wing News': { x: 2 * vis.config.containerWidth / 3, y: vis.config.containerHeight / 2 - 60 },
-      'Freedom Daily': { x: 2 * vis.config.containerWidth / 3, y: 2 * vis.config.containerHeight / 3 - 60 },
+      'The Other 98%': { x: vis.config.containerWidth / 3, y: vis.config.containerHeight / 3 - 20 },
+      'Addicting Info': { x: vis.config.containerWidth / 3, y: vis.config.containerHeight / 2 - 20 },
+      'Occupy Democrats': { x: vis.config.containerWidth / 3, y: 2 * vis.config.containerHeight / 3 },
+      'Politico': { x: vis.config.containerWidth / 2, y: vis.config.containerHeight / 3 - 30 },
+      'CNN Politics': { x: vis.config.containerWidth / 2, y: vis.config.containerHeight / 2 - 22 },
+      'ABC News Politics': { x: vis.config.containerWidth / 2, y: 2 * vis.config.containerHeight / 3 - 20 },
+      'Eagle Rising': { x: 2 * vis.config.containerWidth / 3, y: vis.config.containerHeight / 3 - 50 },
+      'Right Wing News': { x: 2 * vis.config.containerWidth / 3, y: vis.config.containerHeight / 2 - 20 },
+      'Freedom Daily': { x: 2 * vis.config.containerWidth / 3, y: 2 * vis.config.containerHeight / 3 - 20 },
     }
 
     vis.pageLabelCenters = {
-      'The Other 98%': { x: vis.config.containerWidth / 3 - 40, y: vis.config.containerHeight / 3 - 220 },
-      'Addicting Info': { x: vis.config.containerWidth / 3 - 40, y: vis.config.containerHeight / 2 - 140 },
-      'Occupy Democrats': { x: vis.config.containerWidth / 3 - 40, y: 2 * vis.config.containerHeight / 3 - 156},
-      'Politico': { x: vis.config.containerWidth / 2 + 40, y: vis.config.containerHeight / 3 - 220 },
-      'CNN Politics': { x: vis.config.containerWidth / 2 + 40, y: vis.config.containerHeight / 2 - 140 },
-      'ABC News Politics': { x: vis.config.containerWidth / 2 + 60, y: 2 * vis.config.containerHeight / 3 - 50 },
-      'Eagle Rising': { x: 2 * vis.config.containerWidth / 3 + 80, y: vis.config.containerHeight / 3 - 180 },
-      'Right Wing News': { x: 2 * vis.config.containerWidth / 3 + 80, y: vis.config.containerHeight / 2 - 140 },
-      'Freedom Daily': { x: 2 * vis.config.containerWidth / 3 + 80, y: 2 * vis.config.containerHeight / 3 - 65 },
+      'The Other 98%': { x: vis.config.containerWidth / 3 - 40, y: vis.config.containerHeight / 3 - 200 },
+      'Addicting Info': { x: vis.config.containerWidth / 3 - 40, y: vis.config.containerHeight / 2 - 100 },
+      'Occupy Democrats': { x: vis.config.containerWidth / 3 - 40, y: 2 * vis.config.containerHeight / 3 - 90 },
+      'Politico': { x: vis.config.containerWidth / 2 + 40, y: vis.config.containerHeight / 3 - 200 },
+      'CNN Politics': { x: vis.config.containerWidth / 2 + 40, y: vis.config.containerHeight / 2 - 100 },
+      'ABC News Politics': { x: vis.config.containerWidth / 2 + 60, y: 2 * vis.config.containerHeight / 3 - 8 },
+      'Eagle Rising': { x: 2 * vis.config.containerWidth / 3 + 80, y: vis.config.containerHeight / 3 - 190 },
+      'Right Wing News': { x: 2 * vis.config.containerWidth / 3 + 80, y: vis.config.containerHeight / 2 - 100 },
+      'Freedom Daily': { x: 2 * vis.config.containerWidth / 3 + 80, y: 2 * vis.config.containerHeight / 3 - 16 },
     }
 
     function charge(d) {
