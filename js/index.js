@@ -54,8 +54,8 @@ Promise.all([
     // Initialize bubble vis
     let postBubbles = new bubbleVis({ 
       parentElement: '#bubbleVis',
-      containerWidth: document.getElementsByClassName("bubble-container")[0].clientWidth,
-      containerHeight: document.getElementsByClassName("bubble-container")[0].clientHeight,
+      containerWidth: document.getElementById("bubbleVis").clientWidth,
+      containerHeight: document.getElementById("bubbleVis").clientHeight,
       data: data,
       idValue: d => d.post_id,
       colorValue: d => d.Rating,
@@ -63,32 +63,53 @@ Promise.all([
       pageValue: d => d.Page,
       linkValue: d => d['Post URL'],
       formatValue: d => d['Post Type'],
-      politicalValue: d => d.Category
+      politicalValue: d => d.Category,
     });
   
     postBubbles.render();  
 
-    let pageRankings = new circleJuxtaposeVis({
+    let pageRankings, truthPercentage;
+
+    let onMouseover = (d) => {
+      console.log(d)
+      pageRankings.selectedPage = d.name;
+      truthPercentage.selectedPage = d.name;
+      pageRankings.render();
+      truthPercentage.render();
+  }
+  
+  let onMouseout = (d) => {
+      pageRankings.selectedPage = null;
+      truthPercentage.selectedPage = null;
+      pageRankings.render();
+      truthPercentage.render();
+  }
+
+    pageRankings = new circleJuxtaposeVis({
       parentElement: '#falseToAllPostsRanking',
       data: data,
       postMap: perPageData,
+      onMouseout: onMouseout,
+      onMouseover: onMouseover,
+      containerWidth: document.getElementById("falseToAllPostsRanking").clientWidth,
+      containerHeight: document.getElementById("falseToAllPostsRanking").clientHeight,
     })
 
     pageRankings.render();
 
-    // Event listeners for layout tabs
+    // Event listeners for bubble vis layout tabs
     d3.select('#layout-tabs')
-      .selectAll('.tab')
+      .selectAll('.bubble-tab')
         .on('click', (d, i, nodes) => {
           const selectedButton = nodes[i]
-          d3.selectAll('.tab').classed('active', false);
+          d3.selectAll('.bubble-tab').classed('active', false);
           d3.select(selectedButton).classed('active', true);
           const layoutId = d3.select(selectedButton).attr('id');
-          pageRankings.se
           postBubbles.update(layoutId);
       });
 
-      d3.select('#circle-layout-tabs')
+    // Event listeners for page ranking viz 
+      d3.select('#rank-layout-tabs')
       .selectAll('.tab')
         .on('click', (d, i, nodes) => {
           const selectedButton = nodes[i];
@@ -100,10 +121,12 @@ Promise.all([
           pageRankings.render();
       });
     
-    let truthPercentage = new stackedBarVis({
+    truthPercentage = new stackedBarVis({
       parentElement: '#stackedBarVis',
       data: data,
       postMap: perPageData,
+      containerWidth: document.getElementById("stackedBarVis").clientWidth,
+      containerHeight: document.getElementById("stackedBarVis").clientHeight,
     })
 
     let pageSelect1 = new pageSelect({
@@ -177,5 +200,12 @@ Promise.all([
 
     pageScatterplot1.render();
     pageScatterplot2.render();
+    
+    pageRankings.onMouseover = onMouseover;
+    pageRankings.onMouseout = onMouseout;
+    truthPercentage.onMouseover = onMouseover;
+    truthPercentage.onMouseout = onMouseout;
+  
   });
+  
   

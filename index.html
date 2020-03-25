@@ -19,13 +19,17 @@
         and three are considered mainstream.</p>
         <p>The truthfulness ratings were provided by Buzzfeed News, as part of their analysis on the topic which you can read <a href="https://www.buzzfeednews.com/article/craigsilverman/partisan-fb-pages-analysis">here</a>.
         You can explore the dataset <a href="https://www.kaggle.com/mrisdal/fact-checking-facebook-politics-pages/data#">here</a>.</p>
-        <h2>Does false content get more engagement?</h2>
+        <h2>Exploring post engagement</h2>
+        <p>Does non-factual content get more engagement? How is engagement distributed across the political spectrum?
+        </p>
+        <p>Each bubble represents a post, where the size of the bubble indicates the combined number of 
+        likes, reactions, and shares for that post. Click on a bubble to see the original post.</p>
     </div>
     <div class="right-column">
             <div class="tabs" id="layout-tabs">
-                <button class="tab active" id="all-layout">All posts</button>
-                <button class="tab" id="political-layout">Posts by political category</button>
-                <button class="tab" id="page-layout">Posts by page</button>
+                <button class="bubble-tab active" id="all-layout">All posts</button>
+                <button class="bubble-tab" id="political-layout">Posts by political category</button>
+                <button class="bubble-tab" id="page-layout">Posts by page</button>
             </div>
             <div class="color-legend-container">
                 <svg id="color-legend"></svg>
@@ -38,18 +42,19 @@
     </div>
     <div class="container">
         <h2>How accurate are each Page's posts?</h2>
-    </div>
-    <div class="vis-container">
-        <svg id="stackedBarVis"></svg>
-    </div>
-    <div class="vis-container">
-        <div class="tabs" id="circle-layout-tabs">
-            <button class="tab active" id="all-layout">Mostly false</button>
-            <button class="tab" id="political-layout">Mixture of true and false</button>
-            <button class="tab" id="page-layout">Mostly true</button>
-            <button class="tab" id="page-layout">No factual content</button>
+        <p>What percentage of a Page's posts fall into each category?
+        How do the Pages rank against each other for each category of content?
+        </p>
+        <div class="tabs" id="rank-layout-tabs">
+            <button class="tab active">Mostly false</button>
+            <button class="tab">Mixture of true and false</button>
+            <button class="tab">Mostly true</button>
+            <button class="tab">No factual content</button>
         </div>
-        <svg id="falseToAllPostsRanking"></svg>
+    </div>
+    <div class="accuracy">
+        <svg id="stackedBarVis"></svg>
+        <svg id="falseToAllPostsRanking"></svg>   
     </div>
     <div class="vis-container" id="small-multiples-pages">
         <h3 class="vis-title">Posts by truthfulness rating and engagement count</h3>

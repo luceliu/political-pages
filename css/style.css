@@ -52,8 +52,24 @@ p {
 .bubble-container {
   margin: auto;
   max-width: 100vw;
-  max-height: 90vh;  width: 80vw;
+  max-height: 90vh;
+  width: 80vw;
   height: 800px;
+}
+
+.accuracy {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  padding-left: 1em;
+  padding-right: 1em;
+  padding-top: 64px;
+}
+
+#bubbleVis {
+  width: 80vw;
+  height: 100vh;
+  margin-left: -9.5vw;
 }
 
 /** Color Legend **/ 
@@ -93,6 +109,8 @@ p {
 /* TODO fix structure */
 #falseToAllPostsRanking {
   font-family: Archivo, Helvetica, sans-serif; 
+  height: 600px;
+  width: 50%
 }
 
 #falseToAllPostsRanking .name-label {
@@ -107,28 +125,20 @@ p {
   transition: 0.2s ease-in-out;
 }
 
-#falseToAllPostsRanking rect:hover {
-  fill: lightgray;
-}
-
 .key-text {  
   font-family: Archivo, Helvetica, sans-serif;
+  font-weight: 500;
+  fill: #3B3A3C;
   text-align: center;
   font-size: 18px;
 }
 
 .total-circle, .post-circle {
-  stroke: white;
-  stroke-width: 10px;
+  stroke: #fdfdfd;
+  stroke-width: 6px;
 }
 
 /** Bubble Vis **/
-#bubbleVis {
-  width: 80vw;
-  height: 800px;
-  margin-left: -9.5vw;
-}
-
 .bubble:hover {
   cursor: pointer;
 }
@@ -150,14 +160,13 @@ p {
 
 /* Stacked Bar Vis */
 #stackedBarVis {
-  width: 70%;
-  height: 520px;
-  margin-top: -24px;
-  margin-bottom: 24px;
+  height: 580px;
+  width: 50%;
+  margin-right: 48px;
 }
 
 .vis-title {
-  font-size: 0.7em;
+  font-size: 0.75em;
   font-family: Archivo, Helvetica, sans-serif;
   font-weight: 500;
   max-width: 36vw;
@@ -395,4 +404,10 @@ fill: #434244;
   background-color: #f3f6f9;
   opacity: 1;
   outline: none;
+}
+
+#rank-layout-tabs {
+  display: flex;
+  flex-direction: row;
+  width: 100vw;
 }
