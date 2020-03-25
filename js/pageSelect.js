@@ -2,6 +2,7 @@ class pageSelect {
     constructor(_config) {
         this.select_id = _config.select_id;
         this.precedingElementId = _config.precedingElementId;
+        this.selectedPage = _config.selectedPage;
         this.initSelect();
     }
 
@@ -17,10 +18,12 @@ class pageSelect {
             "ABC News Politics",
             "CNN Politics",
             "Politico"
-    ]
+        ]
         sel.dropdown = d3.select('#small-multiples-pages')
             .insert('select', `#${sel.precedingElementId} + *`)
             .attr('id', sel.select_id);
+
+
         console.log('sel.dropdown: ', sel.dropdown)
         
         sel.dropdownOptions = sel.dropdown.selectAll("option")
@@ -35,5 +38,9 @@ class pageSelect {
             .attr("value", function(d) {
                 return d;
             })
+
+        // Set default/starting page selection
+        d3.select(`#${sel.select_id}`).property('value', sel.selectedPage);
+        
     }
 }

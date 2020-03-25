@@ -108,24 +108,35 @@ Promise.all([
 
     let pageSelect1 = new pageSelect({
       precedingElementId: "span-1",
-      select_id: "page-select-1"
+      select_id: "page-select-1",
+      selectedPage: "Politico"
     })
 
     let pageSelect2 = new pageSelect({
       precedingElementId: "span-2",
-      select_id: "page-select-2"
+      select_id: "page-select-2",
+      selectedPage: "Politico"
     })
 
+    // Get correctly formatted data for a certain page
+    const politicoPosts = data.filter(p => p.Page === "Politico")
+      .map(function (page) {
+        const newPostObj = {};
+        newPostObj.page = page.Page;
+        newPostObj.rating = page.Rating;
+        newPostObj.engCount = page.engagement_count;
+        newPostObj.category = page.Category;
+        return newPostObj;
+      });
+    console.log('politicoPosts', politicoPosts);
     let pageScatterplot1 = new engagementByPageViz({
       parentElement: "#engagementCountByPage1",
-      data: data,
-      postMap: perPageData,
+      data: politicoPosts,
     })
     
     let pageScatterplot2 = new engagementByPageViz({
       parentElement: "#engagementCountByPage2",
-      data: data,
-      postMap: perPageData,
+      data: politicoPosts,
     })
   });
   
