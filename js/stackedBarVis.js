@@ -5,9 +5,13 @@ class stackedBarVis {
           containerWidth: _config.containerWidth || 500,
           containerHeight: _config.containerHeight || 470,
         }
-        this.config.margin = _config.margin || { top: 40, bottom: 50, right: 0, left: 160 }
+        this.config.margin = _config.margin || { top: 40, bottom: 50, right: 0, left: 170 }
         this.data = _config.data;
         this.perPageData = _config.postMap;
+
+        this.onMouseover = _config.onMouseover;
+        this.onMouseout = _config.onMouseout;
+
         this.initVis();
       }
 
@@ -19,7 +23,7 @@ class stackedBarVis {
           const truthRankings = ["mostly true", "mixture of true and false", "mostly false", "no factual content"];
 
           const svg = d3.select('svg#stackedBarVis');
-          const g = svg.append('g')
+          let g = svg.append('g')
             .attr('transform', `translate(${vis.config.margin.left},${vis.config.margin.top})`);
         
           const titleOffset = 40;
@@ -55,6 +59,30 @@ class stackedBarVis {
             .domain(pageTitles)
             .range([0, vis.height])
             .padding(0.3);
+
+          vis.highlightBar = g.append("rect")
+          .attr("width", vis.config.containerWidth + 20)
+          .attr("height", vis.yScale.bandwidth() + 20)
+          .attr("fill", "none")
+          .attr("rx", 10)
+          .attr("ry", 10)
+          .attr('transform', `translate(${-vis.config.margin.left},${titleOffset - 10})`);
+          // let highlightGroups = g.append("g").attr("class", "highlights");
+
+          // vis.highlightBar = highlightGroups.selectAll(".highlight-bar")
+          // .data(vis.perPageData)
+          // .enter()
+          // .append("rect")
+          // .attr("class", "highlight-bar");
+
+          // vis.highlightBar
+          // .attr("width", vis.config.containerWidth + 20)
+          // .attr("height", vis.yScale.bandwidth() + 20)
+          // .attr("fill", "none")
+          // .attr("rx", 10)
+          // .attr("ry", 10)
+          // .attr('transform', `translate(${-vis.config.margin.left},${titleOffset - 10})`)
+          // .attr("y", d => vis.yScale(d.name)) //(vis.selectedPage != null) ? 
 
           vis.yAxis = g.append('g')
             .attr('class', 'y-axis')
@@ -107,6 +135,8 @@ class stackedBarVis {
                 .data(d)
                 .enter()
                 .append("rect")
+                .on("mouseover", d => { console.log(d); vis.onMouseover(d.data)})
+                .on("mouseout", d => vis.onMouseout(d.data))
                 .attr("width", d => vis.widthScale(d[1] - d[0]))
                 .attr("height", 28)
                 .attr('y', (p, i) => vis.yScale(pageTitles[i])) 
@@ -123,5 +153,20 @@ class stackedBarVis {
       render() {
           let vis = this;
           
+          
+          // create a gray box around the page in question
+          // TODO for a fade-in style, need to create one
+          // for each name using enter-update-exit
+          vis.highlightBar
+           .attr("y", (vis.selectedPage != null) ? vis.yScale(vis.selectedPage) : 0)
+          .transition().duration(1000)
+          .attr("fill", 
+            d => (vis.selectedPage != null) //&& d.name == vis.selectedPage) 
+            ? "#d3d3d3" : "none"
+          )
+        //   () => {
+        //     console.log(vis.yScale(vis.selectedPage))
+        //   vis.yScale(vis.selectedPage) // - vis.yScale.bandwidth()/2 - 10) //: 0)
+        // })
       }
 }
