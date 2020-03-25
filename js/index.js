@@ -109,7 +109,7 @@ Promise.all([
     let pageSelect1 = new pageSelect({
       precedingElementId: "span-1",
       select_id: "page-select-1",
-      selectedPage: "Politico"
+      selectedPage: "Addicting Info"
     })
 
     let pageSelect2 = new pageSelect({
@@ -131,26 +131,28 @@ Promise.all([
       groupedData.set(post.Page, pagePosts);
     })
     console.log('groupedData: ', groupedData);
-    
+
     let pageScatterplot1 = new engagementByPageViz({
       parentElement: "#engagementCountByPage1",
-      data: groupedData.get('Politico'),
+      data: groupedData.get(pageSelect1.selectedPage),
     })
     
     let pageScatterplot2 = new engagementByPageViz({
       parentElement: "#engagementCountByPage2",
-      data: groupedData.get('Eagle Rising'),
+      data: groupedData.get(pageSelect2.selectedPage),
     })
 
     // Event listeners for handling page selections
     const select1 = document.getElementById('page-select-1');
     select1.addEventListener('change', function(){
-      console.log('Changed val to: ', this.value);
+      pageScatterplot1.data = groupedData.get(this.value);
+      pageScatterplot1.update();
     });
 
     const select2 = document.getElementById('page-select-2');
     select2.addEventListener('change', function(){
-      console.log('Changed val to: ', this.value);
+      pageScatterplot2.data = groupedData.get(this.value);
+      pageScatterplot2.update();
     });
   });
   
