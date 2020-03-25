@@ -45,19 +45,16 @@
         <p>What percentage of a Page's posts fall into each category?
         How do the Pages rank against each other for each category of content?
         </p>
-    </div>
-    <div class="vis-container">
-        <svg id="stackedBarVis"></svg>
-        <div class="tabs" id="circle-layout-tabs">
+        <div class="tabs" id="rank-layout-tabs">
             <button class="tab active">Mostly false</button>
             <button class="tab">Mixture of true and false</button>
             <button class="tab">Mostly true</button>
             <button class="tab">No factual content</button>
         </div>
     </div>
-    <div class="vis-container">
-        <svg id="falseToAllPostsRanking" class="right-column"></svg>
-        
+    <div class="accuracy">
+        <svg id="stackedBarVis"></svg>
+        <svg id="falseToAllPostsRanking"></svg>   
     </div>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>

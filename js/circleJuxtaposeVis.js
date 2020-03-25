@@ -6,11 +6,11 @@ class circleJuxtaposeVis {
     constructor(_config) {
         this.config = {
             parentElement: _config.parentElement,
-            containerWidth: _config.containerWidth || 1100,
-            containerHeight: _config.containerHeight || 830,
+            containerWidth: _config.containerWidth,
+            containerHeight: _config.containerHeight
         }
 
-        this.config.margin = _config.margin || { top: 40, bottom: 20, right: 0, left: 0 }
+        this.config.margin = _config.margin || { top: 100, bottom: 20, right: 0, left: 0 }
 
         this.data = _config.data;
         // deep copy this object so I can mess with it
@@ -39,8 +39,8 @@ class circleJuxtaposeVis {
     initVis() {
         let vis = this;
 
-        vis.frontTextPadding = 170;
-        vis.backTextPadding = 100;
+        vis.frontTextPadding = 0;
+        vis.backTextPadding = 0;
 
         // create two kinds of scales 
         // one for placement of total posts and one for fake
@@ -54,11 +54,10 @@ class circleJuxtaposeVis {
             d => ratingArray.forEach(r =>
                 d[r] = d[r] / d.total)
         )
-        console.log(vis.postMap)
 
         vis.xScale = d3.scaleBand()
             .domain([0, 1, 2])
-            .range([0, vis.width - vis.frontTextPadding + vis.backTextPadding])
+            .range([0, vis.width])
             .padding(0.2);
 
         let computeStatistic = (func) =>
@@ -73,15 +72,12 @@ class circleJuxtaposeVis {
         vis.postRadiusScale = d3.scaleSqrt()
             .domain([computeStatistic(Math.min),
             computeStatistic(Math.max)])
-            .range([5, 30]);
+            .range([2, 22]);
 
         vis.totalRadiusScale = d3.scaleSqrt()
             .domain([Math.min(...vis.postMap.map(d => d.total)),
             Math.max(...vis.postMap.map(d => d.total))])
-            .range([10, 40]);
-
-        console.log(vis.postRadiusScale.domain())
-        console.log(vis.totalRadiusScale.domain())
+            .range([2, 24]);
 
         // TODO - get this from somewhere else
         vis.colourScale = d3.scaleOrdinal()
@@ -90,27 +86,35 @@ class circleJuxtaposeVis {
 
         vis.sortKey = "mostly false";
 
+        // Label positioning values
+        // Get x-coordinate of div
+        let parentElementID = vis.config.parentElement;
+        parentElementID = parentElementID.slice(1);
+
+        const rect = document.getElementById(parentElementID).getBoundingClientRect();
+        const rightEdge = rect.x + rect.width;
+        const leftEdge = rect.x;
+
         vis.totalkey = vis.chart.append("text");
         vis.totalkey
             .attr('class', 'key-text')
-            .attr('x', 930) // todo another magic number...
-            .attr('y', 0)
+            .attr('x', rect.width - 100) // todo another magic number...
+            .attr('y', -60)
             .text("Total posts");
 
         vis.sortKeyPre = vis.chart.append("text");
         vis.sortKeyPre
             .attr('class', 'key-text')
             .text("Percentage posts rated")
-            .attr('x', 0)
-            .attr('y', 0)
+            .attr('x', 4)
+            .attr('y', -60)
 
         vis.sortKeyText = vis.chart.append("text");
         vis.sortKeyText
             .attr('class', 'key-text')
             .text(vis.sortKey)
-            .attr('x', 0)
-            // TODO lots of magic numbers related to pixels
-            .attr('y', 20)
+            .attr('x', 4)
+            .attr('y', -38)
 
         vis.group = vis.chart.append('g');
         vis.group.attr('transform', `translate(${vis.frontTextPadding}, 0)`);
@@ -135,7 +139,6 @@ class circleJuxtaposeVis {
         );
 
         vis.yScale.domain(vis.postMap.map(d => d.name));
-        console.log(vis.yScale.domain());
     }
 
     render() {
@@ -162,11 +165,10 @@ class circleJuxtaposeVis {
             })
             .merge(names)
             .transition().duration(vis.duration)
-            .attr('x', vis.xScale(1))
+            .attr('x', vis.xScale(1) + vis.xScale.bandwidth() / 2)
             .attr('y', d => vis.yScale(d.name))
             .text(d => d.name)
             .each(function (d) {
-                console.log(d)
                 d3.select(this)
                     .attr('transform', `translate(${-d.textWidth / 2}, 0)`)
             });
@@ -180,7 +182,7 @@ class circleJuxtaposeVis {
             .append('rect')
             .attr('class', 'line')
             // span the whole line 
-            .attr('width', vis.xScale(2) - vis.xScale(0))
+            .attr('width', vis.xScale(2) - vis.xScale(0) + vis.xScale.bandwidth())
             .attr('height', 2)
             .attr('fill', 'lightgray')
             .merge(line)
@@ -216,7 +218,7 @@ class circleJuxtaposeVis {
             .attr('class', 'total-circle')
             .merge(totalCircle)
             .transition().duration(vis.duration)
-            .attr('cx', vis.xScale(2))
+            .attr('cx', vis.xScale(2) + vis.xScale.bandwidth())
             .attr('r', d => vis.totalRadiusScale(d.total) + circleStroke / 2)
             .attr('cy', function (d) {
                 // d.totalCirclePosY = vis.yScale(d.name)
@@ -239,10 +241,10 @@ class circleJuxtaposeVis {
             .merge(backgroundRect)
             //.transition().duration(vis.duration)
             .attr('width', d => d.textWidth * 1.2)
-            .attr('height', d => d.textHeight * 1.4)
-            .attr('y', d => vis.yScale(d.name) - d.textHeight)
-            .attr('x', d => vis.xScale(1) - d.textWidth / 2 - (d.textWidth * 0.2 / 2))
-            .attr('fill', d => (d.name === vis.selectedPage && vis.selectedPage != null) ? '#d3d3d3' : 'white')
+            .attr('height', d => d.textHeight * 1.8 )
+            .attr('y', d => vis.yScale(d.name) - d.textHeight - 4)
+            .attr('x', d => vis.xScale(1) - d.textWidth / 2 - (d.textWidth * 0.2 / 2) + vis.xScale.bandwidth() / 2)
+            .attr('fill', d => (d.name === vis.selectedPage && vis.selectedPage != null) ? '#E7E7E7' : '#FDFDFD')
 
         groups.selectAll('.name-label').each(function (d) {
             d3.select(this).raise();

@@ -53,8 +53,6 @@ Promise.all([
     // Initialize bubble vis
     let postBubbles = new bubbleVis({ 
       parentElement: '#bubbleVis',
-      // containerWidth: document.getElementsByClassName("bubble-container")[0].clientWidth,
-      // containerHeight: document.getElementsByClassName("bubble-container")[0].clientHeight,
       containerWidth: document.getElementById("bubbleVis").clientWidth,
       containerHeight: document.getElementById("bubbleVis").clientHeight,
       data: data,
@@ -92,6 +90,8 @@ Promise.all([
       postMap: perPageData,
       onMouseout: onMouseout,
       onMouseover: onMouseover,
+      containerWidth: document.getElementById("falseToAllPostsRanking").clientWidth,
+      containerHeight: document.getElementById("falseToAllPostsRanking").clientHeight,
     })
 
     pageRankings.render();
@@ -108,7 +108,7 @@ Promise.all([
       });
 
     // Event listeners for page ranking viz 
-      d3.select('#circle-layout-tabs')
+      d3.select('#rank-layout-tabs')
       .selectAll('.tab')
         .on('click', (d, i, nodes) => {
           const selectedButton = nodes[i];
@@ -124,6 +124,8 @@ Promise.all([
       parentElement: '#stackedBarVis',
       data: data,
       postMap: perPageData,
+      containerWidth: document.getElementById("stackedBarVis").clientWidth,
+      containerHeight: document.getElementById("stackedBarVis").clientHeight,
     })
 
     

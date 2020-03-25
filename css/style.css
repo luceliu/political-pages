@@ -57,6 +57,12 @@ p {
   height: 800px;
 }
 
+.accuracy {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
+
 #bubbleVis {
   width: 80vw;
   height: 100vh;
@@ -100,6 +106,8 @@ p {
 /* TODO fix structure */
 #falseToAllPostsRanking {
   font-family: Archivo, Helvetica, sans-serif; 
+  height: 600px;
+  width: 50%
 }
 
 #falseToAllPostsRanking .name-label {
@@ -113,21 +121,18 @@ p {
 #falseToAllPostsRanking rect {
   transition: 0.2s ease-in-out;
 }
-/*
-#falseToAllPostsRanking rect:hover {
-  fill: lightgray;
-}
-*/
 
 .key-text {  
   font-family: Archivo, Helvetica, sans-serif;
+  font-weight: 500;
+  fill: #3B3A3C;
   text-align: center;
   font-size: 18px;
 }
 
 .total-circle, .post-circle {
-  stroke: white;
-  stroke-width: 10px;
+  stroke: #fdfdfd;
+  stroke-width: 6px;
 }
 
 /** Bubble Vis **/
@@ -152,11 +157,10 @@ p {
 
 /* Stacked Bar Vis */
 #stackedBarVis {
-  width: 70%;
-  height: 520px;
-  margin-top: -24px;
-  margin-bottom: 24px;
+  height: 580px;
   float: left;
+  width: 50%;
+  margin-right: 48px;
 }
 
 .vis-title {
@@ -292,4 +296,10 @@ font-size: 16px;
   background-color: #f3f6f9;
   opacity: 1;
   outline: none;
+}
+
+#rank-layout-tabs {
+  display: flex;
+  flex-direction: row;
+  width: 100vw;
 }

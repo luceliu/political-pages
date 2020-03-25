@@ -2,10 +2,10 @@ class stackedBarVis {
     constructor(_config) {
         this.config = {
           parentElement: _config.parentElement,
-          containerWidth: _config.containerWidth || 500,
-          containerHeight: _config.containerHeight || 470,
+          containerWidth: _config.containerWidth || 580,
+          containerHeight: _config.containerHeight || 580,
         }
-        this.config.margin = _config.margin || { top: 40, bottom: 50, right: 0, left: 170 }
+        this.config.margin = _config.margin || { top: 40, bottom: 140, right: 16, left: 170 }
         this.data = _config.data;
         this.perPageData = _config.postMap;
 
@@ -135,7 +135,7 @@ class stackedBarVis {
                 .data(d)
                 .enter()
                 .append("rect")
-                .on("mouseover", d => { console.log(d); vis.onMouseover(d.data)})
+                .on("mouseover", d => {vis.onMouseover(d.data)})
                 .on("mouseout", d => vis.onMouseout(d.data))
                 .attr("width", d => vis.widthScale(d[1] - d[0]))
                 .attr("height", 28)
@@ -162,7 +162,7 @@ class stackedBarVis {
           .transition().duration(1000)
           .attr("fill", 
             d => (vis.selectedPage != null) //&& d.name == vis.selectedPage) 
-            ? "#d3d3d3" : "none"
+            ? "#E7E7E7" : "none"
           )
         //   () => {
         //     console.log(vis.yScale(vis.selectedPage))
