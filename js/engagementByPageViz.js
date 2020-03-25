@@ -1,4 +1,4 @@
-class SmallMultiplesPagesViz {
+class engagementByPageViz {
     constructor(_config) {
         this.config = {
             parentElement: _config.parentElement,
@@ -13,7 +13,10 @@ class SmallMultiplesPagesViz {
 
     initVis() {
         let vis = this;
-
+        const svg = d3.select(`svg${vis.config.parentElement}`)
+        const g = svg.append('g')
+            .attr('transform', `translate(${vis.config.margin.left},${vis.config.margin.top})`)
+            .attr('class', 'pleaseSeeMe');
     }
 
     update() {

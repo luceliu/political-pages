@@ -104,5 +104,17 @@ Promise.all([
       data: data,
       postMap: perPageData,
     })
+
+    let pageScatterplot1 = new engagementByPageViz({
+      parentElement: "#engagementCountByPage1",
+      data: data,
+      postMap: perPageData,
+    })
+    
+    let pageScatterplot2 = new engagementByPageViz({
+      parentElement: "#engagementCountByPage2",
+      data: data,
+      postMap: perPageData,
+    })
   });
   
