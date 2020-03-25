@@ -198,7 +198,25 @@ font-size: 16px;
   height: 500px;
   /* border: 2px solid green; */
   margin: 0 auto;
+  text-align: left;
+}
+#small-multiples-pages h3 {
+  max-width: 100%;
+  font-size: 32px;
+  margin-bottom: 10px;
+  /* margin: 0 auto; */
+}
+#small-multiples-pages span {
+  font-family: Archivo;
+font-style: normal;
+font-weight: bold;
+font-size: 24px;
+color: #434244;
+}
+#small-multiples-pages div {
+  margin-top: 10px;
   display: flex;
+  height: 100%;
 }
 #engagementCountByPage1, #engagementCountByPage2 {
   width: 50%;

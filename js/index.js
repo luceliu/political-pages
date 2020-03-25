@@ -32,7 +32,8 @@ Promise.all([
           return map;
       }, map)
 
-      console.log(perPageData);
+      console.log('data: ', data);
+      console.log('perPageData: ', perPageData);
 
       perPageData.forEach(d =>
         d.total = Object.values(d).filter(a => !isNaN(a)).reduce((sum, cur) => sum + cur)
