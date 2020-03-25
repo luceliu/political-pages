@@ -118,18 +118,30 @@ Promise.all([
       selectedPage: "Politico"
     })
 
-    // Get correctly formatted data for a certain page
+
     // Group data by page
-    const groupedData = new Map();
     // <"Politico", [...]>
-    data.forEach(function(post) {
+    const processGroupedData = data => {
+      const groupedData = new Map();
+      data.forEach(function(post) {
       if (!groupedData.has(post.Page)) {
         groupedData.set(post.Page, []);
       }
       const pagePosts = groupedData.get(post.Page);
-      pagePosts.push(post);
+      const newPost = {};
+      newPost.category = post.Category;
+      newPost.page = post.Page;
+      newPost.rating = post.Rating;
+      newPost.engCount = post.engagement_count;
+      pagePosts.push(newPost);
       groupedData.set(post.Page, pagePosts);
     })
+
+      return groupedData;
+
+    }
+
+    const groupedData = processGroupedData(data);
     console.log('groupedData: ', groupedData);
 
     let pageScatterplot1 = new engagementByPageViz({

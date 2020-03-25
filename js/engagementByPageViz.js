@@ -22,7 +22,8 @@ class engagementByPageViz {
 
     update() {
         let vis = this;
-        console.log('new data is for page: ', vis.data[0].Page)
+        console.log('new data is for page: ', vis.data[0].page)
+        console.log('new data: ', vis.data)
         vis.render();
     }
 
