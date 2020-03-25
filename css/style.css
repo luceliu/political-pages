@@ -228,6 +228,16 @@ color: #434244;
   font-weight: bold;
 }
 
+.scatterplot .x-axis .tick {
+  font-size: 14px;
+  font-weight: normal;
+  color: #434244;
+}
+
+.all-circles circle {
+  fill: rgba(122, 153, 232, 0.8);
+  opacity: 0.5
+}
 .scatterplot text.chartTitle {
   font-family: Archivo;
 font-style: normal;
