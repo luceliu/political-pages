@@ -123,6 +123,7 @@ Promise.all([
     // <"Politico", [...]>
     const processGroupedData = data => {
       const groupedData = new Map();
+      let maxCount = 0;
       data.forEach(function(post) {
       if (!groupedData.has(post.Page)) {
         groupedData.set(post.Page, []);
@@ -133,25 +134,32 @@ Promise.all([
       newPost.page = post.Page;
       newPost.rating = post.Rating;
       newPost.engCount = post.engagement_count;
+      if (newPost.engCount > maxCount) {
+        maxCount = newPost.engCount;
+      }
       pagePosts.push(newPost);
       groupedData.set(post.Page, pagePosts);
     })
 
-      return groupedData;
+      return [groupedData, maxCount];
 
     }
 
-    const groupedData = processGroupedData(data);
+    const processedData = processGroupedData(data);
+    groupedData = processedData[0];
+    maxEngCount = processedData[1];
+    console.log('maxEngCount', maxEngCount);
     console.log('groupedData: ', groupedData);
-
     let pageScatterplot1 = new engagementByPageViz({
       parentElement: "#engagementCountByPage1",
       data: groupedData.get(pageSelect1.selectedPage),
+      maxCount: maxEngCount
     })
     
     let pageScatterplot2 = new engagementByPageViz({
       parentElement: "#engagementCountByPage2",
       data: groupedData.get(pageSelect2.selectedPage),
+      maxCount: maxEngCount
     })
 
     // Event listeners for handling page selections

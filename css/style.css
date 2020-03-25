@@ -188,7 +188,7 @@ font-size: 16px;
 .x-axis .tick line {
   color: #D9D9D9;
 }
-.x-axis g:nth-child(2n) text {
+#stackedBarVis .x-axis g:nth-child(2n) text {
   visibility: hidden;
 }
 
@@ -220,8 +220,12 @@ color: #434244;
 }
 #engagementCountByPage1, #engagementCountByPage2 {
   width: 50%;
-  height: 100%;
-  border: 2px solid red;
+  height: 80%;
+}
+
+.scatterplot .y-axis .tick {
+  font-size: 14px;
+  font-weight: bold;
 }
 
 .scatterplot text.chartTitle {
