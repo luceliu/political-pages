@@ -224,6 +224,15 @@ color: #434244;
   border: 2px solid red;
 }
 
+.scatterplot text.chartTitle {
+  font-family: Archivo;
+font-style: normal;
+font-weight: bold;
+font-size: 24px;
+line-height: 26px;
+fill: #434244;
+}
+
 #page-select-1, #page-select-2 {
   font-family: Archivo;
   font-style: normal;
