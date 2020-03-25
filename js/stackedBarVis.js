@@ -5,7 +5,7 @@ class stackedBarVis {
           containerWidth: _config.containerWidth || 580,
           containerHeight: _config.containerHeight || 580,
         }
-        this.config.margin = _config.margin || { top: 40, bottom: 140, right: 16, left: 170 }
+        this.config.margin = _config.margin || { top: 40, bottom: 140, right: 30, left: 170 }
         this.data = _config.data;
         this.perPageData = _config.postMap;
 
@@ -62,10 +62,10 @@ class stackedBarVis {
 
           vis.highlightBar = g.append("rect")
           .attr("width", vis.config.containerWidth + 20)
-          .attr("height", vis.yScale.bandwidth() + 20)
+          .attr("height", vis.yScale.bandwidth() + 16)
           .attr("fill", "none")
           .attr("rx", 10)
-          .attr("ry", 10)
+          .attr("ry", 8)
           .attr('transform', `translate(${-vis.config.margin.left},${titleOffset - 10})`);
           // let highlightGroups = g.append("g").attr("class", "highlights");
 
