@@ -19,7 +19,7 @@ class engagementByPageViz {
         vis.yAxisLabelOffset = 180;
         vis.plotWidth = 300;
         vis.plotHeight = 175;
-        vis.POINT_RADIUS = 2;
+        vis.POINT_RADIUS = 3;
         console.log('viz data: ', vis.data);
         const svg = d3.select(`svg${vis.config.parentElement}`)
         const g = svg.append('g')
@@ -69,6 +69,7 @@ class engagementByPageViz {
         const yValue = p => p.rating;
 
         chartTitle.enter().append('text').merge(chartTitle)
+            // .transition()
             .text(vis.pageName)
             .attr('class', 'chartTitle')
             .style('text-anchor', 'middle')
@@ -86,6 +87,7 @@ class engagementByPageViz {
             .enter()
             .append('circle')
             .merge(postPoints)
+            // .transition()
             .attr('r', vis.POINT_RADIUS)
             .attr('cx', p => vis.xScale(xValue(p)))
             .attr('cy', p => vis.yScale(yValue(p)))
