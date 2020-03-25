@@ -13,6 +13,7 @@ class engagementByPageViz {
 
     initVis() {
         let vis = this;
+        console.log('viz data: ', vis.data);
         const svg = d3.select(`svg${vis.config.parentElement}`)
         const g = svg.append('g')
             .attr('transform', `translate(${vis.config.margin.left},${vis.config.margin.top})`)

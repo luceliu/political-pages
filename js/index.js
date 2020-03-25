@@ -119,24 +119,38 @@ Promise.all([
     })
 
     // Get correctly formatted data for a certain page
-    const politicoPosts = data.filter(p => p.Page === "Politico")
-      .map(function (page) {
-        const newPostObj = {};
-        newPostObj.page = page.Page;
-        newPostObj.rating = page.Rating;
-        newPostObj.engCount = page.engagement_count;
-        newPostObj.category = page.Category;
-        return newPostObj;
-      });
-    console.log('politicoPosts', politicoPosts);
+    // Group data by page
+    const groupedData = new Map();
+    // <"Politico", [...]>
+    data.forEach(function(post) {
+      if (!groupedData.has(post.Page)) {
+        groupedData.set(post.Page, []);
+      }
+      const pagePosts = groupedData.get(post.Page);
+      pagePosts.push(post);
+      groupedData.set(post.Page, pagePosts);
+    })
+    console.log('groupedData: ', groupedData);
+    
     let pageScatterplot1 = new engagementByPageViz({
       parentElement: "#engagementCountByPage1",
-      data: politicoPosts,
+      data: groupedData.get('Politico'),
     })
     
     let pageScatterplot2 = new engagementByPageViz({
       parentElement: "#engagementCountByPage2",
-      data: politicoPosts,
+      data: groupedData.get('Eagle Rising'),
     })
+
+    // Event listeners for handling page selections
+    const select1 = document.getElementById('page-select-1');
+    select1.addEventListener('change', function(){
+      console.log('Changed val to: ', this.value);
+    });
+
+    const select2 = document.getElementById('page-select-2');
+    select2.addEventListener('change', function(){
+      console.log('Changed val to: ', this.value);
+    });
   });
   
