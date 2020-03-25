@@ -166,5 +166,8 @@ Promise.all([
       pageScatterplot2.data = groupedData.get(this.value);
       pageScatterplot2.update();
     });
+
+    pageScatterplot1.render();
+    pageScatterplot2.render();
   });
   
