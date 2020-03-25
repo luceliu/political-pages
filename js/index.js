@@ -98,10 +98,10 @@ Promise.all([
 
     // Event listeners for bubble vis layout tabs
     d3.select('#layout-tabs')
-      .selectAll('.tab')
+      .selectAll('.bubble-tab')
         .on('click', (d, i, nodes) => {
           const selectedButton = nodes[i]
-          d3.selectAll('.tab').classed('active', false);
+          d3.selectAll('.bubble-tab').classed('active', false);
           d3.select(selectedButton).classed('active', true);
           const layoutId = d3.select(selectedButton).attr('id');
           postBubbles.update(layoutId);
