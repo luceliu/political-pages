@@ -61,28 +61,12 @@ class stackedBarVis {
             .padding(0.3);
 
           vis.highlightBar = g.append("rect")
-          .attr("width", vis.config.containerWidth + 20)
+          .attr("width", vis.config.containerWidth)
           .attr("height", vis.yScale.bandwidth() + 16)
           .attr("fill", "none")
           .attr("rx", 10)
           .attr("ry", 8)
           .attr('transform', `translate(${-vis.config.margin.left},${titleOffset - 10})`);
-          // let highlightGroups = g.append("g").attr("class", "highlights");
-
-          // vis.highlightBar = highlightGroups.selectAll(".highlight-bar")
-          // .data(vis.perPageData)
-          // .enter()
-          // .append("rect")
-          // .attr("class", "highlight-bar");
-
-          // vis.highlightBar
-          // .attr("width", vis.config.containerWidth + 20)
-          // .attr("height", vis.yScale.bandwidth() + 20)
-          // .attr("fill", "none")
-          // .attr("rx", 10)
-          // .attr("ry", 10)
-          // .attr('transform', `translate(${-vis.config.margin.left},${titleOffset - 10})`)
-          // .attr("y", d => vis.yScale(d.name)) //(vis.selectedPage != null) ? 
 
           vis.yAxis = g.append('g')
             .attr('class', 'y-axis')
@@ -152,21 +136,13 @@ class stackedBarVis {
 
       render() {
           let vis = this;
-          
-          
-          // create a gray box around the page in question
-          // TODO for a fade-in style, need to create one
-          // for each name using enter-update-exit
+        
           vis.highlightBar
            .attr("y", (vis.selectedPage != null) ? vis.yScale(vis.selectedPage) : 0)
           .transition().duration(1000)
           .attr("fill", 
-            d => (vis.selectedPage != null) //&& d.name == vis.selectedPage) 
+            d => (vis.selectedPage != null)
             ? "#E7E7E7" : "none"
           )
-        //   () => {
-        //     console.log(vis.yScale(vis.selectedPage))
-        //   vis.yScale(vis.selectedPage) // - vis.yScale.bandwidth()/2 - 10) //: 0)
-        // })
       }
 }

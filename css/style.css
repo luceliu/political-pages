@@ -138,6 +138,11 @@ p {
   stroke-width: 6px;
 }
 
+.total-circle-text, .post-circle-text {
+  font-size:10px;
+  fill: white;
+}
+
 /** Bubble Vis **/
 .bubble:hover {
   cursor: pointer;

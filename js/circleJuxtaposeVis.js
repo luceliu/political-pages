@@ -72,12 +72,12 @@ class circleJuxtaposeVis {
         vis.postRadiusScale = d3.scaleSqrt()
             .domain([computeStatistic(Math.min),
             computeStatistic(Math.max)])
-            .range([2, 22]);
+            .range([2, 23]);
 
         vis.totalRadiusScale = d3.scaleSqrt()
             .domain([Math.min(...vis.postMap.map(d => d.total)),
             Math.max(...vis.postMap.map(d => d.total))])
-            .range([2, 24]);
+            .range([2, 25]);
 
         // TODO - get this from somewhere else
         vis.colourScale = d3.scaleOrdinal()
@@ -193,7 +193,7 @@ class circleJuxtaposeVis {
         // create elements 
         let postCircle = groups.selectAll('.post-circle').data(d => [d]);
 
-        let circleStroke = 10;
+        let circleStroke = 6;
         postCircle.enter()
             .append('circle')
             .attr('class', 'post-circle')
@@ -201,7 +201,10 @@ class circleJuxtaposeVis {
             .transition().duration(vis.duration)
             .attr('fill', d => vis.colourScale(vis.sortKey))
             .attr('cx', vis.xScale(0))
-            .attr('r', d => vis.postRadiusScale(d[vis.sortKey]) + circleStroke / 2)
+            .attr('r', d => {
+                d.postCircleRadius = vis.postRadiusScale(d[vis.sortKey]) + circleStroke / 2;
+                return d.postCircleRadius;
+            })
             // TODO in-progress: this is very janky; there must be a better way to get value
             .attr('cy', function (d) {
                 // d.postCirclePosY = vis.yScale(d.name)
@@ -219,7 +222,10 @@ class circleJuxtaposeVis {
             .merge(totalCircle)
             .transition().duration(vis.duration)
             .attr('cx', vis.xScale(2) + vis.xScale.bandwidth())
-            .attr('r', d => vis.totalRadiusScale(d.total) + circleStroke / 2)
+            .attr('r', d => {
+                d.totalCircleRadius = vis.totalRadiusScale(d.total) + circleStroke / 2;
+                return d.totalCircleRadius;
+            })
             .attr('cy', function (d) {
                 // d.totalCirclePosY = vis.yScale(d.name)
                 //     - (vis.totalRadiusScale(d.total) / 2);
@@ -241,10 +247,43 @@ class circleJuxtaposeVis {
             .merge(backgroundRect)
             //.transition().duration(vis.duration)
             .attr('width', d => d.textWidth * 1.2)
-            .attr('height', d => d.textHeight * 1.8 )
+            .attr('height', d => d.textHeight * 1.8)
             .attr('y', d => vis.yScale(d.name) - d.textHeight - 4)
             .attr('x', d => vis.xScale(1) - d.textWidth / 2 - (d.textWidth * 0.2 / 2) + vis.xScale.bandwidth() / 2)
             .attr('fill', d => (d.name === vis.selectedPage && vis.selectedPage != null) ? '#E7E7E7' : '#FDFDFD')
+
+        // add text to circles
+        let postCircleText = groups.selectAll('.post-circle-text').data(d => [d]);
+
+        postCircleText.enter()
+            .append('text')
+            .attr('class', 'post-circle-text')
+            .merge(postCircleText)
+            .attr('x', vis.xScale(0))
+            .attr('y', d => vis.yScale(d.name) - d.textHeight / 2)
+            .text(d => {
+                console.log(d.totalCircleRadius); return d.postCircleRadius >= 14 ? Math.round(d[vis.sortKey] * 100) + "%" : ''
+            })
+            .each(function (d) {
+                d3.select(this)
+                    .attr('transform', `translate(${-this.getBBox().width / 2}, ${this.getBBox().height / 2})`)
+            });
+
+        let totalCircleText = groups.selectAll('.total-circle-text').data(d => [d]);
+
+        totalCircleText.enter()
+            .append('text')
+            .attr('class', 'total-circle-text')
+            .merge(totalCircleText)
+            .attr('x', vis.xScale(2) + vis.xScale.bandwidth())
+            .attr('y', d => vis.yScale(d.name) - d.textHeight / 2)
+            .text(d => {
+                console.log(d.totalCircleRadius); return d.totalCircleRadius >= 14 ? d.total : ''
+            })
+            .each(function (d) {
+                d3.select(this)
+                    .attr('transform', `translate(${-this.getBBox().width / 2}, ${this.getBBox().height / 2})`)
+            });
 
         groups.selectAll('.name-label').each(function (d) {
             d3.select(this).raise();
