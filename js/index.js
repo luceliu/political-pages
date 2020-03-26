@@ -206,6 +206,12 @@ Promise.all([
     truthPercentage.onMouseover = onMouseover;
     truthPercentage.onMouseout = onMouseout;
   
+    const categoryEngagement = new groupedBarVis({
+      parentElement: '#groupedBarVis',
+      perCategoryData: ''
+    })
+
+    categoryEngagement.render();
   });
   
   
