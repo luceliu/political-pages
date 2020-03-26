@@ -123,6 +123,7 @@ p {
 
 #falseToAllPostsRanking rect {
   transition: 0.2s ease-in-out;
+  cursor: pointer;
 }
 
 .key-text {  
@@ -168,6 +169,10 @@ p {
   height: 580px;
   width: 50%;
   margin-right: 48px;
+}
+
+#stackedBarVis .all-bars rect {
+  cursor: pointer;
 }
 
 .vis-title {
