@@ -17,15 +17,14 @@ class engagementByPageViz {
         vis.height = vis.config.containerHeight - vis.config.margin.top - vis.config.margin.bottom;
         vis.titleOffset = 50;
         vis.yAxisLabelOffset = 180;
-        vis.plotWidth = 300;
+        vis.plotWidth = 300; // actual width of chart, i.e. excluding title & axes labels
         vis.plotHeight = 175;
         vis.POINT_RADIUS = 3;
-        console.log('viz data: ', vis.data);
         const svg = d3.select(`svg${vis.config.parentElement}`)
         const g = svg.append('g')
             .attr('transform', `translate(${vis.config.margin.left},${vis.config.margin.top})`)
             .attr('class', 'scatterplot');
-        vis.pageName = vis.data[0].page;
+        vis.pageName = vis.data[0].page; // just grab from the first index since they're all the same
 
         vis.xScale = d3.scaleLog()
             .domain([1, vis.maxCount])
