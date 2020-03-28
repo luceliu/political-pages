@@ -17,6 +17,7 @@ class groupedBarVis {
         vis.height = vis.config.containerHeight - vis.config.margin.top - vis.config.margin.bottom;
         console.log('data: ', vis.perCategoryData)
         const categories = ['left', 'mainstream', 'right'];
+        const truthRankings = ["mostly true", "mixture of true and false", "mostly false", "no factual content"];
         const leftShift = 125;
         const svg = d3.select('svg#groupedBarVis');
         let g = svg.append('g')
@@ -49,6 +50,7 @@ class groupedBarVis {
             .attr('transform', `translate(${vis.config.margin.left},${vis.config.margin.top+titleOffset})`);
         const formatter = d3.format(".0%");
 
+        // need second x scale
         vis.xScale = d3.scaleLinear()
             .domain([0,1])
             .range([0, chartWidth]);
@@ -67,8 +69,26 @@ class groupedBarVis {
             .attr('transform', `translate(${leftShift}, ${0})`)
             .call(d3.axisLeft(vis.yScale).tickSizeInner(0))
 
+        vis.colorScale = d3.scaleOrdinal()
+            .domain(truthRankings)
+            .range(["#67D99B", "#D3DCE7", "#E05E5E", "#634265"])
+            
+        // move x-axis labels down a bit
         d3.selectAll('#groupedBarVis .x-axis text')
             .attr('transform', 'translate(0, 10)')
+
+        const barsG = g.append('g')
+            .attr('transform', `translate(${vis.config.margin.left},${vis.config.margin.top+titleOffset})`)
+            .attr('class', 'all-bars');
+        
+        barsG.selectAll('rect')
+            .data(vis.perCategoryData)
+            .enter()
+            .append('g')
+            .attr('class', 'bar-group')
+            .each(function (d) {
+                console.log(d);
+            })
     }
 
     update() {
