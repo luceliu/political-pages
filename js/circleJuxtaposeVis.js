@@ -21,6 +21,9 @@ class circleJuxtaposeVis {
         this.onMouseover = _config.onMouseover;
         this.onMouseout = _config.onMouseout;
 
+        this.postCircleMouseover = _config.onRatingMouseover;
+        this.postCircleMouseout = _config.onRatingMouseout;
+
         this.width = this.config.containerWidth - this.config.margin.left - this.config.margin.right;
         this.height = this.config.containerHeight - this.config.margin.top - this.config.margin.bottom;
 
@@ -32,6 +35,8 @@ class circleJuxtaposeVis {
             .attr('transform', `translate(${this.config.margin.left},${this.config.margin.top})`)
             .attr('height', this.height)
             .attr('width', this.width);
+
+        this.circleStroke = 6;
 
         this.initVis();
     }
@@ -119,6 +124,15 @@ class circleJuxtaposeVis {
         vis.group = vis.chart.append('g');
         vis.group.attr('transform', `translate(${vis.frontTextPadding}, 0)`);
 
+        // may want to make radius smaller for selected postcircles
+        vis.highlightCircle = vis.group
+            .append("circle");
+        vis.highlightCircle
+            .attr("fill", "none")
+            .attr('class', 'highlight-circle')
+            .style("stroke-width", vis.circleStroke / 2 + 2) // play around with this
+            .style("opacity", 0.6);
+
         vis.update();
     }
 
@@ -193,16 +207,17 @@ class circleJuxtaposeVis {
         // create elements 
         let postCircle = groups.selectAll('.post-circle').data(d => [d]);
 
-        let circleStroke = 6;
         postCircle.enter()
             .append('circle')
             .attr('class', 'post-circle')
+            .on("mouseover", vis.postCircleMouseover)
+            .on("mouseout", vis.postCircleMouseout)
             .merge(postCircle)
             .transition().duration(vis.duration)
             .attr('fill', d => vis.colourScale(vis.sortKey))
             .attr('cx', vis.xScale(0))
             .attr('r', d => {
-                d.postCircleRadius = vis.postRadiusScale(d[vis.sortKey]) + circleStroke / 2;
+                d.postCircleRadius = vis.postRadiusScale(d[vis.sortKey]) + vis.circleStroke / 2;
                 return d.postCircleRadius;
             })
             // TODO in-progress: this is very janky; there must be a better way to get value
@@ -212,6 +227,13 @@ class circleJuxtaposeVis {
                 //return d.postCirclePosY;
                 return vis.yScale(d.name) - d.textHeight / 2;
             });
+
+        vis.highlightCircle
+            .attr("r", (vis.postCircleSelected != null) ? vis.postCircleSelected.postCircleRadius + 1 : 0)
+            .attr("cx", vis.xScale(0))
+            .attr("cy",  (vis.postCircleSelected != null) ? 
+            vis.yScale(vis.postCircleSelected.name) - vis.postCircleSelected.textHeight / 2 : 0)
+            .style("stroke", (vis.postCircleSelected != null) ? vis.colourScale(vis.sortKey) : "none");
 
         let totalCircle = groups.selectAll('.total-circle').data(d => [d]);
 
@@ -223,7 +245,7 @@ class circleJuxtaposeVis {
             .transition().duration(vis.duration)
             .attr('cx', vis.xScale(2) + vis.xScale.bandwidth())
             .attr('r', d => {
-                d.totalCircleRadius = vis.totalRadiusScale(d.total) + circleStroke / 2;
+                d.totalCircleRadius = vis.totalRadiusScale(d.total) + vis.circleStroke / 2;
                 return d.totalCircleRadius;
             })
             .attr('cy', function (d) {
@@ -261,9 +283,7 @@ class circleJuxtaposeVis {
             .merge(postCircleText)
             .attr('x', vis.xScale(0))
             .attr('y', d => vis.yScale(d.name) - d.textHeight / 2)
-            .text(d => {
-                console.log(d.totalCircleRadius); return d.postCircleRadius >= 14 ? Math.round(d[vis.sortKey] * 100) + "%" : ''
-            })
+            .text(d => d.postCircleRadius >= 14 ? Math.round(d[vis.sortKey] * 100) + "%" : '')
             .each(function (d) {
                 d3.select(this)
                     .attr('transform', `translate(${-this.getBBox().width / 2}, ${this.getBBox().height / 2})`)
@@ -277,13 +297,13 @@ class circleJuxtaposeVis {
             .merge(totalCircleText)
             .attr('x', vis.xScale(2) + vis.xScale.bandwidth())
             .attr('y', d => vis.yScale(d.name) - d.textHeight / 2)
-            .text(d => {
-                console.log(d.totalCircleRadius); return d.totalCircleRadius >= 14 ? d.total : ''
-            })
+            .text(d => d.totalCircleRadius >= 14 ? d.total : '')
             .each(function (d) {
                 d3.select(this)
                     .attr('transform', `translate(${-this.getBBox().width / 2}, ${this.getBBox().height / 2})`)
             });
+
+        d3.select('.highlight-circle').raise();
 
         groups.selectAll('.name-label').each(function (d) {
             d3.select(this).raise();

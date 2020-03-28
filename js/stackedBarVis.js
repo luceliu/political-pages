@@ -96,6 +96,10 @@ class stackedBarVis {
           .attr('text-anchor', 'middle')
           .text("Percentage of page’s total posts");
 
+          // record widths for highlighting bar
+          vis.widthsMap = {};
+          vis.perPageData.forEach(d => vis.widthsMap[d.name] = {});
+
           const truthfulnessStack = d3.stack().keys(truthRankings)
           const percentages = vis.perPageData.map(function(page) {
             const p = {};
@@ -106,6 +110,7 @@ class stackedBarVis {
             p['name'] = page['name']
             return p;
           })
+
           const bars = g.append('g')
             .attr('class', 'all-bars')
             .attr('transform', `translate(10,${titleOffset})`)
@@ -115,18 +120,39 @@ class stackedBarVis {
             .append('g')
             .attr('class', 'bar')
             .each(function(d) {
+              let key = d.key;
               d3.select(this).selectAll("rect")
                 .data(d)
                 .enter()
                 .append("rect")
-                .on("mouseover", d => {vis.onMouseover(d.data)})
+                .on("mouseover", d => vis.onMouseover(d.data))
                 .on("mouseout", d => vis.onMouseout(d.data))
-                .attr("width", d => vis.widthScale(d[1] - d[0]))
+                .attr("width", d => {
+                  vis.widthsMap[d.data.name][key] = [vis.xScale(d[0]), vis.xScale(d[1])];
+                  return vis.widthScale(d[1] - d[0]);
+                })
                 .attr("height", 28)
                 .attr('y', (p, i) => vis.yScale(pageTitles[i])) 
                 .attr('x', p => vis.xScale(p[0])) // changed from p[1] to p[0]
                 .style("fill", vis.colorScale(d))
             })
+            console.log(vis.widthsMap);
+
+            vis.highlightSize = 10;
+            vis.ratingHighlight = g.append('rect');
+            //.attr("width", vis.config.containerWidth)
+            vis.ratingHighlight
+            .attr("height", vis.yScale.bandwidth() + 16)
+            .attr("fill", "none")
+            .attr("rx", 10)
+            .attr("ry", 8)
+            .attr('transform', `translate(0,${titleOffset - 8})`);
+            
+            vis.highlightStroke = g.append('rect')
+            .attr("height", vis.yScale.bandwidth())
+            .attr('class', 'highlight-stroke')
+            .attr("fill", "none")
+            .attr('transform', `translate(${vis.highlightSize},${titleOffset})`);
       }
 
       update() {
@@ -144,5 +170,39 @@ class stackedBarVis {
             d => (vis.selectedPage != null)
             ? "#E7E7E7" : "none"
           )
+      
+          vis.ratingHighlight
+          .attr("y", (vis.postCircleSelected != null) ? vis.yScale(vis.postCircleSelected.name) : 0)
+          .attr("x", (vis.postCircleSelected != null) ? 
+          vis.widthsMap[vis.postCircleSelected.name][vis.selectedRating][0] : 0)
+          .attr("width", () => {
+            if (vis.postCircleSelected != null) {
+            let width = vis.widthsMap[vis.postCircleSelected.name][vis.selectedRating][1]
+              -  vis.widthsMap[vis.postCircleSelected.name][vis.selectedRating][0];
+              if (width == 0) { 
+                return 0; 
+              } else {
+                return width + 2 * vis.highlightSize;
+              }
+            } else return 0;
+          })
+          .style("fill", vis.colorScale(vis.selectedRating))
+          .style("opacity", 0.6);
+
+          vis.highlightStroke
+          .attr("y", (vis.postCircleSelected != null) ? vis.yScale(vis.postCircleSelected.name) : 0)
+          .attr("x", (vis.postCircleSelected != null) ? 
+          vis.widthsMap[vis.postCircleSelected.name][vis.selectedRating][0] : 0)
+          .attr("width", () => {
+            if (vis.postCircleSelected != null) {
+            let width = vis.widthsMap[vis.postCircleSelected.name][vis.selectedRating][1]
+              -  vis.widthsMap[vis.postCircleSelected.name][vis.selectedRating][0];
+              if (width == 0) { 
+                return 0; 
+              } else {
+                return width;
+              }
+            } else return 0;
+          })
       }
 }

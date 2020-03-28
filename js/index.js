@@ -71,7 +71,6 @@ Promise.all([
     let pageRankings, truthPercentage;
 
     let onMouseover = (d) => {
-      console.log(d)
       pageRankings.selectedPage = d.name;
       truthPercentage.selectedPage = d.name;
       pageRankings.render();
@@ -85,12 +84,30 @@ Promise.all([
       truthPercentage.render();
   }
 
+  let onRatingMouseover = (d) => {
+    pageRankings.postCircleSelected = d;
+    truthPercentage.postCircleSelected = d;
+    truthPercentage.selectedRating = pageRankings.sortKey;
+    pageRankings.render();
+    truthPercentage.render();
+}
+
+let onRatingMouseout = (d) => {
+    pageRankings.postCircleSelected = null;
+    truthPercentage.postCircleSelected = null;
+    truthPercentage.selectedRating = null;
+    pageRankings.render();
+    truthPercentage.render();
+}
+
     pageRankings = new circleJuxtaposeVis({
       parentElement: '#falseToAllPostsRanking',
       data: data,
       postMap: perPageData,
       onMouseout: onMouseout,
       onMouseover: onMouseover,
+      onRatingMouseout: onRatingMouseout,
+      onRatingMouseover: onRatingMouseover,
       containerWidth: document.getElementById("falseToAllPostsRanking").clientWidth,
       containerHeight: document.getElementById("falseToAllPostsRanking").clientHeight,
     })
