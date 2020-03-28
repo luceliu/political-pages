@@ -65,9 +65,9 @@ p {
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
-  padding-left: 1em;
-  padding-right: 1em;
-  padding-top: 64px;
+  padding-left: 1.8em;
+  padding-right: 1.8em;
+  padding-top: 24px;
 }
 
 #bubbleVis {
@@ -113,7 +113,7 @@ p {
 /* TODO fix structure */
 #falseToAllPostsRanking {
   font-family: Archivo, Helvetica, sans-serif; 
-  height: 600px;
+  height: 580px;
   width: 50%
 }
 
@@ -171,7 +171,7 @@ p {
 
 /* Stacked Bar Vis */
 #stackedBarVis {
-  height: 580px;
+  height: 540px;
   width: 50%;
   margin-right: 48px;
 }
@@ -228,21 +228,22 @@ font-size: 16px;
   height: 500px;
   /* border: 2px solid green; */
   margin: 0 auto;
-  text-align: left;
+  text-align: 
+  left;
 }
 #small-multiples-pages h3 {
   max-width: 100%;
-  font-size: 32px;
   margin-bottom: 10px;
-  /* margin: 0 auto; */
 }
+
 #small-multiples-pages span {
   font-family: Archivo;
-font-style: normal;
-font-weight: bold;
-font-size: 24px;
-color: #434244;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 24px;
+  color: #434244;
 }
+
 #small-multiples-pages div {
   margin-top: 10px;
   display: flex;
@@ -251,6 +252,10 @@ color: #434244;
 #engagementCountByPage1, #engagementCountByPage2 {
   width: 50%;
   height: 80%;
+}
+
+#small-multiples-pages .vis-title {
+  margin-top: 24px;
 }
 
 .scatterplot .y-axis .tick {

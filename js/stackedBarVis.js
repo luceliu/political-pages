@@ -49,6 +49,7 @@ class stackedBarVis {
           vis.xScale = d3.scaleLinear()
             .domain([0,1])
             .range([0, vis.width])
+            .nice();
 
           vis.xAxis = d3.axisBottom(vis.xScale)
             .tickFormat(formatter)

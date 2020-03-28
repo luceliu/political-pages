@@ -77,12 +77,12 @@ class circleJuxtaposeVis {
         vis.postRadiusScale = d3.scaleSqrt()
             .domain([computeStatistic(Math.min),
             computeStatistic(Math.max)])
-            .range([0, 23]);
+            .range([0, 22]);
 
         vis.totalRadiusScale = d3.scaleSqrt()
             .domain([Math.min(...vis.postMap.map(d => d.total)),
             Math.max(...vis.postMap.map(d => d.total))])
-            .range([2, 25]);
+            .range([2, 24]);
 
         // TODO - get this from somewhere else
         vis.colourScale = d3.scaleOrdinal()
