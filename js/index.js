@@ -234,8 +234,13 @@ Promise.all([
       console.log('groupedBarData: ', groupedBarData)
       // data is an array of objects
       data.forEach(post => {
-        const newPost = {};
-
+        const cat = post['Category'];
+        const rat = post['Rating'];
+        const count = post['engagement_count'];
+        const prev = groupedBarData[cat][rat];
+        const prevTotal = groupedBarData[cat]['total'];
+        groupedBarData[cat][rat] = prev + count;
+        groupedBarData[cat]['total'] = prevTotal + count;
       })
       // {left: {'no factual content': [], }, right: , mainstream: }
       return groupedBarData;
@@ -245,7 +250,7 @@ Promise.all([
 
     const categoryEngagement = new groupedBarVis({
       parentElement: '#groupedBarVis',
-      perCategoryData: ''
+      perCategoryData: processedGbData
     })
 
     categoryEngagement.render();
