@@ -143,6 +143,10 @@ p {
   stroke-width: 6px;
 }
 
+.post-circle:hover {
+  cursor: pointer;
+}
+
 .total-circle-text, .post-circle-text {
   font-size:10px;
   fill: white;
