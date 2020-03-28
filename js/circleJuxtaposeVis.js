@@ -87,7 +87,7 @@ class circleJuxtaposeVis {
         // TODO - get this from somewhere else
         vis.colourScale = d3.scaleOrdinal()
             .domain(['no factual content', 'mostly false', 'mixture of true and false', 'mostly true'])
-            .range(['#634265', '#E05E5E', '#D3DCE7', '#67D99B']);
+            .range(['#634265', '#E05E5E', '#96a8b3', '#67D99B']);
 
         vis.sortKey = "mostly false";
 
