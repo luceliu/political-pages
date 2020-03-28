@@ -206,6 +206,43 @@ Promise.all([
     truthPercentage.onMouseover = onMouseover;
     truthPercentage.onMouseout = onMouseout;
   
+    const processGroupedBarData = data => {
+      const groupedBarData = {
+        left: {
+          'no factual content': 0,
+          'mostly false': 0,
+          'mixture of true and false': 0,
+          'mostly true': 0,
+          'total': 0
+        },
+        mainstream: {
+          'no factual content': 0,
+          'mostly false': 0,
+          'mixture of true and false': 0,
+          'mostly true': 0,
+          'total': 0
+        },
+        right: {
+          'no factual content': 0,
+          'mostly false': 0,
+          'mixture of true and false': 0,
+          'mostly true': 0,
+          'total': 0
+        },
+      };
+      console.log('data: ', data);
+      console.log('groupedBarData: ', groupedBarData)
+      // data is an array of objects
+      data.forEach(post => {
+        const newPost = {};
+
+      })
+      // {left: {'no factual content': [], }, right: , mainstream: }
+      return groupedBarData;
+    }
+
+    const processedGbData = processGroupedBarData(data);
+
     const categoryEngagement = new groupedBarVis({
       parentElement: '#groupedBarVis',
       perCategoryData: ''
