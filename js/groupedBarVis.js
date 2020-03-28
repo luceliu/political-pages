@@ -22,6 +22,8 @@ class groupedBarVis {
         let g = svg.append('g')
           .attr('transform', `translate(${vis.config.margin.left},${vis.config.margin.top})`);
 
+        const chartWidth = 500;
+        const chartHeight = 350;
         const titleOffset = 80;
         const titleG = g.append('g')
             .attr('class', 'vis-title')
@@ -31,37 +33,42 @@ class groupedBarVis {
 
         titleG.append('text')
             .text("What is the percentage of engagement")
-            .attr('x', vis.width/3)
+            .attr('x', vis.width/4)
 
         titleG.append('text')
             .text("resulting from each type of post across")
             .attr('y', titleOffset-50)
-            .attr('x', vis.width/3)
+            .attr('x', vis.width/4)
 
         titleG.append('text')
             .text("the political spectrum?")
             .attr('y', titleOffset-20)
-            .attr('x', vis.width/3)
+            .attr('x', vis.width/4)
 
+        const chartG = g.append('g')
+            .attr('transform', `translate(${vis.config.margin.left},${vis.config.margin.top+titleOffset})`);
         const formatter = d3.format(".0%");
 
         vis.xScale = d3.scaleLinear()
             .domain([0,1])
-            .range([0, vis.width]);
+            .range([0, chartWidth]);
 
-        vis.xAxis = g.append('g')
+        vis.xAxis = chartG.append('g')
             .attr('class', 'x-axis')
-            .attr('transform', `translate(${leftShift}, ${vis.height+titleOffset})`)
-            .call(d3.axisBottom(vis.xScale).tickFormat(formatter).ticks(4))
+            .attr('transform', `translate(${leftShift}, ${chartHeight})`)
+            .call(d3.axisBottom(vis.xScale).tickSizeInner(-chartHeight).tickFormat(formatter).ticks(4))
 
         vis.yScale = d3.scaleBand()
             .domain(categories)
-            .range([0, vis.height])
+            .range([0, chartHeight])
 
-        vis.yAxis = g.append('g')
+        vis.yAxis = chartG.append('g')
             .attr('class', 'y-axis')
-            .attr('transform', `translate(${leftShift}, ${titleOffset})`)
+            .attr('transform', `translate(${leftShift}, ${0})`)
             .call(d3.axisLeft(vis.yScale).tickSizeInner(0))
+
+        d3.selectAll('#groupedBarVis .x-axis text')
+            .attr('transform', 'translate(0, 10)')
     }
 
     update() {
