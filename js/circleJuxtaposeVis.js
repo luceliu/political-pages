@@ -282,7 +282,7 @@ class circleJuxtaposeVis {
             .attr('class', 'post-circle-text')
             .merge(postCircleText)
             .attr('x', vis.xScale(0))
-            .attr('y', d => vis.yScale(d.name) - d.textHeight / 2)
+            .attr('y', d => vis.yScale(d.name) - d.textHeight / 2 - 2)
             .text(d => d.postCircleRadius >= 14 ? Math.round(d[vis.sortKey] * 100) + "%" : '')
             .each(function (d) {
                 d3.select(this)
@@ -296,7 +296,7 @@ class circleJuxtaposeVis {
             .attr('class', 'total-circle-text')
             .merge(totalCircleText)
             .attr('x', vis.xScale(2) + vis.xScale.bandwidth())
-            .attr('y', d => vis.yScale(d.name) - d.textHeight / 2)
+            .attr('y', d => vis.yScale(d.name) - d.textHeight / 2 - 2)
             .text(d => d.totalCircleRadius >= 14 ? d.total : '')
             .each(function (d) {
                 d3.select(this)
