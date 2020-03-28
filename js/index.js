@@ -190,13 +190,17 @@ let onRatingMouseout = (d) => {
     let pageScatterplot1 = new engagementByPageViz({
       parentElement: "#engagementCountByPage1",
       data: groupedData.get(pageSelect1.selectedPage),
-      maxCount: maxEngCount
+      maxCount: maxEngCount,
+      containerWidth: document.getElementById("engagementCountByPage1").clientWidth,
+      containerHeight: document.getElementById("engagementCountByPage1").clientHeight,
     })
     
     let pageScatterplot2 = new engagementByPageViz({
       parentElement: "#engagementCountByPage2",
       data: groupedData.get(pageSelect2.selectedPage),
-      maxCount: maxEngCount
+      maxCount: maxEngCount,
+      containerWidth: document.getElementById("engagementCountByPage2").clientWidth,
+      containerHeight: document.getElementById("engagementCountByPage2").clientHeight,
     })
 
     // Event listeners for handling page selections

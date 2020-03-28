@@ -249,7 +249,6 @@ font-size: 16px;
 }
 
 #small-multiples-pages div {
-  margin-top: 10px;
   display: flex;
   height: 100%;
 }
@@ -259,7 +258,7 @@ font-size: 16px;
 }
 
 #small-multiples-pages .vis-title {
-  margin-top: 24px;
+  margin-top: 48px;
 }
 
 .scatterplot .y-axis .tick {

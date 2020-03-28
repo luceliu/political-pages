@@ -2,10 +2,10 @@ class engagementByPageViz {
     constructor(_config) {
         this.config = {
             parentElement: _config.parentElement,
-            containerWidth: _config.containerWidth || 500,
-            containerHeight: _config.containerHeight || 470,
+            containerWidth: _config.containerWidth,
+            containerHeight: _config.containerHeight,
           }
-          this.config.margin = _config.margin || { top: 40, bottom: 50, right: 0, left: 0 }
+          this.config.margin = _config.margin || { top: 32, bottom: 50, right: 8, left: 0 }
           this.data = _config.data;
           this.maxCount = _config.maxCount;
           this.initVis();
@@ -17,7 +17,7 @@ class engagementByPageViz {
         vis.height = vis.config.containerHeight - vis.config.margin.top - vis.config.margin.bottom;
         vis.titleOffset = 50;
         vis.yAxisLabelOffset = 180;
-        vis.plotWidth = 300; // actual width of chart, i.e. excluding title & axes labels
+        vis.plotWidth = vis.width - vis.yAxisLabelOffset; // actual width of chart, i.e. excluding title & axes labels
         vis.plotHeight = 175;
         vis.POINT_RADIUS = 3;
         const svg = d3.select(`svg${vis.config.parentElement}`)
