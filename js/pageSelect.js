@@ -23,9 +23,6 @@ class pageSelect {
             .insert('select', `#${sel.precedingElementId} + *`)
             .attr('id', sel.select_id);
 
-
-        console.log('sel.dropdown: ', sel.dropdown)
-        
         sel.dropdownOptions = sel.dropdown.selectAll("option")
             .data(pageNames)
             .enter()

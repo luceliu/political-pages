@@ -62,18 +62,18 @@ class stackedBarVis {
             .padding(0.3);
 
           vis.highlightBar = g.append("rect")
-          .attr("width", vis.config.containerWidth)
-          .attr("height", vis.yScale.bandwidth() + 16)
-          .attr("fill", "none")
-          .attr("rx", 10)
-          .attr("ry", 8)
-          .attr('transform', `translate(${-vis.config.margin.left},${titleOffset - 10})`);
+            .attr("width", vis.config.containerWidth)
+            .attr("height", vis.yScale.bandwidth() + 16)
+            .attr("fill", "none")
+            .attr("rx", 10)
+            .attr("ry", 8)
+            .attr('transform', `translate(${-vis.config.margin.left},${titleOffset - 10})`);
 
           vis.yAxis = g.append('g')
             .attr('class', 'y-axis')
             .attr('transform', `translate(0, ${titleOffset})`)
             .call(d3.axisLeft(vis.yScale).tickSizeInner(0))
-            .call(g => g.select(".domain").remove());
+            .call(g => g.select(".domain").remove()); // remove y-axis line
 
           vis.colorScale = d3.scaleOrdinal()
             .domain(truthRankings)
@@ -87,15 +87,15 @@ class stackedBarVis {
             .attr('class', 'x-axis')
             .attr('transform', `translate(10,${vis.height+titleOffset})`)
             .call(vis.xAxis.tickSizeInner(-vis.height).ticks(12))
-            .call(g => g.select(".domain").remove())
+            .call(g => g.select(".domain").remove()) // remove x-axis line
 
           xAxisG.append('text')
-          .attr('class', 'axis-label')
-          .attr('y', 50)
-          .attr('x', vis.width / 2)
-          .attr('fill', 'black')
-          .attr('text-anchor', 'middle')
-          .text("Percentage of page’s total posts");
+            .attr('class', 'axis-label')
+            .attr('y', 50)
+            .attr('x', vis.width / 2)
+            .attr('fill', 'black')
+            .attr('text-anchor', 'middle')
+            .text("Percentage of page’s total posts");
 
           // record widths for highlighting bar
           vis.widthsMap = {};
@@ -134,26 +134,25 @@ class stackedBarVis {
                 })
                 .attr("height", 28)
                 .attr('y', (p, i) => vis.yScale(pageTitles[i])) 
-                .attr('x', p => vis.xScale(p[0])) // changed from p[1] to p[0]
+                .attr('x', p => vis.xScale(p[0]))
                 .style("fill", vis.colorScale(d))
             })
             console.log(vis.widthsMap);
 
             vis.highlightSize = 10;
             vis.ratingHighlight = g.append('rect');
-            //.attr("width", vis.config.containerWidth)
             vis.ratingHighlight
-            .attr("height", vis.yScale.bandwidth() + 16)
-            .attr("fill", "none")
-            .attr("rx", 10)
-            .attr("ry", 8)
-            .attr('transform', `translate(0,${titleOffset - 8})`);
+              .attr("height", vis.yScale.bandwidth() + 16)
+              .attr("fill", "none")
+              .attr("rx", 10)
+              .attr("ry", 8)
+              .attr('transform', `translate(0,${titleOffset - 8})`);
             
             vis.highlightStroke = g.append('rect')
-            .attr("height", vis.yScale.bandwidth())
-            .attr('class', 'highlight-stroke')
-            .attr("fill", "none")
-            .attr('transform', `translate(${vis.highlightSize},${titleOffset})`);
+              .attr("height", vis.yScale.bandwidth())
+              .attr('class', 'highlight-stroke')
+              .attr("fill", "none")
+              .attr('transform', `translate(${vis.highlightSize},${titleOffset})`);
       }
 
       update() {
@@ -169,41 +168,41 @@ class stackedBarVis {
           .transition().duration(1000)
           .attr("fill", 
             d => (vis.selectedPage != null)
-            ? "#E7E7E7" : "none"
+            ? "#E7E7E7" : "none" // render gray border around highlighted page
           )
       
           vis.ratingHighlight
-          .attr("y", (vis.postCircleSelected != null) ? vis.yScale(vis.postCircleSelected.name) : 0)
-          .attr("x", (vis.postCircleSelected != null) ? 
+            .attr("y", (vis.postCircleSelected != null) ? vis.yScale(vis.postCircleSelected.name) : 0)
+            .attr("x", (vis.postCircleSelected != null) ? 
           vis.widthsMap[vis.postCircleSelected.name][vis.selectedRating][0] : 0)
-          .attr("width", () => {
-            if (vis.postCircleSelected != null) {
-            let width = vis.widthsMap[vis.postCircleSelected.name][vis.selectedRating][1]
-              -  vis.widthsMap[vis.postCircleSelected.name][vis.selectedRating][0];
-              if (width == 0) { 
-                return 0; 
-              } else {
-                return width + 2 * vis.highlightSize;
-              }
-            } else return 0;
-          })
-          .style("fill", vis.colorScale(vis.selectedRating))
-          .style("opacity", 0.6);
+            .attr("width", () => {
+              if (vis.postCircleSelected != null) {
+              let width = vis.widthsMap[vis.postCircleSelected.name][vis.selectedRating][1]
+                -  vis.widthsMap[vis.postCircleSelected.name][vis.selectedRating][0];
+                if (width == 0) { 
+                  return 0; 
+                } else {
+                  return width + 2 * vis.highlightSize;
+                }
+              } else return 0;
+            })
+            .style("fill", vis.colorScale(vis.selectedRating))
+            .style("opacity", 0.6);
 
           vis.highlightStroke
-          .attr("y", (vis.postCircleSelected != null) ? vis.yScale(vis.postCircleSelected.name) : 0)
-          .attr("x", (vis.postCircleSelected != null) ? 
+            .attr("y", (vis.postCircleSelected != null) ? vis.yScale(vis.postCircleSelected.name) : 0)
+            .attr("x", (vis.postCircleSelected != null) ? 
           vis.widthsMap[vis.postCircleSelected.name][vis.selectedRating][0] : 0)
-          .attr("width", () => {
-            if (vis.postCircleSelected != null) {
-            let width = vis.widthsMap[vis.postCircleSelected.name][vis.selectedRating][1]
-              -  vis.widthsMap[vis.postCircleSelected.name][vis.selectedRating][0];
-              if (width == 0) { 
-                return 0; 
-              } else {
-                return width;
-              }
-            } else return 0;
-          })
+            .attr("width", () => {
+              if (vis.postCircleSelected != null) {
+              let width = vis.widthsMap[vis.postCircleSelected.name][vis.selectedRating][1]
+                -  vis.widthsMap[vis.postCircleSelected.name][vis.selectedRating][0];
+                if (width == 0) { 
+                  return 0; 
+                } else {
+                  return width;
+                }
+              } else return 0;
+            })
       }
 }

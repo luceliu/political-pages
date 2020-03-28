@@ -149,21 +149,20 @@ let onRatingMouseout = (d) => {
     let pageSelect1 = new pageSelect({
       precedingElementId: "span-1",
       select_id: "page-select-1",
-      selectedPage: "Addicting Info"
+      selectedPage: "Addicting Info" // default to start
     })
 
     let pageSelect2 = new pageSelect({
       precedingElementId: "span-2",
       select_id: "page-select-2",
-      selectedPage: "Politico"
+      selectedPage: "Politico" // default to start
     })
-
 
     // Group data by page
     // <"Politico", [...]>
     const processGroupedData = data => {
       const groupedData = new Map();
-      let maxCount = 0;
+      let maxCount = 0; // to get global max engagement count
       data.forEach(function(post) {
       if (!groupedData.has(post.Page)) {
         groupedData.set(post.Page, []);
@@ -188,8 +187,6 @@ let onRatingMouseout = (d) => {
     const processedData = processGroupedData(data);
     groupedData = processedData[0];
     maxEngCount = processedData[1];
-    console.log('maxEngCount', maxEngCount);
-    console.log('groupedData: ', groupedData);
     let pageScatterplot1 = new engagementByPageViz({
       parentElement: "#engagementCountByPage1",
       data: groupedData.get(pageSelect1.selectedPage),
