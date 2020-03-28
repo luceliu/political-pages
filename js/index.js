@@ -171,8 +171,6 @@ Promise.all([
     const processedData = processSmallMultiplesData(data);
     smData = processedData[0];
     maxEngCount = processedData[1];
-    console.log('maxEngCount', maxEngCount);
-    console.log('smData: ', smData);
     let pageScatterplot1 = new engagementByPageViz({
       parentElement: "#engagementCountByPage1",
       data: smData.get(pageSelect1.selectedPage),
@@ -230,9 +228,6 @@ Promise.all([
           'total': 0
         },
       };
-      console.log('data: ', data);
-      console.log('groupedBarData: ', groupedBarData)
-      // data is an array of objects
       data.forEach(post => {
         const cat = post['Category'];
         const rat = post['Rating'];
