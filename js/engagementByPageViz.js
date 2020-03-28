@@ -20,7 +20,6 @@ class engagementByPageViz {
         vis.plotWidth = 300;
         vis.plotHeight = 175;
         vis.POINT_RADIUS = 3;
-        console.log('viz data: ', vis.data);
         const svg = d3.select(`svg${vis.config.parentElement}`)
         const g = svg.append('g')
             .attr('transform', `translate(${vis.config.margin.left},${vis.config.margin.top})`)
@@ -50,8 +49,6 @@ class engagementByPageViz {
 
     update() {
         let vis = this;
-        console.log('new data is for page: ', vis.data[0].page)
-        console.log('new data: ', vis.data)
         vis.pageName = vis.data[0].page;
         // not binding post/circle data correctly. workaround for now:
         d3.selectAll(`${vis.config.parentElement} g.all-circles`).remove();
@@ -61,9 +58,7 @@ class engagementByPageViz {
     render() {
         let vis = this;
         const chart = d3.select(`${vis.config.parentElement} g.scatterplot`);
-        console.log('chart', chart);
         const chartTitle = chart.selectAll('text.chartTitle').data([vis.pageName])
-        console.log('vis.width: ', vis.width)
 
         const xValue = p => p.engCount;
         const yValue = p => p.rating;

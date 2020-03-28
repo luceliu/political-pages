@@ -144,14 +144,14 @@ Promise.all([
 
     // Group data by page
     // <"Politico", [...]>
-    const processGroupedData = data => {
-      const groupedData = new Map();
+    const processSmallMultiplesData = data => {
+      const smallMultiplesData = new Map();
       let maxCount = 0;
       data.forEach(function(post) {
-      if (!groupedData.has(post.Page)) {
-        groupedData.set(post.Page, []);
+      if (!smallMultiplesData.has(post.Page)) {
+        smallMultiplesData.set(post.Page, []);
       }
-      const pagePosts = groupedData.get(post.Page);
+      const pagePosts = smallMultiplesData.get(post.Page);
       const newPost = {};
       newPost.category = post.Category;
       newPost.page = post.Page;
@@ -161,40 +161,40 @@ Promise.all([
         maxCount = newPost.engCount;
       }
       pagePosts.push(newPost);
-      groupedData.set(post.Page, pagePosts);
+      smallMultiplesData.set(post.Page, pagePosts);
     })
 
-      return [groupedData, maxCount];
+      return [smallMultiplesData, maxCount];
 
     }
 
-    const processedData = processGroupedData(data);
-    groupedData = processedData[0];
+    const processedData = processSmallMultiplesData(data);
+    smData = processedData[0];
     maxEngCount = processedData[1];
     console.log('maxEngCount', maxEngCount);
-    console.log('groupedData: ', groupedData);
+    console.log('smData: ', smData);
     let pageScatterplot1 = new engagementByPageViz({
       parentElement: "#engagementCountByPage1",
-      data: groupedData.get(pageSelect1.selectedPage),
+      data: smData.get(pageSelect1.selectedPage),
       maxCount: maxEngCount
     })
     
     let pageScatterplot2 = new engagementByPageViz({
       parentElement: "#engagementCountByPage2",
-      data: groupedData.get(pageSelect2.selectedPage),
+      data: smData.get(pageSelect2.selectedPage),
       maxCount: maxEngCount
     })
 
     // Event listeners for handling page selections
     const select1 = document.getElementById('page-select-1');
     select1.addEventListener('change', function(){
-      pageScatterplot1.data = groupedData.get(this.value);
+      pageScatterplot1.data = smData.get(this.value);
       pageScatterplot1.update();
     });
 
     const select2 = document.getElementById('page-select-2');
     select2.addEventListener('change', function(){
-      pageScatterplot2.data = groupedData.get(this.value);
+      pageScatterplot2.data = smData.get(this.value);
       pageScatterplot2.update();
     });
 
