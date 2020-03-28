@@ -3,7 +3,7 @@ class groupedBarVis {
         this.config = {
             parentElement: _config.parentElement,
             containerWidth: _config.containerWidth || 580,
-            containerHeight: _config.containerHeight || 580,
+            containerHeight: _config.containerHeight || 680,
           }
           this.config.margin = _config.margin || { top: 40, bottom: 140, right: 0, left: 0 }
           this.perCategoryData = _config.perCategoryData;
@@ -22,27 +22,26 @@ class groupedBarVis {
         let g = svg.append('g')
           .attr('transform', `translate(${vis.config.margin.left},${vis.config.margin.top})`);
 
-          const titleOffset = 40;
-          const titleG = g.append('g')
+        const titleOffset = 80;
+        const titleG = g.append('g')
             .attr('class', 'vis-title')
             .style('fill', '#434244')
             .style('font-size', '24px')
-            .attr('text-anchor', 'middle')
             .attr('width', '200px');
 
-          titleG.append('text')
+        titleG.append('text')
             .text("What is the percentage of engagement")
-            .attr('x', vis.width/2)
+            .attr('x', vis.width/3)
 
-          titleG.append('text')
+        titleG.append('text')
             .text("resulting from each type of post across")
-            .attr('y', titleOffset+10)
-            .attr('x', vis.width/2)
+            .attr('y', titleOffset-50)
+            .attr('x', vis.width/3)
 
-          titleG.append('text')
-          .text("the political spectrum?")
-          .attr('y', titleOffset+20)
-          .attr('x', vis.width/2)
+        titleG.append('text')
+            .text("the political spectrum?")
+            .attr('y', titleOffset-20)
+            .attr('x', vis.width/3)
 
         const formatter = d3.format(".0%");
 
@@ -53,7 +52,7 @@ class groupedBarVis {
         vis.xAxis = g.append('g')
             .attr('class', 'x-axis')
             .attr('transform', `translate(${leftShift}, ${vis.height+titleOffset})`)
-            .call(d3.axisBottom(vis.xScale).tickFormat(formatter))
+            .call(d3.axisBottom(vis.xScale).tickFormat(formatter).ticks(4))
 
         vis.yScale = d3.scaleBand()
             .domain(categories)
