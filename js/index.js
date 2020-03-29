@@ -134,6 +134,7 @@ let onRatingMouseout = (d) => {
           d3.select(selectedButton).classed('active', true);
           console.log(d3.select(selectedButton).node().innerText.toLowerCase());
           pageRankings.sortKey = d3.select(selectedButton).node().innerText.toLowerCase();
+          pageRankings.changingRank = true;
           pageRankings.update();
           pageRankings.render();
       });
