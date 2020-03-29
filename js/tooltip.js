@@ -19,11 +19,12 @@ class tooltip {
             .style('pointer-events', 'none')
             .style('position', 'absolute');
         
+        // if tooltip width is specified, set width
         if (tooltip.width) {
             tooltip.tt.style('width', tooltip.width);
         }
 
-        // hidet tooltip to begin with
+        // hide tooltip to begin with
         tooltip.hideTooltip();
     }
 
