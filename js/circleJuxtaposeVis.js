@@ -10,7 +10,7 @@ class circleJuxtaposeVis {
             containerHeight: _config.containerHeight
         }
 
-        this.config.margin = _config.margin || { top: 100, bottom: 20, right: 0, left: 0 }
+        this.config.margin = _config.margin || { top: 110, bottom: 20, right: 0, left: 0 }
 
         this.data = _config.data;
         // deep copy this object so I can mess with it
