@@ -23,30 +23,35 @@ class bubbleVis {
   
   initVis() {
     let vis = this;
-
+    
+    // initialize tooltip with width
     vis.tt = new tooltip('bubble_tooltip', 180);
 
     vis.forceStrength = 0.15;
     vis.bubbles = null;
     vis.nodes = [];
 
+    // center of the visualization for positioning bubbles
     vis.center = {
       x: vis.config.containerWidth / 2,
       y: 1.25 * vis.config.containerHeight / 3
     };
 
+    // center coordinates for political category layout
     vis.politicalCenters = {
       'left': { x: vis.config.containerWidth / 3, y: 1.3 * vis.config.containerHeight / 3},
       'mainstream': { x: vis.config.containerWidth / 2, y: 1.25 * vis.config.containerHeight / 3 },
       'right': { x: 2 * vis.config.containerWidth / 3, y: 1.2 * vis.config.containerHeight / 3 }
     }
 
+    // x-position for political category labels
     vis.categoryLabelCenters = {
       'left': vis.config.containerWidth / 3 - 30,
       'mainstream': vis.config.containerWidth / 2 + 60,
       'right': 2 * vis.config.containerWidth / 3 + 80
     }
 
+    // center coordinates for Page layout
     vis.pageCenters = {
       'The Other 98%': { x: vis.config.containerWidth / 3, y: vis.config.containerHeight / 3 - 20 },
       'Addicting Info': { x: vis.config.containerWidth / 3, y: vis.config.containerHeight / 2 - 20 },
@@ -59,6 +64,7 @@ class bubbleVis {
       'Freedom Daily': { x: 2 * vis.config.containerWidth / 3, y: 2 * vis.config.containerHeight / 3 - 20 },
     }
 
+    // center coordinates for Page labels 
     vis.pageLabelCenters = {
       'The Other 98%': { x: vis.config.containerWidth / 3 - 40, y: vis.config.containerHeight / 3 - 200 },
       'Addicting Info': { x: vis.config.containerWidth / 3 - 40, y: vis.config.containerHeight / 2 - 100 },
@@ -71,10 +77,12 @@ class bubbleVis {
       'Freedom Daily': { x: 2 * vis.config.containerWidth / 3 + 80, y: 2 * vis.config.containerHeight / 3 - 16 },
     }
 
+    // charge function that is called for each node, creates repulsion between nodes
     function charge(d) {
       return -Math.pow(d.radius, 2.08) * vis.forceStrength;
     }
 
+    // create force layout
     vis.simulation = d3.forceSimulation()
       .velocityDecay(0.18)
       .force('x', d3.forceX().strength(vis.forceStrength).x(vis.center.x))
@@ -82,18 +90,22 @@ class bubbleVis {
       .force('charge', d3.forceManyBody().strength(charge))
       .on('tick', () => vis.ticked(vis));
 
+    // stop the visualization since nodes haven't been initialized yet
     vis.simulation.stop();
 
+    // color scale for truthfulness categories
     vis.colorScale = d3.scaleOrdinal()
       .domain(['no factual content', 'mostly false', 'mixture of true and false', 'mostly true'])
       .range(['#634265', '#E05E5E', '#D3DCE7', '#67D99B']);
 
+    // emoji scale for post formats
     vis.formatScale = d3.scaleOrdinal()
     .domain(['link', 'video', 'photo'])
     .range(['🔗', '⏯️', '🖼️']);
       
     const maxValue = d3.max(vis.data, vis.zValue);
 
+    // radius scale
     vis.zScale = d3.scalePow()
     .exponent(0.5)
     .range([2, 40])
@@ -103,12 +115,14 @@ class bubbleVis {
   update(layoutID) {
     let vis = this;
     
+    // update bubble layout with selected layout
     vis.updateLayout(layoutID);
   }
 
   render() {
     let vis = this;
 
+    // initialize nodes
     vis.nodes = vis.createNodes(vis.data);
 
     vis.bubbles = vis.svg.selectAll('.bubble')
@@ -139,6 +153,7 @@ class bubbleVis {
   createNodes() {
     let vis = this; 
 
+    // create node objects given csv data
     var nodes = vis.data.map(function (d) {
       return {
         itemID: vis.idValue(d),
@@ -154,27 +169,34 @@ class bubbleVis {
       }
     });
 
-      nodes.sort(function (a, b) { return b.value - a.value; });
+    // sort nodes to prevent occlusion of smaller nodes
+    nodes.sort(function (a, b) { return b.value - a.value; });
     return nodes;
   }
 
+  // reposition bubbles after each tick of force simulation
   ticked(vis) {
     vis.bubbles
       .attr('cx', d => d.x)
       .attr('cy', d => d.y);
   }
 
+  // set styling for hovered bubble, display tooltip
   setHover(d, vis, circle) {
+    // increase saturation, decrease luminance of given color for the selected stroke
     let c = d3.hsl(vis.colorScale(d.color));
     c.s += 0.1;
     c.l -= 0.25;
 
+    // set stroke
     d3.select(circle)
       .attr('stroke', c)
       .attr('stroke-width', 4);
 
+    // get emoji for given post format to render in tooltip
     let dynamicFormatEmoji = vis.formatScale(d.format);
 
+    // format tooltip contents
     const content = '<p class="header">' +
     d.page +
     '</p>' +
@@ -188,13 +210,16 @@ class bubbleVis {
     dynamicFormatEmoji + ' ' + d.format +
     '</p>';
 
+    // get color based on truthfulness rating of selected bubble
     let dynamicColor = d3.hsl(vis.colorScale(d.color));
 
+    // modify saturation and luminance if selected bubble is purple
     if(d.color != 'no factual content') {
       dynamicColor.s += 0.1;
       dynamicColor.l -= 0.15;
     }
 
+    // render tooltip
     vis.tt.showTooltip(content, d3.event, dynamicColor);
   }
 
@@ -223,6 +248,8 @@ class bubbleVis {
     return vis.pageCenters[d.page].y;
   }
 
+  // updates the layout given selected layout
+  // restarts the simulation to render bubbles in new x/y positions
   updateLayout(layout) {
     let vis = this;
     if(layout === 'political-layout') {
@@ -252,9 +279,13 @@ class bubbleVis {
     }
   }
 
+  // render bubble grouping labels for the different layouts
   renderLabels(layout) {
     let vis = this;
+
+    // political category layout 
     if (layout === 'political-layout') {
+      // remove Page labels
       vis.svg.selectAll('.page')
       .transition().duration(300)
       .attr( 'fill-opacity', 0)
@@ -264,6 +295,7 @@ class bubbleVis {
       const categoryLabels = vis.svg.selectAll('.category')
         .data(categories);
       
+      // render political category labels
       categoryLabels.enter().append('text')
         .attr('class', 'category')
         .attr('color', '#8D9097')
@@ -273,7 +305,10 @@ class bubbleVis {
         .text(d => d)
         .transition().duration(300)
         .attr( 'fill-opacity', 1);
+
+    // Page layout
     } else {
+      // remove political category labels
       vis.svg.selectAll('.category')
       .transition().duration(300)
       .attr( 'fill-opacity', 0)
@@ -283,6 +318,7 @@ class bubbleVis {
       const pageLabels = vis.svg.selectAll('.page')
         .data(pages);
       
+      // render Page labels 
       pageLabels.enter().append('text')
         .attr('class', 'page')
         .attr('color', '#8D9097')
@@ -295,12 +331,15 @@ class bubbleVis {
     }
   }
 
+  // hide labels for when all posts layout is selected
   hideLabels() {
     let vis = this;
+    
     vis.svg.selectAll('.category')
       .transition().duration(300)
       .attr( 'fill-opacity', 0)
       .remove();
+
     vis.svg.selectAll('.page')
     .transition().duration(300)
     .attr( 'fill-opacity', 0)
