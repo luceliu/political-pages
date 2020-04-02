@@ -14,6 +14,7 @@ Promise.all([
       }
     });
 
+    let pageCategories = {};
     let processPerPageData = data => {
       // collect total posts for the page
       // collect each type of post for the page
@@ -25,6 +26,11 @@ Promise.all([
           obj.name = n;
           return obj;
       })
+
+      names.forEach(n => {
+        let entry = data.find(c => c.Page == n);
+        pageCategories[n] = entry.Category;
+      });
 
       let perPageData = data.reduce((map, current) => {
           let page = map.find(d => d.name == current.Page);
@@ -74,6 +80,7 @@ Promise.all([
       pageRankings.selectedPage = d.name;
       truthPercentage.selectedPage = d.name;
       pageRankings.render();
+      pageRankings.showTooltip(d);
       truthPercentage.render();
   }
   
@@ -81,6 +88,7 @@ Promise.all([
       pageRankings.selectedPage = null;
       truthPercentage.selectedPage = null;
       pageRankings.render();
+      pageRankings.hideTooltip();
       truthPercentage.render();
   }
 
@@ -104,6 +112,7 @@ let onRatingMouseout = (d) => {
       parentElement: '#falseToAllPostsRanking',
       data: data,
       postMap: perPageData,
+      pageCategories: pageCategories,
       onMouseout: onMouseout,
       onMouseover: onMouseover,
       onRatingMouseout: onRatingMouseout,
