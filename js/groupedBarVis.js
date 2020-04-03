@@ -21,7 +21,7 @@ class groupedBarVis {
         const svg = d3.select('svg#groupedBarVis');
         let g = svg.append('g')
           .attr('transform', `translate(${vis.config.margin.left},${vis.config.margin.top})`);
-
+        const yAxisLabelOffset = 15;
         const chartWidth = 500;
         const chartHeight = 350;
         const titleOffset = 80;
@@ -83,6 +83,9 @@ class groupedBarVis {
         // move x-axis labels down a bit
         d3.selectAll('#groupedBarVis .x-axis text')
             .attr('transform', 'translate(0, 10)')
+
+        d3.selectAll('#groupedBarVis .y-axis text')
+            .attr('transform', 'translate(-10, 0)')
 
         const barsG = g.append('g')
             .attr('transform', `translate(${vis.config.margin.left},${vis.config.margin.top+titleOffset})`)
