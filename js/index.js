@@ -120,7 +120,7 @@ Promise.all([
           pageRankings.update();
           pageRankings.render();
       });
-    
+
     truthPercentage = new stackedBarVis({
       parentElement: '#stackedBarVis',
       data: data,
@@ -205,39 +205,29 @@ Promise.all([
     truthPercentage.onMouseout = onMouseout;
   
     const processGroupedBarData = data => {
-      const groupedBarData = {
-        left: {
+      const groupedBarData = new Map();
+      const defaultObj = {
           'no factual content': 0,
           'mostly false': 0,
           'mixture of true and false': 0,
           'mostly true': 0,
-          'total': 0
-        },
-        mainstream: {
-          'no factual content': 0,
-          'mostly false': 0,
-          'mixture of true and false': 0,
-          'mostly true': 0,
-          'total': 0
-        },
-        right: {
-          'no factual content': 0,
-          'mostly false': 0,
-          'mixture of true and false': 0,
-          'mostly true': 0,
-          'total': 0
-        },
-      };
+          'total': 0,
+        }
+      groupedBarData.set('left', defaultObj)
+      groupedBarData.set('mainstream', defaultObj)
+      groupedBarData.set('right', defaultObj)
+
       data.forEach(post => {
         const cat = post['Category'];
         const rat = post['Rating'];
         const count = post['engagement_count'];
-        const prev = groupedBarData[cat][rat];
-        const prevTotal = groupedBarData[cat]['total'];
-        groupedBarData[cat][rat] = prev + count;
-        groupedBarData[cat]['total'] = prevTotal + count;
+        const newObj = Object.assign({}, groupedBarData.get(cat))
+        const prev = newObj[rat]
+        const prevTotal = newObj['total']
+        newObj[rat] = prev + count;
+        newObj['total'] = prevTotal + count;
+        groupedBarData.set(cat, newObj)
       })
-      // {left: {'no factual content': [], }, right: , mainstream: }
       return groupedBarData;
     }
 
