@@ -15,7 +15,6 @@ class groupedBarVis {
         let vis = this;
         vis.width = vis.config.containerWidth - vis.config.margin.left - vis.config.margin.right;
         vis.height = vis.config.containerHeight - vis.config.margin.top - vis.config.margin.bottom;
-        console.log('data: ', vis.perCategoryData)
         const categories = ['left', 'mainstream', 'right'];
         const truthRankings = ["mostly true", "mixture of true and false", "mostly false", "no factual content"];
         const leftShift = 125;
@@ -69,9 +68,15 @@ class groupedBarVis {
             .attr('transform', `translate(${leftShift}, ${0})`)
             .call(d3.axisLeft(vis.yScale).tickSizeInner(0))
 
+        vis.ySubScale = d3.scaleBand()
+            .domain(truthRankings)
+            .range([0, vis.yScale.bandwidth()])
+            .paddingOuter(1.2)
+            // .padding([-0.5])
+
         vis.colorScale = d3.scaleOrdinal()
             .domain(truthRankings)
-            .range(["#67D99B", "#D3DCE7", "#E05E5E", "#634265"])
+            .range(['#634265', '#E05E5E', '#96a8b3', '#67D99B']);
             
         // move x-axis labels down a bit
         d3.selectAll('#groupedBarVis .x-axis text')
@@ -80,15 +85,64 @@ class groupedBarVis {
         const barsG = g.append('g')
             .attr('transform', `translate(${vis.config.margin.left},${vis.config.margin.top+titleOffset})`)
             .attr('class', 'all-bars');
-        
-        barsG.selectAll('rect')
-            .data(vis.perCategoryData)
+
+        const leftBars = barsG.append('g')
+            .selectAll('rect')
+            .data(Object.entries(vis.perCategoryData.get('left')))
             .enter()
-            .append('g')
-            .attr('class', 'bar-group')
-            .each(function (d) {
-                console.log(d);
-            })
+            .append('rect')
+            .attr('transform', `translate(${leftShift}, ${vis.yScale('left')})`)
+            .attr('fill', key => vis.colorScale(key))
+            .attr('height', vis.ySubScale.bandwidth())
+            .attr('width', key => vis.xScale(key[1]))
+            .attr('y', key => vis.ySubScale(key[0]))
+
+        const mainstreamBars = barsG.append('g')
+            .selectAll('rect')
+            .data(Object.entries(vis.perCategoryData.get('mainstream')))
+            .enter()
+            .append('rect')
+            .attr('transform', `translate(${leftShift}, ${vis.yScale('mainstream')})`)
+            .attr('fill', key => vis.colorScale(key))
+            .attr('height', vis.ySubScale.bandwidth())
+            .attr('width', key => vis.xScale(key[1]))
+            .attr('y', key => vis.ySubScale(key[0]))
+
+        const rightBars = barsG.append('g')
+            .selectAll('rect')
+            .data(Object.entries(vis.perCategoryData.get('right')))
+            .enter()
+            .append('rect')
+            .attr('transform', `translate(${leftShift}, ${vis.yScale('right')})`)
+            .attr('fill', key => vis.colorScale(key))
+            .attr('height', vis.ySubScale.bandwidth())
+            .attr('width', key => vis.xScale(key[1]))
+            .attr('y', key => vis.ySubScale(key[0]))
+
+        // barsG.selectAll('g')
+        //     .data(vis.perCategoryData)
+        //     .enter()
+        //     .append('g')
+        //     .attr('class', 'heck')
+            // .attr('transform', d => `translate(0, ${vis.yScale(d)}`)
+            // .selectAll('rect')
+            // .data(d => truthRankings.map(
+            //     function (key) {
+            //         return {
+            //             key: key,
+            //             value: d[key]
+            //         }
+            //     }
+            // )
+            // )
+            // .enter()
+            // .append('rect')
+            // .attr('y', d => vis.ySubScale(d.key))
+            // .attr('x', d => vis.xScale(d.value))
+            // .attr('height', vis.ySubScale.bandwidth())
+            // .attr('width', d => chartWidth - vis.xScale(d.value))
+            // .attr('fill', d => vis.colorScale(d.key))
+    
     }
 
     update() {

@@ -228,7 +228,20 @@ Promise.all([
         newObj['total'] = prevTotal + count;
         groupedBarData.set(cat, newObj)
       })
-      return groupedBarData;
+
+      groupedBarPercentagesData = new Map();
+
+      for (const [k, v] of groupedBarData) {
+        console.log(k, v)
+        const percentObj = {}
+        for (const rating in v) {
+          percentObj[rating] = v[rating] / v['total']
+        }
+        delete percentObj['total']
+        groupedBarPercentagesData.set(k, percentObj)
+      }
+
+      return groupedBarPercentagesData;
     }
 
     const processedGbData = processGroupedBarData(data);
