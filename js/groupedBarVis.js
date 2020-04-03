@@ -58,6 +58,7 @@ class groupedBarVis {
             .attr('class', 'x-axis')
             .attr('transform', `translate(${leftShift}, ${chartHeight})`)
             .call(d3.axisBottom(vis.xScale).tickSizeInner(-chartHeight).tickFormat(formatter).ticks(4))
+            .call(g => g.select(".domain").remove());
 
         vis.yScale = d3.scaleBand()
             .domain(categories)
@@ -67,11 +68,12 @@ class groupedBarVis {
             .attr('class', 'y-axis')
             .attr('transform', `translate(${leftShift}, ${0})`)
             .call(d3.axisLeft(vis.yScale).tickSizeInner(0))
+            .call(g => g.select(".domain").remove());
 
         vis.ySubScale = d3.scaleBand()
             .domain(truthRankings)
             .range([0, vis.yScale.bandwidth()])
-            .paddingOuter(1.2)
+            .paddingOuter(1.5)
             // .padding([-0.5])
 
         vis.colorScale = d3.scaleOrdinal()
