@@ -336,6 +336,43 @@ fill: #434244;
   outline: 0;
 }
 
+#small-multiples-categories {
+  width: 80vw;
+  height: 500px;
+  max-width: 32em;
+  /* border: 2px solid green; */
+  margin: 0 auto;
+  text-align: 
+  left;
+}
+#small-multiples-categories h3 {
+  max-width: 100%;
+  margin-bottom: 10px;
+}
+
+#small-multiples-categories span {
+  font-family: Archivo;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 24px;
+  color: #434244;
+}
+
+#small-multiples-categories div {
+  display: flex;
+  height: 100%;
+}
+#engagementByPageRight, #engagementByPageLeft, #engagementByPageMainstream {
+  width: 50%;
+  height: 80%;
+}
+
+#small-multiples-categories .all-circles circle {
+  opacity: 0.5;
+  fill: unset;
+}
+
+
 /** Tooltip **/ 
 
 .tooltip {
