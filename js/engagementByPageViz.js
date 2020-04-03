@@ -8,6 +8,14 @@ class engagementByPageViz {
           this.config.margin = _config.margin || { top: 32, bottom: 50, right: 8, left: 0 }
           this.data = _config.data;
           this.maxCount = _config.maxCount;
+
+          this.yDomain = _config.yDomain || ["no factual content", "mostly false", "mixture of true and false", "mostly true"];
+          this.xValue = _config.xValue || (p => p.engCount);
+          this.yValue = _config.yValue || (p => p.rating);
+
+          this.colourValue = _config.colourValue;
+          this.colourScale = _config.colourScale;
+
           this.initVis();
     }
 
@@ -25,13 +33,14 @@ class engagementByPageViz {
             .attr('transform', `translate(${vis.config.margin.left},${vis.config.margin.top})`)
             .attr('class', 'scatterplot');
         vis.pageName = vis.data[0].page; // just grab from the first index since they're all the same
+        console.log(vis.data);
 
         vis.xScale = d3.scaleLog()
             .domain([1, vis.maxCount])
             .range([0, vis.plotWidth])
         
         vis.yScale = d3.scaleBand()
-            .domain(["no factual content", "mostly false", "mixture of true and false", "mostly true"])
+            .domain(vis.yDomain)
             .range([0, vis.plotHeight])
 
         const formatter = d3.format(".2s");
@@ -64,9 +73,6 @@ class engagementByPageViz {
         const chartTitle = chart.selectAll('text.chartTitle').data([vis.pageName])
         console.log('vis.width: ', vis.width)
 
-        const xValue = p => p.engCount;
-        const yValue = p => p.rating;
-
         chartTitle.enter().append('text').merge(chartTitle)
             // .transition()
             .text(vis.pageName)
@@ -88,8 +94,9 @@ class engagementByPageViz {
             .merge(postPoints)
             // .transition()
             .attr('r', vis.POINT_RADIUS)
-            .attr('cx', p => vis.xScale(xValue(p)))
-            .attr('cy', p => vis.yScale(yValue(p)))
+            .attr('cx', p => vis.xScale(vis.xValue(p)))
+            .attr('cy', p => vis.yScale(vis.yValue(p)))
+            .style('fill', d => vis.colourScale == null ? '' : vis.colourScale(vis.colourValue(d)))
 
         postPoints.exit().remove();
     }

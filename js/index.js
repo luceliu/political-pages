@@ -14,6 +14,7 @@ Promise.all([
       }
     });
 
+    let pageCategories = {};
     let processPerPageData = data => {
       // collect total posts for the page
       // collect each type of post for the page
@@ -25,6 +26,11 @@ Promise.all([
           obj.name = n;
           return obj;
       })
+
+      names.forEach(n => {
+        let entry = data.find(c => c.Page == n);
+        pageCategories[n] = entry.Category;
+      });
 
       let perPageData = data.reduce((map, current) => {
           let page = map.find(d => d.name == current.Page);
@@ -74,6 +80,7 @@ Promise.all([
       pageRankings.selectedPage = d.name;
       truthPercentage.selectedPage = d.name;
       pageRankings.render();
+      pageRankings.showTooltip(d);
       truthPercentage.render();
   }
   
@@ -81,6 +88,7 @@ Promise.all([
       pageRankings.selectedPage = null;
       truthPercentage.selectedPage = null;
       pageRankings.render();
+      pageRankings.hideTooltip();
       truthPercentage.render();
   }
 
@@ -104,6 +112,7 @@ let onRatingMouseout = (d) => {
       parentElement: '#falseToAllPostsRanking',
       data: data,
       postMap: perPageData,
+      pageCategories: pageCategories,
       onMouseout: onMouseout,
       onMouseover: onMouseover,
       onRatingMouseout: onRatingMouseout,
@@ -219,6 +228,43 @@ let onRatingMouseout = (d) => {
 
     pageScatterplot1.render();
     pageScatterplot2.render();
+
+    let perCategoryData = {};
+
+    let engData = data.map(d => {
+      let item = {page: d.Category, engCount: d.engagement_count, rating: d.Rating, format: d["Post Type"]};
+      return item; 
+    });
+  
+    perCategoryData.Left = engData.filter(d => d.page == "left");
+    perCategoryData.Right = engData.filter(d => d.page == "right");
+    perCategoryData.Mainstream = engData.filter(d => d.page == "mainstream");
+
+  console.log(perCategoryData);
+    
+  let pageScatterplots = [];
+  ["Left", "Right", "Mainstream"].forEach(leaning => {
+    let pageScatterplot = new engagementByPageViz({
+      parentElement: "#engagementByPage" + leaning,
+      data: perCategoryData[leaning],
+      maxCount: maxEngCount,
+      yValue: (d => d.format),
+      yDomain: ['link', 'photo', 'video'],
+      colourScale: d3.scaleOrdinal()
+      .domain(['no factual content *', 'mostly false', 'mixture of true and false', 'mostly true'])
+      .range(['#634265', '#E05E5E', '#D3DCE7', '#67D99B']),
+      colourValue: (d => d.rating),
+      containerWidth: document.getElementById("engagementByPage" + leaning).clientWidth,
+      containerHeight: document.getElementById("engagementByPage" + leaning).clientHeight,
+    });
+
+    pageScatterplots.push(pageScatterplot);
+  });    
+
+    pageScatterplots.forEach(psp => {
+      psp.update();
+      psp.render();
+    });
     
     pageRankings.onMouseover = onMouseover;
     pageRankings.onMouseout = onMouseout;
