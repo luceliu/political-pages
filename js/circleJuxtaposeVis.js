@@ -345,7 +345,9 @@ class circleJuxtaposeVis {
         vis.politicalCategory[d.name] +
         '</p>';
 
-        vis.tooltip.showTooltip(content, d3.event, 'none');
+        if (("#" + d3.event.relatedTarget.id).includes(this.config.parentElement)) {
+            vis.tooltip.showTooltip(content, d3.event, 'none');
+        }
     }
 
     hideTooltip() {
