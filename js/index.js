@@ -244,7 +244,7 @@ let onRatingMouseout = (d) => {
     
   let pageScatterplots = [];
   ["Left", "Right", "Mainstream"].forEach(leaning => {
-    let pageScatterplot = new engagementByPageViz({
+    let pageScatterplot = new asymmetricalViolin({
       parentElement: "#engagementByPage" + leaning,
       data: perCategoryData[leaning],
       maxCount: maxEngCount,
