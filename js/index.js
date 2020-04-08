@@ -82,6 +82,7 @@ Promise.all([
       pageRankings.render();
       pageRankings.showTooltip(d);
       truthPercentage.render();
+      truthPercentage.showTooltip(d);
   }
   
   let onMouseout = (d) => {
@@ -90,6 +91,7 @@ Promise.all([
       pageRankings.render();
       pageRankings.hideTooltip();
       truthPercentage.render();
+      truthPercentage.hideTooltip();
   }
 
   let onRatingMouseover = (d) => {

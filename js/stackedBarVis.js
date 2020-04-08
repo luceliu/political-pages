@@ -21,6 +21,14 @@ class stackedBarVis {
           vis.height = vis.config.containerHeight - vis.config.margin.top - vis.config.margin.bottom;
 
           const truthRankings = ["mostly true", "mixture of true and false", "mostly false", "no factual content"];
+          const colourToRankMap = new Map();
+          colourToRankMap.set('rgb(103, 217, 155)', 'mostly true');
+          colourToRankMap.set('rgb(211, 220, 231)', 'mixture of true and false')
+          colourToRankMap.set('rgb(224, 94, 94)', 'mostly false')
+          colourToRankMap.set('rgb(99, 66, 101)', 'no factual content')
+
+          // init tooltip
+          vis.tooltip = new tooltip('stacked-tooltip', 100);
 
           const svg = d3.select('svg#stackedBarVis');
           let g = svg.append('g')
@@ -126,7 +134,12 @@ class stackedBarVis {
                 .data(d)
                 .enter()
                 .append("rect")
-                .on("mouseover", d => vis.onMouseover(d.data))
+                // .on("mouseover", d => vis.onMouseover(d.data))
+                .on("mouseover", function (d) {
+                  vis.onMouseover(d.data)
+                  const fillRgb = d3.select(this).style("fill");
+                  console.log("hovering over: ", colourToRankMap.get(fillRgb))
+                })
                 .on("mouseout", d => vis.onMouseout(d.data))
                 .attr("width", d => {
                   vis.widthsMap[d.data.name][key] = [vis.xScale(d[0]), vis.xScale(d[1])];
@@ -204,5 +217,15 @@ class stackedBarVis {
                 }
               } else return 0;
             })
+      }
+
+      showTooltip(d) {
+        let vis = this;
+        console.log("showTooltip called with: ", d)
+        vis.tooltip.showTooltip("blah", d3.event, 'none')
+      }
+
+      hideTooltip() {
+        this.tooltip.hideTooltip();
       }
 }
