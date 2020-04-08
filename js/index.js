@@ -154,6 +154,7 @@ let onRatingMouseout = (d) => {
       parentElement: '#stackedBarVis',
       data: data,
       postMap: perPageData,
+      pageCategories: pageCategories,
       containerWidth: document.getElementById("stackedBarVis").clientWidth,
       containerHeight: document.getElementById("stackedBarVis").clientHeight,
     })
