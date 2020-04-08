@@ -28,7 +28,10 @@ class stackedBarVis {
           colourToRankMap.set('rgb(99, 66, 101)', 'no factual content')
 
           // init tooltip
-          vis.tooltip = new tooltip('stacked-tooltip', 100);
+          vis.tooltip = new tooltip({
+            tooltip_id: 'stacked-tooltip',
+            width: '200px'
+          })
 
           const svg = d3.select('svg#stackedBarVis');
           let g = svg.append('g')
@@ -138,9 +141,13 @@ class stackedBarVis {
                 .on("mouseover", function (d) {
                   vis.onMouseover(d.data)
                   const fillRgb = d3.select(this).style("fill");
-                  console.log("hovering over: ", colourToRankMap.get(fillRgb))
+                  vis.showTooltip(d.data, colourToRankMap.get(fillRgb))
                 })
-                .on("mouseout", d => vis.onMouseout(d.data))
+                // .on("mouseout", d => vis.onMouseout(d.data))
+                .on("mouseout", function (d) {
+                  vis.onMouseout(d.data)
+                  vis.hideTooltip();
+                })
                 .attr("width", d => {
                   vis.widthsMap[d.data.name][key] = [vis.xScale(d[0]), vis.xScale(d[1])];
                   return vis.widthScale(d[1] - d[0]);
@@ -219,10 +226,23 @@ class stackedBarVis {
             })
       }
 
-      showTooltip(d) {
+      showTooltip(d, ranking) {
         let vis = this;
-        console.log("showTooltip called with: ", d)
-        vis.tooltip.showTooltip("blah", d3.event, 'none')
+        const content = '<p class="header">' +
+        d.name +
+        '</p>' +
+        '<p class="attr">Percentage Posts with this Rating</p>' + 
+        '<p class="value">' +
+        Math.round(d[ranking] * 100) + "%" +
+        '</p>' ;
+        // '<p class="attr">Total posts</p><p class="value">' +
+        // d.total +
+        // '</p>' +
+        // '<p class="attr">Political Category</p><p class="value">' +
+        // vis.politicalCategory[d.name] +
+        // '</p>';
+  
+        vis.tooltip.showTooltip(content, d3.event, 'none')
       }
 
       hideTooltip() {
