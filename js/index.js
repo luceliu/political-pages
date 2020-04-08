@@ -147,7 +147,7 @@ let onRatingMouseout = (d) => {
           pageRankings.update();
           pageRankings.render();
       });
-    
+
     truthPercentage = new stackedBarVis({
       parentElement: '#stackedBarVis',
       data: data,
@@ -170,14 +170,14 @@ let onRatingMouseout = (d) => {
 
     // Group data by page
     // <"Politico", [...]>
-    const processGroupedData = data => {
-      const groupedData = new Map();
-      let maxCount = 0; // to get global max engagement count
+    const processSmallMultiplesData = data => {
+      const smallMultiplesData = new Map();
+      let maxCount = 0;
       data.forEach(function(post) {
-      if (!groupedData.has(post.Page)) {
-        groupedData.set(post.Page, []);
+      if (!smallMultiplesData.has(post.Page)) {
+        smallMultiplesData.set(post.Page, []);
       }
-      const pagePosts = groupedData.get(post.Page);
+      const pagePosts = smallMultiplesData.get(post.Page);
       const newPost = {};
       newPost.category = post.Category;
       newPost.page = post.Page;
@@ -187,19 +187,19 @@ let onRatingMouseout = (d) => {
         maxCount = newPost.engCount;
       }
       pagePosts.push(newPost);
-      groupedData.set(post.Page, pagePosts);
+      smallMultiplesData.set(post.Page, pagePosts);
     })
 
-      return [groupedData, maxCount];
+      return [smallMultiplesData, maxCount];
 
     }
 
-    const processedData = processGroupedData(data);
-    groupedData = processedData[0];
+    const processedData = processSmallMultiplesData(data);
+    smData = processedData[0];
     maxEngCount = processedData[1];
     let pageScatterplot1 = new engagementByPageViz({
       parentElement: "#engagementCountByPage1",
-      data: groupedData.get(pageSelect1.selectedPage),
+      data: smData.get(pageSelect1.selectedPage),
       maxCount: maxEngCount,
       containerWidth: document.getElementById("engagementCountByPage1").clientWidth,
       containerHeight: document.getElementById("engagementCountByPage1").clientHeight,
@@ -207,7 +207,7 @@ let onRatingMouseout = (d) => {
     
     let pageScatterplot2 = new engagementByPageViz({
       parentElement: "#engagementCountByPage2",
-      data: groupedData.get(pageSelect2.selectedPage),
+      data: smData.get(pageSelect2.selectedPage),
       maxCount: maxEngCount,
       containerWidth: document.getElementById("engagementCountByPage2").clientWidth,
       containerHeight: document.getElementById("engagementCountByPage2").clientHeight,
@@ -216,13 +216,13 @@ let onRatingMouseout = (d) => {
     // Event listeners for handling page selections
     const select1 = document.getElementById('page-select-1');
     select1.addEventListener('change', function(){
-      pageScatterplot1.data = groupedData.get(this.value);
+      pageScatterplot1.data = smData.get(this.value);
       pageScatterplot1.update();
     });
 
     const select2 = document.getElementById('page-select-2');
     select2.addEventListener('change', function(){
-      pageScatterplot2.data = groupedData.get(this.value);
+      pageScatterplot2.data = smData.get(this.value);
       pageScatterplot2.update();
     });
 
@@ -271,6 +271,54 @@ let onRatingMouseout = (d) => {
     truthPercentage.onMouseover = onMouseover;
     truthPercentage.onMouseout = onMouseout;
   
+    const processGroupedBarData = data => {
+      const groupedBarData = new Map();
+      const defaultObj = {
+          'no factual content': 0,
+          'mostly false': 0,
+          'mixture of true and false': 0,
+          'mostly true': 0,
+          'total': 0,
+        }
+      groupedBarData.set('left', defaultObj)
+      groupedBarData.set('mainstream', defaultObj)
+      groupedBarData.set('right', defaultObj)
+
+      data.forEach(post => {
+        const cat = post['Category'];
+        const rat = post['Rating'];
+        const count = post['engagement_count'];
+        const newObj = Object.assign({}, groupedBarData.get(cat))
+        const prev = newObj[rat]
+        const prevTotal = newObj['total']
+        newObj[rat] = prev + count;
+        newObj['total'] = prevTotal + count;
+        groupedBarData.set(cat, newObj)
+      })
+
+      groupedBarPercentagesData = new Map();
+
+      for (const [k, v] of groupedBarData) {
+        console.log(k, v)
+        const percentObj = {}
+        for (const rating in v) {
+          percentObj[rating] = v[rating] / v['total']
+        }
+        delete percentObj['total']
+        groupedBarPercentagesData.set(k, percentObj)
+      }
+
+      return groupedBarPercentagesData;
+    }
+
+    const processedGbData = processGroupedBarData(data);
+
+    const categoryEngagement = new groupedBarVis({
+      parentElement: '#groupedBarVis',
+      perCategoryData: processedGbData
+    })
+
+    categoryEngagement.render();
   });
   
   

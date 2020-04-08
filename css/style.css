@@ -372,6 +372,16 @@ fill: #434244;
   fill: unset;
 }
 
+/* Grouped Bar */
+#grouped-bar {
+  width: 80vw;
+  height: 650px;
+}
+
+#groupedBarVis {
+  width: 100%;
+  height: 100%;
+}
 
 /** Tooltip **/ 
 
