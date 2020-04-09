@@ -138,7 +138,7 @@ let onRatingMouseout = (d) => {
 
     // Event listeners for page ranking viz 
       d3.select('#rank-layout-tabs')
-      .selectAll('.tab')
+      .selectAll('.tab-legend')
         .on('click', (d, i, nodes) => {
           const selectedButton = nodes[i];
           d3.selectAll('.tab').classed('active', false);

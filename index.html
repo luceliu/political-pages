@@ -51,10 +51,18 @@
         How do the Pages rank against each other for each category of content?
         </p>
         <div class="tabs" id="rank-layout-tabs">
-            <button class="tab active">Mostly false</button>
-            <button class="tab">Mixture of true and false</button>
-            <button class="tab">Mostly true</button>
-            <button class="tab">No factual content</button>
+            <button class="tab tab-legend active">
+                <div class="false-legend"></div>Mostly false
+            </button>
+            <button class="tab tab-legend">
+                <div class="mixture-legend"></div> Mixture of true and false
+            </button>
+            <button class="tab tab-legend">
+                <div class="true-legend"></div>Mostly true
+            </button>
+            <button class="tab tab-legend">
+                <div class="no-factual-legend"></div>No factual content
+            </button>
         </div>
     </div>
     <div class="accuracy">
@@ -74,8 +82,12 @@
         </div>
     </div>
 
-    <div class="container" id="small-multiples-categories">
+    <div class="container">
         <h3 class="vis-title">Engagement per Post Type over Left, Mainstream, and Right pages</h3>
+        <p>How much engagement is typical for posts of different ratings? Which ratings and formats produce more highly-engaged-with posts?</p>
+        <p>Each coloured curve is half a violin chart; stronger curves represent more posts.</p>
+    </div>
+    <div class="container" id="small-multiples-categories">
         <div>
             <svg id="engagementByPageLeft"></svg>
             <svg id="engagementByPageMainstream"></svg>
