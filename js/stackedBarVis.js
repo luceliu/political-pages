@@ -8,7 +8,7 @@ class stackedBarVis {
         this.config.margin = _config.margin || { top: 40, bottom: 140, right: 30, left: 170 }
         this.data = _config.data;
         this.perPageData = _config.postMap;
-
+        this.pageCategories = _config.pageCategories;
         this.onMouseover = _config.onMouseover;
         this.onMouseout = _config.onMouseout;
 
@@ -21,6 +21,21 @@ class stackedBarVis {
           vis.height = vis.config.containerHeight - vis.config.margin.top - vis.config.margin.bottom;
 
           const truthRankings = ["mostly true", "mixture of true and false", "mostly false", "no factual content"];
+          const colourToRankMap = new Map();
+          colourToRankMap.set('rgb(103, 217, 155)', 'mostly true');
+          colourToRankMap.set('rgb(211, 220, 231)', 'mixture of true and false')
+          colourToRankMap.set('rgb(224, 94, 94)', 'mostly false')
+          colourToRankMap.set('rgb(99, 66, 101)', 'no factual content')
+
+          // init tooltip
+          vis.tooltip = new tooltip({
+            tooltip_id: 'stacked-tooltip',
+            width: '200px'
+          })
+
+          vis.pageDataMap = new Map();
+          const perPageDataCopy = Array.from(vis.perPageData);
+          vis.fillPageDataMap(vis.pageDataMap, perPageDataCopy);
 
           const svg = d3.select('svg#stackedBarVis');
           let g = svg.append('g')
@@ -55,7 +70,7 @@ class stackedBarVis {
             .tickFormat(formatter)
 
           const pageTitles = vis.perPageData.map(page => page.name)
-
+          
           vis.yScale = d3.scaleBand()
             .domain(pageTitles)
             .range([0, vis.height])
@@ -126,8 +141,15 @@ class stackedBarVis {
                 .data(d)
                 .enter()
                 .append("rect")
-                .on("mouseover", d => vis.onMouseover(d.data))
-                .on("mouseout", d => vis.onMouseout(d.data))
+                .on("mouseover", function (d) {
+                  vis.onMouseover(d.data)
+                  const fillRgb = d3.select(this).style("fill");
+                  vis.showTooltip(d.data, colourToRankMap.get(fillRgb))
+                })
+                .on("mouseout", function (d) {
+                  vis.onMouseout(d.data)
+                  vis.hideTooltip();
+                })
                 .attr("width", d => {
                   vis.widthsMap[d.data.name][key] = [vis.xScale(d[0]), vis.xScale(d[1])];
                   return vis.widthScale(d[1] - d[0]);
@@ -204,5 +226,48 @@ class stackedBarVis {
                 }
               } else return 0;
             })
+      }
+
+      showTooltip(d, ranking) {
+        let vis = this;
+        const content = '<p class="header">' +
+        d.name +
+        '</p>' +
+        '<p class="attr">Political Category</p>' +
+        '<p class="value">' +
+        vis.pageCategories[d.name] +
+        '</p>' +
+        '<p class="attr">Rating</p>' +
+        '<p class="value dynamic-color">' +
+        ranking +
+        '</p>' +
+        '<p class="attr">Percentage of Posts with this Rating</p>' + 
+        '<p class="value">' +
+        Math.round(d[ranking] * 100) + "%" +
+        '</p>' +
+        '<p class="attr">Number of Posts with this Rating</p><p class="value">' +
+        vis.pageDataMap.get(d.name)[ranking] + 
+        ' out of ' + 
+        vis.pageDataMap.get(d.name)['total']
+        '</p>' ;
+        
+        let dynamicColor = d3.hsl(vis.colorScale(ranking));
+        if(ranking !== 'no factual content') {
+          dynamicColor.s += 0.1;
+          dynamicColor.l -= 0.15;
+        }
+        vis.tooltip.showTooltip(content, d3.event, dynamicColor)
+      }
+
+      hideTooltip() {
+        this.tooltip.hideTooltip();
+      }
+
+      fillPageDataMap(map, array) {
+        array.forEach(function (item) {
+          const pageObj = JSON.parse(JSON.stringify(item)) // deep copy to delete key
+          const page = pageObj.name;
+          map.set(page, pageObj);
+        })
       }
 }
