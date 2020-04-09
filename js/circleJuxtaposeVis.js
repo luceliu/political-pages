@@ -50,7 +50,10 @@ class circleJuxtaposeVis {
         let ratingArray = ["mostly false", "mostly true", "mixture of true and false",
             "no factual content"];
 
-        vis.tooltip = new tooltip('rank-tooltip', 100);
+        vis.tooltip = new tooltip({
+            tooltip_id: 'rank-tooltip',
+            width: '200px'
+        });
 
         // compute percentages for each Page and Rating
         vis.postMap.forEach(
