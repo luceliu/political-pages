@@ -487,3 +487,30 @@ fill: #434244;
   flex-direction: row;
   width: 100vw;
 }
+
+.tab-legend {
+  display: flex;
+  flex-direction: row;
+}
+
+.false-legend, .mixture-legend, .true-legend, .no-factual-legend {
+  width: 18px;
+  height: 18px;
+  margin-right: 8px;
+}
+
+.false-legend {
+  background-color:rgb(224, 94, 94);
+}
+
+.mixture-legend {
+  background-color:rgb(211, 220, 231); 
+}
+
+.true-legend {
+  background-color: rgb(103, 217, 155);
+} 
+
+.no-factual-legend {
+  background-color: rgb(99, 66, 101);
+}
