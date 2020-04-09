@@ -26,7 +26,7 @@ class asymmetricalViolin {
         vis.width = vis.config.containerWidth - vis.config.margin.left - vis.config.margin.right;
         vis.height = vis.config.containerHeight - vis.config.margin.top - vis.config.margin.bottom;
         vis.titleOffset = 50;
-        vis.yAxisLabelOffset = 30;
+        vis.yAxisLabelOffset = 40;
         vis.plotWidth = vis.width - vis.yAxisLabelOffset; // actual width of chart, i.e. excluding title & axes labels
         vis.plotHeight = 250;
         vis.POINT_RADIUS = 3;
@@ -48,7 +48,7 @@ class asymmetricalViolin {
 
         vis.yScale = d3.scaleLog()
             .domain([1, vis.maxCount])
-            .range([0, vis.plotHeight])
+            .range([vis.plotHeight, 0])
             .nice()
 
         vis.xScale = d3.scaleBand()
@@ -60,7 +60,7 @@ class asymmetricalViolin {
             .attr('class', 'x-axis')
             //.attr('transform', `translate(${vis.yAxisLabelOffset}, ${vis.plotHeight + vis.titleOffset})`)
             // .call(d3.axisBottom(vis.xScale).tickFormat(formatter).ticks(4))
-            .attr('transform', `translate(0, ${vis.plotHeight + vis.titleOffset})`)
+            .attr('transform', `translate(${vis.yAxisLabelOffset}, ${vis.plotHeight + vis.titleOffset})`)
             .call(d3.axisBottom(vis.xScale))
 
         vis.yAxis = g.append('g')
