@@ -78,7 +78,7 @@ class groupedBarVis {
 
         vis.colorScale = d3.scaleOrdinal()
             .domain(truthRankings)
-            .range(['#634265', '#E05E5E', '#96a8b3', '#67D99B']);
+            .range(['#634265', '#E05E5E', '#D3DCE7', '#67D99B']);
             
         // move x-axis labels down a bit
         d3.selectAll('#groupedBarVis .x-axis text')
