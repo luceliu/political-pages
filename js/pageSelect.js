@@ -22,7 +22,6 @@ class pageSelect {
         sel.dropdown = d3.select('#small-multiples-pages')
             .insert('select', `#${sel.precedingElementId} + *`)
             .attr('id', sel.select_id);
-
         sel.dropdownOptions = sel.dropdown.selectAll("option")
             .data(pageNames)
             .enter()
