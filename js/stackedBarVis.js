@@ -95,7 +95,7 @@ class stackedBarVis {
             .attr('x', vis.width / 2)
             .attr('fill', 'black')
             .attr('text-anchor', 'middle')
-            .text("Percentage of page’s total posts");
+            .text("Percentage of political category's total posts");
 
           // record widths for highlighting bar
           vis.widthsMap = {};

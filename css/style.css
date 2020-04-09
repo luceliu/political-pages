@@ -59,6 +59,7 @@ p {
   max-height: 90vh;
   width: 80vw;
   height: 800px;
+  margin-bottom: 72px;
 }
 
 .accuracy {
@@ -375,6 +376,7 @@ fill: #434244;
 /* Grouped Bar */
 #grouped-bar {
   width: 80vw;
+  max-width: 700px;
   height: 650px;
 }
 
