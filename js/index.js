@@ -242,8 +242,6 @@ let onRatingMouseout = (d) => {
     perCategoryData.Left = engData.filter(d => d.page == "left");
     perCategoryData.Right = engData.filter(d => d.page == "right");
     perCategoryData.Mainstream = engData.filter(d => d.page == "mainstream");
-
-  console.log(perCategoryData);
     
   let pageScatterplots = [];
   ["Left", "Right", "Mainstream"].forEach(leaning => {
@@ -318,7 +316,9 @@ let onRatingMouseout = (d) => {
 
     const categoryEngagement = new groupedBarVis({
       parentElement: '#groupedBarVis',
-      perCategoryData: processedGbData
+      perCategoryData: processedGbData,
+      containerWidth: document.getElementById("grouped-bar").clientWidth,
+      containerHeight: document.getElementById("grouped-bar").clientHeight,
     })
 
     categoryEngagement.render();

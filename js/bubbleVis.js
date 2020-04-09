@@ -71,13 +71,13 @@ class bubbleVis {
     vis.pageLabelCenters = {
       'The Other 98%': { x: vis.config.containerWidth / 3 - 40, y: vis.config.containerHeight / 3 - 200 },
       'Addicting Info': { x: vis.config.containerWidth / 3 - 40, y: vis.config.containerHeight / 2 - 100 },
-      'Occupy Democrats': { x: vis.config.containerWidth / 3 - 40, y: 2 * vis.config.containerHeight / 3 - 90 },
+      'Occupy Democrats': { x: vis.config.containerWidth / 3 - 40, y: 2 * vis.config.containerHeight / 3 - 104 },
       'Politico': { x: vis.config.containerWidth / 2 + 40, y: vis.config.containerHeight / 3 - 200 },
       'CNN Politics': { x: vis.config.containerWidth / 2 + 40, y: vis.config.containerHeight / 2 - 100 },
-      'ABC News Politics': { x: vis.config.containerWidth / 2 + 60, y: 2 * vis.config.containerHeight / 3 - 8 },
+      'ABC News Politics': { x: vis.config.containerWidth / 2 + 60, y: 2 * vis.config.containerHeight / 3 - 10 },
       'Eagle Rising': { x: 2 * vis.config.containerWidth / 3 + 80, y: vis.config.containerHeight / 3 - 190 },
       'Right Wing News': { x: 2 * vis.config.containerWidth / 3 + 80, y: vis.config.containerHeight / 2 - 100 },
-      'Freedom Daily': { x: 2 * vis.config.containerWidth / 3 + 80, y: 2 * vis.config.containerHeight / 3 - 16 },
+      'Freedom Daily': { x: 2 * vis.config.containerWidth / 3 + 80, y: 2 * vis.config.containerHeight / 3 - 20 },
     }
 
     // charge function that is called for each node, creates repulsion between nodes
