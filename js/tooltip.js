@@ -6,7 +6,6 @@ class tooltip {
       this.tooltip_id = _config.tooltip_id;
   
       this.initTooltip();
-
     }
 
     initTooltip() {

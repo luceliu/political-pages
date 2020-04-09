@@ -50,7 +50,10 @@ class circleJuxtaposeVis {
         let ratingArray = ["mostly false", "mostly true", "mixture of true and false",
             "no factual content"];
 
-        vis.tooltip = new tooltip('rank-tooltip', 100);
+        vis.tooltip = new tooltip({
+            tooltip_id: 'rank-tooltip',
+            width: '200px'
+        });
 
         // compute percentages for each Page and Rating
         vis.postMap.forEach(
@@ -334,15 +337,15 @@ class circleJuxtaposeVis {
         const content = '<p class="header">' +
         d.name +
         '</p>' +
+        '<p class="attr">Political Category</p><p class="value">' +
+        vis.politicalCategory[d.name] +
+        '</p>' +
         '<p class="attr">Percentage Posts with this Rating</p>' + 
         '<p class="value">' +
         Math.round(d[vis.sortKey] * 100) + "%" +
         '</p>' +
         '<p class="attr">Total posts</p><p class="value">' +
         d.total +
-        '</p>' +
-        '<p class="attr">Political Category</p><p class="value">' +
-        vis.politicalCategory[d.name] +
         '</p>';
 
         if (("#" + d3.event.relatedTarget.id).includes(this.config.parentElement)) {

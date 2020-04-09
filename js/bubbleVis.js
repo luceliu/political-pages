@@ -25,7 +25,10 @@ class bubbleVis {
     let vis = this;
     
     // initialize tooltip with width
-    vis.tt = new tooltip('bubble_tooltip', 180);
+    vis.tt = new tooltip({
+      tooltip_id: 'bubble_tooltip',
+      width: '200px'
+    });
 
     vis.forceStrength = 0.15;
     vis.bubbles = null;
@@ -213,8 +216,8 @@ class bubbleVis {
     // get color based on truthfulness rating of selected bubble
     let dynamicColor = d3.hsl(vis.colorScale(d.color));
 
-    // modify saturation and luminance if selected bubble is purple
-    if(d.color != 'no factual content') {
+    // modify saturation and luminance if selected bubble is NOT purple
+    if (d.color !== 'no factual content') {
       dynamicColor.s += 0.1;
       dynamicColor.l -= 0.15;
     }
