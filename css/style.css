@@ -221,6 +221,11 @@ font-size: 16px;
 .highlight-stroke {
   stroke: white;
   stroke-width: 1.5px;
+  pointer-events: none;
+}
+
+.highlight-bar {
+  pointer-events: none;
 }
 
 #stackedBarVis .x-axis g:nth-child(2n) text {
@@ -368,9 +373,8 @@ fill: #434244;
   height: 80%;
 }
 
-#small-multiples-categories .all-circles circle {
-  opacity: 0.5;
-  fill: unset;
+#small-multiples-categories .tick line {
+  stroke:none;
 }
 
 /* Grouped Bar */
@@ -389,6 +393,7 @@ fill: #434244;
 
 .tooltip {
   background-color: white;
+  pointer-events: none;
 	padding: 20px;
 	width: 300px;
   z-index: 100;

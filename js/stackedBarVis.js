@@ -33,6 +33,10 @@ class stackedBarVis {
             width: '200px'
           })
 
+          vis.tooltip.tt.on('mouseover mouseenter mouseleave mouseup mousedown', function() {
+            return false
+         });
+
           vis.pageDataMap = new Map();
           const perPageDataCopy = Array.from(vis.perPageData);
           vis.fillPageDataMap(vis.pageDataMap, perPageDataCopy);
@@ -77,6 +81,7 @@ class stackedBarVis {
             .padding(0.3);
 
           vis.highlightBar = g.append("rect")
+            .attr("class", "highlight-bar")
             .attr("width", vis.config.containerWidth)
             .attr("height", vis.yScale.bandwidth() + 16)
             .attr("fill", "none")
@@ -89,6 +94,9 @@ class stackedBarVis {
             .attr('transform', `translate(0, ${titleOffset})`)
             .call(d3.axisLeft(vis.yScale).tickSizeInner(0))
             .call(g => g.select(".domain").remove()); // remove y-axis line
+
+            g.selectAll(".y-axis .tick")
+            .on("mouseover", function(d) { vis.onMouseover({name: d})});
 
           vis.colorScale = d3.scaleOrdinal()
             .domain(truthRankings)
@@ -142,12 +150,19 @@ class stackedBarVis {
                 .enter()
                 .append("rect")
                 .on("mouseover", function (d) {
-                  vis.onMouseover(d.data)
                   const fillRgb = d3.select(this).style("fill");
-                  vis.showTooltip(d.data, colourToRankMap.get(fillRgb))
+                  let rating = colourToRankMap.get(fillRgb);
+                  
+                  vis.postCircleSelected = d.data;
+                  vis.selectedRating = rating;    
+                  vis.onMouseover(d.data);
+                  vis.showTooltip(d.data, rating);
                 })
                 .on("mouseout", function (d) {
-                  vis.onMouseout(d.data)
+                  vis.postCircleSelected = null;
+                  vis.ranking = null;
+                  vis.onMouseout(d.data);
+                      
                   vis.hideTooltip();
                 })
                 .attr("width", d => {
@@ -165,6 +180,7 @@ class stackedBarVis {
             vis.ratingHighlight = g.append('rect');
             vis.ratingHighlight
               .attr("height", vis.yScale.bandwidth() + 16)
+              .attr("class", "highlight-bar")
               .attr("fill", "none")
               .attr("rx", 10)
               .attr("ry", 8)
@@ -230,6 +246,7 @@ class stackedBarVis {
 
       showTooltip(d, ranking) {
         let vis = this;
+
         const content = '<p class="header">' +
         d.name +
         '</p>' +
@@ -256,11 +273,12 @@ class stackedBarVis {
           dynamicColor.s += 0.1;
           dynamicColor.l -= 0.15;
         }
+        
         vis.tooltip.showTooltip(content, d3.event, dynamicColor)
       }
 
       hideTooltip() {
-        this.tooltip.hideTooltip();
+        this.tooltip.hideTooltip();  
       }
 
       fillPageDataMap(map, array) {
