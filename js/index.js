@@ -268,7 +268,7 @@ let onRatingMouseout = (d) => {
       chartName: leaning,
       colourScale: d3.scaleOrdinal()
       .domain(['no factual content *', 'mostly false', 'mixture of true and false', 'mostly true'])
-      .range(['#634265', '#E05E5E', '#D3DCE7', '#67D99B']),
+      .range(['#634265', '#E05E5E', '#9ea9b0', '#67D99B']),
       colourValue: (d => d.rating),
       containerWidth: document.getElementById("engagementByPage" + leaning).clientWidth,
       containerHeight: document.getElementById("engagementByPage" + leaning).clientHeight,

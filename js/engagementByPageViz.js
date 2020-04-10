@@ -5,7 +5,7 @@ class engagementByPageViz {
             containerWidth: _config.containerWidth,
             containerHeight: _config.containerHeight,
           }
-          this.config.margin = _config.margin || { top: 32, bottom: 50, right: 8, left: 0 }
+          this.config.margin = _config.margin || { top: 24, bottom: 50, right: 8, left: 0 }
           this.data = _config.data;
           this.maxCount = _config.maxCount;
 
@@ -23,7 +23,7 @@ class engagementByPageViz {
         let vis = this;
         vis.width = vis.config.containerWidth - vis.config.margin.left - vis.config.margin.right;
         vis.height = vis.config.containerHeight - vis.config.margin.top - vis.config.margin.bottom;
-        vis.titleOffset = 50;
+        vis.titleOffset = 24;
         vis.yAxisLabelOffset = 180;
         vis.plotWidth = vis.width - vis.yAxisLabelOffset; // actual width of chart, i.e. excluding title & axes labels
         vis.plotHeight = 175;
@@ -82,7 +82,7 @@ class engagementByPageViz {
             .text(vis.pageName)
             .attr('class', 'chartTitle')
             .style('text-anchor', 'middle')
-            .attr('x', vis.width/2) // TODO: fix this positioning lol
+            .attr('x', vis.width/3 * 2.25)
             .attr('y', 10)
         
         chartTitle.exit().remove();
