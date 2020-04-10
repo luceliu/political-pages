@@ -66,7 +66,6 @@ class engagementByPageViz {
     update() {
         let vis = this;
         vis.pageName = vis.data[0].page;
-        // not binding post/circle data correctly. workaround for now:
         d3.selectAll(`${vis.config.parentElement} g.all-circles`).remove();
         vis.render();
     }
@@ -77,7 +76,6 @@ class engagementByPageViz {
         const chartTitle = chart.selectAll('text.chartTitle').data([vis.pageName])
 
         chartTitle.enter().append('text').merge(chartTitle)
-            // .transition()
             .text(vis.pageName)
             .attr('class', 'chartTitle')
             .style('text-anchor', 'middle')
@@ -95,7 +93,6 @@ class engagementByPageViz {
             .enter()
             .append('circle')
             .merge(postPoints)
-            // .transition()
             .attr('r', vis.POINT_RADIUS)
             .attr('cx', p => vis.xScale(vis.xValue(p)))
             .attr('cy', p => vis.yScale(vis.yValue(p)))

@@ -21,6 +21,8 @@ class stackedBarVis {
           vis.height = vis.config.containerHeight - vis.config.margin.top - vis.config.margin.bottom;
 
           const truthRankings = ["mostly true", "mixture of true and false", "mostly false", "no factual content"];
+          
+          // for use in detecting which substack the viewer mouses over
           const colourToRankMap = new Map();
           colourToRankMap.set('rgb(103, 217, 155)', 'mostly true');
           colourToRankMap.set('rgb(211, 220, 231)', 'mixture of true and false')
@@ -37,7 +39,7 @@ class stackedBarVis {
             return false
          });
 
-          vis.pageDataMap = new Map();
+          vis.pageDataMap = new Map(); // to be used in grabbing data about each page for tooltip
           const perPageDataCopy = Array.from(vis.perPageData);
           vis.fillPageDataMap(vis.pageDataMap, perPageDataCopy);
 
@@ -153,7 +155,6 @@ class stackedBarVis {
                 .on("mouseover", function (d) {
                   const fillRgb = d3.select(this).style("fill");
                   let rating = colourToRankMap.get(fillRgb);
-                  
                   vis.postCircleSelected = d.data;
                   vis.selectedRating = rating;    
                   vis.onMouseover(d.data);
@@ -201,6 +202,7 @@ class stackedBarVis {
       render() {
           let vis = this;
         
+          // stacked bar corresponding to a page is highlighted upon hover
           vis.highlightBar
            .attr("y", (vis.selectedPage != null) ? vis.yScale(vis.selectedPage) : 0)
           .transition().duration(1000)
@@ -247,6 +249,7 @@ class stackedBarVis {
       showTooltip(d, ranking) {
         let vis = this;
 
+        // assemble tooltip text
         const content = '<p class="header">' +
         d.name +
         '</p>' +
@@ -269,6 +272,7 @@ class stackedBarVis {
         '</p>' ;
         
         let dynamicColor = d3.hsl(vis.colorScale(ranking));
+        // all colours except purple should be darkened to use as text label
         if(ranking !== 'no factual content') {
           dynamicColor.s += 0.1;
           dynamicColor.l -= 0.15;
@@ -281,9 +285,11 @@ class stackedBarVis {
         this.tooltip.hideTooltip();  
       }
 
+      // set map key-val pairs
+      // to quickly grab info about a page given the page name
       fillPageDataMap(map, array) {
         array.forEach(function (item) {
-          const pageObj = JSON.parse(JSON.stringify(item)) // deep copy to delete key
+          const pageObj = JSON.parse(JSON.stringify(item)) // deep copy to safely delete key
           const page = pageObj.name;
           map.set(page, pageObj);
         })

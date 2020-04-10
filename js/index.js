@@ -331,9 +331,9 @@ createViolinPlots = (data) => {
     psp.render();
   });
 
-  perCategoryData.Left = engData.filter(d => d.page == "left");
-  perCategoryData.Right = engData.filter(d => d.page == "right");
-  perCategoryData.Mainstream = engData.filter(d => d.page == "mainstream");
+  perCategoryData.Left = engData.filter(d => d.page === "left");
+  perCategoryData.Right = engData.filter(d => d.page === "right");
+  perCategoryData.Mainstream = engData.filter(d => d.page === "mainstream");
 
   let pageScatterplots = [];
   ["Left", "Right", "Mainstream"].forEach(leaning => {
