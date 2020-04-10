@@ -115,7 +115,7 @@ p {
 #falseToAllPostsRanking {
   font-family: Archivo, Helvetica, sans-serif; 
   height: 580px;
-  width: 50%
+  width: 48%
 }
 
 #falseToAllPostsRanking .name-label {
@@ -177,7 +177,7 @@ p {
 /* Stacked Bar Vis */
 #stackedBarVis {
   height: 540px;
-  width: 50%;
+  width: 52%;
   margin-right: 48px;
 }
 
