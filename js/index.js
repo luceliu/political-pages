@@ -38,9 +38,6 @@ Promise.all([
       return map;
     }, map)
 
-    console.log('data: ', data);
-    console.log('perPageData: ', perPageData);
-
     perPageData.forEach(d =>
       d.total = Object.values(d).filter(a => !isNaN(a)).reduce((sum, cur) => sum + cur)
     );
@@ -167,7 +164,6 @@ createRankedVis = (data, perPageData, pageCategories, handlers) => {
       const selectedButton = nodes[i];
       d3.selectAll('.tab').classed('active', false);
       d3.select(selectedButton).classed('active', true);
-      console.log(d3.select(selectedButton).node().innerText.toLowerCase());
       pageRankings.sortKey = d3.select(selectedButton).node().innerText.toLowerCase();
       pageRankings.changingRank = true;
       pageRankings.update();
@@ -294,7 +290,6 @@ createCategoryEngagement = (data) => {
     groupedBarPercentagesData = new Map();
 
     for (const [k, v] of groupedBarData) {
-      console.log(k, v)
       const percentObj = {}
       for (const rating in v) {
         percentObj[rating] = v[rating] / v['total']
