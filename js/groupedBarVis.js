@@ -43,11 +43,11 @@ class groupedBarVis {
             .call(g => g.select(".domain").remove());
 
         vis.xAxis.append('text')
-        .attr('class', 'axis-label')
-        .attr('y', 48)
-        .attr('x', vis.width / 2 - 40)
-        .attr('text-anchor', 'middle')
-        .text("Percentage of political category's total engagement");
+            .attr('class', 'axis-label')
+            .attr('y', 48)
+            .attr('x', vis.width / 2 - 40)
+            .attr('text-anchor', 'middle')
+            .text("Percentage of political category's total engagement");
 
         vis.yScale = d3.scaleBand()
             .domain(categories)
