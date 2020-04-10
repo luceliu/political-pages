@@ -197,8 +197,10 @@ p {
 
 .axis-label {
   font-family: Archivo, Helvetica, sans-serif;
-  font-size: 18px;
+  font-size: 14px;
   color: #5D5D5D;
+  fill: #5D5D5D;
+  text-transform: uppercase;
 }
 
 .y-axis .tick {
@@ -378,7 +380,7 @@ fill: #434244;
 #grouped-bar {
   width: 80vw;
   max-width: 700px;
-  height: 650px;
+  height: 500px;
   margin-top: 16px;
 }
 

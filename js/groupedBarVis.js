@@ -3,7 +3,7 @@ class groupedBarVis {
         this.config = {
             parentElement: _config.parentElement,
             containerWidth: _config.containerWidth || 580,
-            containerHeight: _config.containerHeight || 680,
+            containerHeight: _config.containerHeight || 500,
           }
           this.config.margin = _config.margin || { top: 0, bottom: 156, right: 12, left: 125 }
           this.perCategoryData = _config.perCategoryData;
@@ -47,9 +47,8 @@ class groupedBarVis {
         .attr('class', 'axis-label')
         .attr('y', 48)
         .attr('x', vis.width / 2 - 40)
-        .attr('fill', 'black')
         .attr('text-anchor', 'middle')
-        .text("Percentage of political category's total posts");
+        .text("Percentage of political category's total engagement");
 
         vis.yScale = d3.scaleBand()
             .domain(categories)
