@@ -6,6 +6,7 @@ html {
   margin: 0px;
   font-size: calc(1em + 1vw);
   background-color: #FDFDFD;
+  padding-bottom: 80px;
 }
 
 h1, h2 {
@@ -205,16 +206,16 @@ p {
 
 .y-axis .tick {
   font-family: Archivo;
-font-style: normal;
-font-weight: 500;
-font-size: 18px;
-color: #3B3A3B;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 18px;
+  color: #3B3A3B;
 }
 .x-axis .tick {
   font-family: Archivo;
-font-style: normal;
-font-weight: 500;
-font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
   color: #8F8F8F;
 }
 .x-axis .tick line {
@@ -261,6 +262,7 @@ font-size: 16px;
   display: flex;
   height: 100%;
 }
+
 #engagementCountByPage1, #engagementCountByPage2 {
   width: 50%;
   height: 80%;
@@ -272,7 +274,8 @@ font-size: 16px;
 
 .scatterplot .y-axis .tick {
   font-size: 14px;
-  font-weight: bold;
+  font-weight: 500;
+  color: #3B3A3B;
 }
 
 .scatterplot .x-axis .tick {
@@ -346,9 +349,9 @@ fill: #434244;
 }
 
 #small-multiples-categories {
-  width: 80vw;
-  height: 500px;
-  max-width: 28em;
+  width: 90vw;
+  height: 464px;
+  max-width: 32em;
   margin: 0 auto;
   text-align: 
   left;
@@ -367,7 +370,7 @@ fill: #434244;
   color: #434244;
 }
 
-#small-multiples-categories div {
+#small-multiples-categories .violin {
   display: flex;
   height: 100%;
 }
@@ -530,4 +533,60 @@ fill: #434244;
 
 .no-factual-legend {
   background-color: rgb(99, 66, 101);
+}
+
+/** Violin plot **/
+.violin .y-axis .tick {
+  font-size: 14px;
+  font-weight: 400;
+  color: #8F8F8F;
+}
+
+.violin .x-axis .tick {
+  font-size: 14px;
+  font-weight: 500;
+  color: #3B3A3B;
+}
+
+.violin .y-axis .domain {
+  stroke: #D9D9D9;
+}
+
+.violin-y-axis {
+  transform: rotate(-90deg);
+  -webkit-transform:rotate(-90deg);
+  display: block !important;
+  position: relative !important;
+  text-align: center;
+  height: 24px !important;
+  margin-top: 180px;
+}
+
+.violin-y-axis p {
+  margin: 0px;
+}
+
+.violin .chartTitle {
+  font-family: Archivo, Helvetica, sans-serif;
+  font-size: 18px;
+  font-weight: 500;
+  max-width: 420px;
+  fill: rgb(85, 85, 87);
+  margin: 0;
+  text-align: center;
+}
+
+.violin :hover {
+  cursor: crosshair;
+}
+
+.violin-x-axis {
+  margin: auto;
+  margin-bottom: 200px;
+  margin-top: -140px;
+}
+
+.violin-x-axis p {
+  text-align: center;
+  max-width: 100%;
 }
