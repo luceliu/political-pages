@@ -33,7 +33,6 @@ class engagementByPageViz {
             .attr('transform', `translate(${vis.config.margin.left},${vis.config.margin.top})`)
             .attr('class', 'scatterplot');
         vis.pageName = vis.data[0].page; // just grab from the first index since they're all the same
-        console.log(vis.data);
 
         vis.xScale = d3.scaleLog()
             .domain([1, vis.maxCount])

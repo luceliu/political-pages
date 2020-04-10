@@ -175,7 +175,6 @@ class stackedBarVis {
                 .attr('x', p => vis.xScale(p[0]))
                 .style("fill", vis.colorScale(d))
             })
-            console.log(vis.widthsMap);
 
             vis.highlightSize = 10;
             vis.ratingHighlight = g.append('rect');
