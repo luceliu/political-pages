@@ -186,12 +186,13 @@ p {
 }
 
 .vis-title {
-  font-size: 0.7em;
+  font-size: 24px;
   font-family: Archivo, Helvetica, sans-serif;
   font-weight: 500;
   max-width: 36vw;
   color: #3B3A3C;
   margin: 0;
+  text-align: center;
 }
 
 .axis-label {
@@ -378,7 +379,7 @@ fill: #434244;
   width: 80vw;
   max-width: 700px;
   height: 650px;
-  margin-left: 5em;
+  margin-top: 16px;
 }
 
 #groupedBarVis {
