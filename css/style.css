@@ -189,7 +189,7 @@ p {
   font-size: 24px;
   font-family: Archivo, Helvetica, sans-serif;
   font-weight: 500;
-  max-width: 36vw;
+  max-width: 420px;
   color: #3B3A3C;
   margin: 0;
   text-align: center;
@@ -389,8 +389,10 @@ fill: #434244;
   height: 100%;
 }
 
-#grouped-bar h3 {
-  margin: 16px 0px 24px 125px;
+#grouped-bar .vis-title {
+  margin: auto;
+  margin-top: 16px;
+  margin-bottom: 24px;
 }
 
 /** Tooltip **/ 
