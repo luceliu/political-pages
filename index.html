@@ -14,7 +14,7 @@
         <h1>Visualizing Facebook Posts from 9 U.S. Political Pages</h1>
         <p class="subtitle">By Luce Liu, Sherry Xie, Amy Zhu</p>
         <p>We're three UBC students who are interested in exploring patterns concerning truthfulness
-        and user engagement amongst political Facebook posts. The dataset explored here consist of 2282 Facebook posts sourced from nine
+        and user engagement amongst political Facebook posts. The dataset explored here consists of 2282 Facebook posts sourced from nine
         American political pages over the course of a week in September 2016. Six of the pages are hyperpartisan,
         and three are considered mainstream.</p>
         <p>The truthfulness ratings were provided by Buzzfeed News, as part of their analysis on the topic which you can read <a href="https://www.buzzfeednews.com/article/craigsilverman/partisan-fb-pages-analysis">here</a>.
@@ -32,25 +32,12 @@
                 <button class="bubble-tab active" id="page-layout">Posts by page</button>
             </div>
             <div class="color-legend-container">
-                <svg id="color-legend"></svg>
+                <svg id="color-legend-1"></svg>
                 <p class="footnote">* Posts that were satirical or opinion-driven, or that otherwise lacked a factual claim were rated "no factual content" (<a href="https://www.buzzfeednews.com/article/craigsilverman/partisan-fb-pages-analysis">Buzzfeed News</a>)</p>
             </div>
-
     </div>
     <div class=bubble-container>
             <svg id="bubbleVis"></svg>
-    </div>
-    <div class="container">
-        <h2>Post engagement by political category</h2>
-        <p>What is the breakdown of post engagement across the political spectrum? Which audience engages
-            most with mostly false content? Does opinion-based/satirical content get more engagement amongst certain political categories?
-        </p>
-    </div>
-    <div class="vis-container" id="grouped-bar">
-        <h3 class="vis-title">
-            Breakdown of % engagement resulting from each type of post grouped by political category
-        </h3>
-        <svg id="groupedBarVis"></svg>
     </div>
     <div class="container">
         <h2>How accurate are each Page's posts?</h2>
@@ -77,7 +64,10 @@
         <svg id="falseToAllPostsRanking"></svg>   
     </div>
     <div class="container">
-        <h2>Compare post engagement by truthfulness rating between Pages</h2>
+        <h2>Post engagement by Page</h2>
+        <p>Compare post engagement by truthfulness rating between Pages. Each circle reperesents a post. Does false content get more
+           engagement for some Pages?
+        </p>
     </div>
     <div class="container" id="small-multiples-pages">
         <span id="span-1">Compare </span>
@@ -87,18 +77,49 @@
             <svg id="engagementCountByPage1"></svg>
             <svg id="engagementCountByPage2"></svg>
         </div>
+        <p class="axis-label">
+            Engagement count
+        </p>
     </div>
-
     <div class="container">
-        <h3 class="vis-title">Engagement per post type over Left, Mainstream, and Right pages</h3>
+        <h2>Post engagement by political category</h2>
+        <p>What is the breakdown of post engagement across the political spectrum? Which audience engages
+            most with mostly false content? Does opinion-based/satirical content get more engagement amongst certain political categories?
+        </p>
+    </div>
+    <div class="right-column">
+        <div class="color-legend-container">
+            <svg id="color-legend-2"></svg>
+            <p class="footnote">* Posts that were satirical or opinion-driven, or that otherwise lacked a factual claim were rated "no factual content" (<a href="https://www.buzzfeednews.com/article/craigsilverman/partisan-fb-pages-analysis">Buzzfeed News</a>)</p>
+        </div>
+    </div>
+    <div class="vis-container" id="grouped-bar">
+        <h3 class="vis-title">
+            Breakdown of % engagement resulting from each type of post grouped by political category
+        </h3>
+        <svg id="groupedBarVis"></svg>
+    </div>
+    <div class="container">
+        <h2>Engagement and post format</h2>
         <p>How much engagement is typical for posts of different ratings? Which ratings and formats produce more highly-engaged-with posts?</p>
         <p>Each coloured curve is half a violin chart; stronger curves represent more posts.</p>
     </div>
     <div class="container" id="small-multiples-categories">
-        <div>
+        <h3 class="vis-title">Comparing engagement by post format across political categories</h3>
+        <div class="violin">
+                <div class="violin-y-axis">
+                        <p class="axis-label">
+                            Engagement count
+                        </p>
+                    </div>
             <svg id="engagementByPageLeft"></svg>
             <svg id="engagementByPageMainstream"></svg>
             <svg id="engagementByPageRight"></svg>
+        </div>
+        <div class="violin-x-axis">
+            <p class="axis-label">
+                Post format
+            </p>
         </div>
     </div>
 

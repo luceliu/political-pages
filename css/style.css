@@ -6,6 +6,7 @@ html {
   margin: 0px;
   font-size: calc(1em + 1vw);
   background-color: #FDFDFD;
+  padding-bottom: 80px;
 }
 
 h1, h2 {
@@ -48,7 +49,7 @@ p {
   margin: auto;
   max-width: 24em;
   padding-left: 0vw;
-  padding-right: 4vw;
+  padding-right: 0vw;
   position: relative;
   overflow: hidden;
 }
@@ -78,14 +79,14 @@ p {
 }
 
 /** Color Legend **/ 
-#color-legend .tick {
+#color-legend-1 .tick, #color-legend-2 .tick {
   font-family: "Archivo", sans-serif;
   font-size: 17px;
   font-weight: 500;
   fill: #5E6064;
 }
 
-#color-legend {
+#color-legend-1, #color-legend-2 {
   background-color: white;
   padding: 18px;
   -webkit-box-shadow: 13px 17px 52px -12px rgba(0,0,0,0.25);
@@ -94,6 +95,10 @@ p {
   border-radius: 8px;
   height: 102px;
   width: 240px;
+}
+
+#color-legend-2 {
+  margin-top: 88px;
 }
 
 .color-legend-container {
@@ -205,16 +210,16 @@ p {
 
 .y-axis .tick {
   font-family: Archivo;
-font-style: normal;
-font-weight: 500;
-font-size: 18px;
-color: #3B3A3B;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 18px;
+  color: #3B3A3B;
 }
 .x-axis .tick {
   font-family: Archivo;
-font-style: normal;
-font-weight: 500;
-font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
   color: #8F8F8F;
 }
 .x-axis .tick line {
@@ -238,8 +243,7 @@ font-size: 16px;
 /* Small Multiples Pages Viz */
 #small-multiples-pages {
   width: 80vw;
-  height: 500px;
-  /* border: 2px solid green; */
+  height: 424px;
   margin: 0 auto;
   text-align: 
   left;
@@ -259,26 +263,38 @@ font-size: 16px;
 
 #small-multiples-pages div {
   display: flex;
-  height: 100%;
+  height: 256px;
 }
+
 #engagementCountByPage1, #engagementCountByPage2 {
   width: 50%;
-  height: 80%;
+  height: 256px;
 }
 
 #small-multiples-pages .vis-title {
   margin-top: 48px;
 }
 
+#small-multiples-pages .axis-label {
+  margin: auto;
+  text-align: center;
+  margin-top: 4px;
+}
+
 .scatterplot .y-axis .tick {
   font-size: 14px;
-  font-weight: bold;
+  font-weight: 500;
+  color: #3B3A3B;
 }
 
 .scatterplot .x-axis .tick {
   font-size: 14px;
   font-weight: normal;
-  color: #434244;
+  color: #8F8F8F;
+}
+
+.scatterplot .domain {
+  stroke: #8F8F8F;
 }
 
 .all-circles circle {
@@ -286,12 +302,13 @@ font-size: 16px;
   opacity: 0.5
 }
 .scatterplot text.chartTitle {
-  font-family: Archivo;
-font-style: normal;
-font-weight: bold;
-font-size: 24px;
-line-height: 26px;
-fill: #434244;
+  font-family: Archivo, Helvetica, sans-serif;
+  font-size: 18px;
+  font-weight: 500;
+  max-width: 420px;
+  fill: rgb(85, 85, 87);
+  margin: 0;
+  text-align: center;
 }
 
 #page-select-1, #page-select-2 {
@@ -346,10 +363,9 @@ fill: #434244;
 }
 
 #small-multiples-categories {
-  width: 80vw;
-  height: 500px;
-  max-width: 28em;
-  /* border: 2px solid green; */
+  width: 90vw;
+  height: 464px;
+  max-width: 32em;
   margin: 0 auto;
   text-align: 
   left;
@@ -357,6 +373,7 @@ fill: #434244;
 #small-multiples-categories h3 {
   max-width: 100%;
   margin-bottom: 10px;
+  margin-top: 32px;
 }
 
 #small-multiples-categories span {
@@ -367,7 +384,7 @@ fill: #434244;
   color: #434244;
 }
 
-#small-multiples-categories div {
+#small-multiples-categories .violin {
   display: flex;
   height: 100%;
 }
@@ -530,4 +547,60 @@ fill: #434244;
 
 .no-factual-legend {
   background-color: rgb(99, 66, 101);
+}
+
+/** Violin plot **/
+.violin .y-axis .tick {
+  font-size: 14px;
+  font-weight: 400;
+  color: #8F8F8F;
+}
+
+.violin .x-axis .tick {
+  font-size: 14px;
+  font-weight: 500;
+  color: #3B3A3B;
+}
+
+.violin .y-axis .domain {
+  stroke: #D9D9D9;
+}
+
+.violin-y-axis {
+  transform: rotate(-90deg);
+  -webkit-transform:rotate(-90deg);
+  display: block !important;
+  position: relative !important;
+  text-align: center;
+  height: 24px !important;
+  margin-top: 180px;
+}
+
+.violin-y-axis p {
+  margin: 0px;
+}
+
+.violin .chartTitle {
+  font-family: Archivo, Helvetica, sans-serif;
+  font-size: 18px;
+  font-weight: 500;
+  max-width: 420px;
+  fill: rgb(85, 85, 87);
+  margin: 0;
+  text-align: center;
+}
+
+.violin :hover {
+  cursor: crosshair;
+}
+
+.violin-x-axis {
+  margin: auto;
+  margin-bottom: 200px;
+  margin-top: -140px;
+}
+
+.violin-x-axis p {
+  text-align: center;
+  max-width: 100%;
 }

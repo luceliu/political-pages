@@ -5,7 +5,7 @@ class asymmetricalViolin {
             containerWidth: _config.containerWidth,
             containerHeight: _config.containerHeight,
         }
-        this.config.margin = _config.margin || { top: 32, bottom: 50, right: 20, left: 40 }
+        this.config.margin = _config.margin || { top: 16, bottom: 50, right: 20, left: 8 }
         this.data = _config.data;
         this.maxCount = _config.maxCount;
 
@@ -37,7 +37,7 @@ class asymmetricalViolin {
         const svg = d3.select(`svg${vis.config.parentElement}`)
         const g = svg.append('g')
             .attr('transform', `translate(${vis.config.margin.left},${vis.config.margin.top})`)
-            .attr('class', 'scatterplot');
+            .attr('class', 'violin');
         vis.pageName = vis.data[0].page; // just grab from the first index since they're all the same
         console.log(vis.data);
 
@@ -55,29 +55,13 @@ class asymmetricalViolin {
             .attr('class', 'x-axis')
             .attr('transform', `translate(${vis.yAxisLabelOffset}, ${vis.plotHeight + vis.titleOffset})`)
             .call(d3.axisBottom(vis.xScale).tickSizeOuter(0));
+        
+        vis.xAxis.selectAll('.domain').remove();
 
         vis.yAxis = g.append('g')
             .attr('class', 'y-axis')
             .attr('transform', `translate(${vis.yAxisLabelOffset / 2}, ${vis.titleOffset})`)
             .call(d3.axisLeft(vis.yScale).tickFormat(formatter).ticks(4).tickSizeOuter(0))
-
-        vis.xAxis.append('text')
-            .attr('class', 'axis-label')
-            .attr('y', 48)
-            .attr('x', vis.plotWidth / 2)
-            .attr('fill', 'black')
-            .attr('text-anchor', 'middle')
-            .text("Post format");
-
-        vis.yAxis.append('text')
-            .attr('class', 'axis-label')
-            .attr("transform", "rotate(-90)")
-            .attr('x', -(vis.plotHeight / 2))
-            .attr('y', -vis.yAxisLabelOffset)
-            .attr('fill', 'black')
-            .attr('text-anchor', 'middle')
-            .text("Engagement");
-
 
         vis.histogram = d3.histogram()
             .domain(vis.yScale.domain())
@@ -99,15 +83,11 @@ class asymmetricalViolin {
             processed.push({ format: type, bins: ratingsHistogram });
         });
 
-        console.log(vis.data);
-        console.log(processed);
         vis.processed = processed;
 
         vis.maxByPage = Math.max(...Object.keys(processed)
             .map(type => Math.max(...Object.keys(processed[type].bins)
                 .map(rating => d3.max(processed[type].bins[rating].bins.map(d => d.length))))));
-
-        console.log(vis.maxByPage)
 
         // how many posts are of a certain rating?
         vis.violinScale = d3.scaleLinear()
@@ -115,7 +95,7 @@ class asymmetricalViolin {
             .range([0, vis.xScale.bandwidth() / 3 * 2]);
 
         // canvas setup
-        const chart = d3.select(`${vis.config.parentElement} g.scatterplot`);
+        const chart = d3.select(`${vis.config.parentElement} g.violin`);
         const chartTitle = chart.selectAll('text.chartTitle').data([vis.pageName]);
 
         // add a chart title
@@ -124,7 +104,7 @@ class asymmetricalViolin {
             .attr('class', 'chartTitle')
             .style('text-anchor', 'middle')
             .attr('x', vis.width / 2) 
-            .attr('y', 10)
+            .attr('y', 24)
 
         chartTitle.exit().remove();
 

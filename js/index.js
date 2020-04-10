@@ -49,13 +49,16 @@ Promise.all([
   }
 
   let perPageData = processPerPageData(data);
-  console.log(perPageData);
 
-  // Initialize color legend
-  let categoryLegend = new colorLegend({
-    parentElement: '#color-legend',
-    squareSize: 18
-  });
+    // Initialize color legends
+    let categoryLegend = new colorLegend({ 
+        parentElement: '#color-legend-1',
+        squareSize: 18
+    });
+    let categoryLegend2 = new colorLegend({ 
+      parentElement: '#color-legend-2',
+      squareSize: 18
+    });
 
   let pageRankings, truthPercentage;
 
@@ -128,6 +131,17 @@ createBubbleViz = (data) => {
   });
 
   postBubbles.render();
+
+  // Event listeners for bubble vis layout tabs
+  d3.select('#layout-tabs')
+    .selectAll('.bubble-tab')
+    .on('click', (d, i, nodes) => {
+      const selectedButton = nodes[i]
+      d3.selectAll('.bubble-tab').classed('active', false);
+      d3.select(selectedButton).classed('active', true);
+      const layoutId = d3.select(selectedButton).attr('id');
+      postBubbles.update(layoutId);
+    });
 }
 
 createRankedVis = (data, perPageData, pageCategories, handlers) => {
@@ -145,17 +159,6 @@ createRankedVis = (data, perPageData, pageCategories, handlers) => {
   })
 
   pageRankings.render();
-
-  // Event listeners for bubble vis layout tabs
-  d3.select('#layout-tabs')
-    .selectAll('.bubble-tab')
-    .on('click', (d, i, nodes) => {
-      const selectedButton = nodes[i]
-      d3.selectAll('.bubble-tab').classed('active', false);
-      d3.select(selectedButton).classed('active', true);
-      const layoutId = d3.select(selectedButton).attr('id');
-      postBubbles.update(layoutId);
-    });
 
   // Event listeners for page ranking viz 
   d3.select('#rank-layout-tabs')
@@ -349,8 +352,8 @@ createViolinPlots = (data) => {
       onMouseout: onViolinMouseout,
       chartName: leaning,
       colourScale: d3.scaleOrdinal()
-        .domain(['no factual content *', 'mostly false', 'mixture of true and false', 'mostly true'])
-        .range(['#634265', '#E05E5E', '#D3DCE7', '#67D99B']),
+      .domain(['no factual content *', 'mostly false', 'mixture of true and false', 'mostly true'])
+      .range(['#634265', '#E05E5E', '#9ea9b0', '#67D99B']),
       colourValue: (d => d.rating),
       containerWidth: document.getElementById("engagementByPage" + leaning).clientWidth,
       containerHeight: document.getElementById("engagementByPage" + leaning).clientHeight,
