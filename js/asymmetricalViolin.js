@@ -118,16 +118,17 @@ class asymmetricalViolin {
         const chart = d3.select(`${vis.config.parentElement} g.scatterplot`);
         const chartTitle = chart.selectAll('text.chartTitle').data([vis.pageName]);
 
+        // add a chart title
         chartTitle.enter().append('text').merge(chartTitle)
-            // .transition()
             .text(vis.chartName)
             .attr('class', 'chartTitle')
             .style('text-anchor', 'middle')
-            .attr('x', vis.width / 2) // TODO: fix this positioning lol
+            .attr('x', vis.width / 2) 
             .attr('y', 10)
 
         chartTitle.exit().remove();
 
+        // set up groups for each format
         let typeGroup = chart.selectAll('.type-group').data(vis.processed);
         let typeGroupEnter = typeGroup.enter()
             .append('g')
@@ -155,30 +156,32 @@ class asymmetricalViolin {
     render() {
         let vis = this;
 
+        // draw each curve
         let ratingGroupBins = vis.ratingGroup.merge(vis.ratingGroupEnter).selectAll('path').data(d => d.bins);
 
         let ratingGroupBinsDeeper = ratingGroupBins.data(d => d.bins);
         ratingGroupBinsDeeper.enter()
         .append("path")
         .attr("class", d => d.rating)
-            .merge(ratingGroupBins)
-            //.style('fill', d => vis.colourScale == null ? '' : vis.colourScale(vis.colourValue(d)))
             .style('fill', "none")
-            .on("mouseover", function(d) { vis.onMouseover(d3.select(this).attr("class")); })
+            .on("mouseover", function(d) { 
+                vis.onMouseover(d3.select(this).attr("class")); 
+            })
             .on("mouseout", vis.onMouseout)
             .attr("transform", d => d.rating == 'mixture of true or false' || d.rating == 'mostly false' ? '' : `scale(-1, 1)`)
             .style("stroke", d => vis.colourScale == null ? '' : vis.colourScale(vis.colourValue(d)))
-            .style("stroke-opacity", d => vis.selectedRating == null || vis.selectedRating == d.rating ? 1 : 0.2)
-            .datum(d => d.bins)     // So now we are working bin per bin
-            //.style('fill', d => vis.colourScale == null ? '' : vis.colourScale((' ' + currRating).slice(1)))
-            .attr("d", d3.line()//d3.area()
-                // .x0(d => vis.violinScale(-d.length))
-                // .x1(d => vis.violinScale(d.length))
+            .style("stroke-width", 1.5)
+            // draw the line for a curve from the histogram bins
+            .datum(d => d.bins)
+            .attr("d", d3.line()
                 .y(d => vis.yScale(d.x0))
                 .x(d => vis.violinScale(d.length))
-                // .y(d => vis.yScale(d.x0))
-                .curve(d3.curveCatmullRom)    // This makes the line smoother to give the violin appearance. Try d3.curveStep to see the difference
-            );
+                .curve(d3.curveCatmullRom)    // smooth the line
+            )
+            .merge(ratingGroupBins)
+            // interactivity
+            .transition()
+            .style("stroke-opacity", d => vis.selectedRating == null || vis.selectedRating == d.rating ? 1 : 0.2)
 
             
     }

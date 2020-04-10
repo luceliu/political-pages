@@ -334,6 +334,7 @@ class circleJuxtaposeVis {
     showTooltip(d) {
         let vis = this;
 
+        // set up tooltip content
         const content = '<p class="header">' +
         d.name +
         '</p>' +
