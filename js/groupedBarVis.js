@@ -29,16 +29,16 @@ class groupedBarVis {
             .attr('width', '200px');
 
         titleG.append('text')
-            .text("What is the percentage of engagement")
+            .text("Breakdown of % engagement")
             .attr('x', vis.width/4)
 
         titleG.append('text')
-            .text("resulting from each type of post across")
+            .text("resulting from each type of post")
             .attr('y', vis.config.margin.top-50)
             .attr('x', vis.width/4)
 
         titleG.append('text')
-            .text("the political spectrum?")
+            .text("grouped by political category")
             .attr('y', vis.config.margin.top-20)
             .attr('x', vis.width/4)
 

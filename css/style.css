@@ -46,8 +46,8 @@ p {
 
 .vis-container {
   margin: auto;
-  max-width: 100vw;
-  padding-left: 4vw;
+  max-width: 24em;
+  padding-left: 0vw;
   padding-right: 4vw;
   position: relative;
   overflow: hidden;
@@ -59,7 +59,7 @@ p {
   max-height: 90vh;
   width: 80vw;
   height: 800px;
-  margin-bottom: 72px;
+  margin-bottom: 64px;
 }
 
 .accuracy {

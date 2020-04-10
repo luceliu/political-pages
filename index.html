@@ -27,9 +27,9 @@
     </div>
     <div class="right-column">
             <div class="tabs" id="layout-tabs">
-                <button class="bubble-tab active" id="all-layout">All posts</button>
+                <button class="bubble-tab" id="all-layout">All posts</button>
                 <button class="bubble-tab" id="political-layout">Posts by political category</button>
-                <button class="bubble-tab" id="page-layout">Posts by page</button>
+                <button class="bubble-tab active" id="page-layout">Posts by page</button>
             </div>
             <div class="color-legend-container">
                 <svg id="color-legend"></svg>
@@ -40,11 +40,15 @@
     <div class=bubble-container>
             <svg id="bubbleVis"></svg>
     </div>
-
-    <div class="vis-container" id="grouped-bar">
-        <svg id="groupedBarVis"></svg>
+    <div class="container">
+        <h2>Post engagement by political category</h2>
+        <p>What is the breakdown of post engagement across the political spectrum? Which audience engages
+            most with mostly false content? Does opinion/satirical get more engagement amongst certain political categories?
+        </p>
+        <div class="vis-container" id="grouped-bar">
+            <svg id="groupedBarVis"></svg>
+        </div>
     </div>
-
     <div class="container">
         <h2>How accurate are each Page's posts?</h2>
         <p>What percentage of a Page's posts fall into each category?
