@@ -161,14 +161,14 @@ class asymmetricalViolin {
         ratingGroupBinsDeeper.enter()
         .append("path")
         .attr("class", d => d.rating)
-            .merge(ratingGroupBins)
+            
             //.style('fill', d => vis.colourScale == null ? '' : vis.colourScale(vis.colourValue(d)))
             .style('fill', "none")
             .on("mouseover", function(d) { vis.onMouseover(d3.select(this).attr("class")); })
             .on("mouseout", vis.onMouseout)
             .attr("transform", d => d.rating == 'mixture of true or false' || d.rating == 'mostly false' ? '' : `scale(-1, 1)`)
             .style("stroke", d => vis.colourScale == null ? '' : vis.colourScale(vis.colourValue(d)))
-            .style("stroke-opacity", d => vis.selectedRating == null || vis.selectedRating == d.rating ? 1 : 0.2)
+            .style("stroke-width", 1.5)
             .datum(d => d.bins)     // So now we are working bin per bin
             //.style('fill', d => vis.colourScale == null ? '' : vis.colourScale((' ' + currRating).slice(1)))
             .attr("d", d3.line()//d3.area()
@@ -178,7 +178,10 @@ class asymmetricalViolin {
                 .x(d => vis.violinScale(d.length))
                 // .y(d => vis.yScale(d.x0))
                 .curve(d3.curveCatmullRom)    // This makes the line smoother to give the violin appearance. Try d3.curveStep to see the difference
-            );
+            )
+            .merge(ratingGroupBins)
+            .transition()
+            .style("stroke-opacity", d => vis.selectedRating == null || vis.selectedRating == d.rating ? 1 : 0.2)
 
             
     }
