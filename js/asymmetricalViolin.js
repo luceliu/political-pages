@@ -5,7 +5,7 @@ class asymmetricalViolin {
             containerWidth: _config.containerWidth,
             containerHeight: _config.containerHeight,
         }
-        this.config.margin = _config.margin || { top: 32, bottom: 50, right: 20, left: 50 }
+        this.config.margin = _config.margin || { top: 32, bottom: 50, right: 20, left: 40 }
         this.data = _config.data;
         this.maxCount = _config.maxCount;
 
@@ -16,7 +16,11 @@ class asymmetricalViolin {
         this.colourValue = _config.colourValue;
         this.colourScale = _config.colourScale;
 
+        this.onMouseover = _config.onMouseover;
+        this.onMouseout = _config.onMouseout;
+
         this.binGranularity = 5;
+        this.chartName = _config.chartName;
 
         this.initVis();
     }
@@ -49,32 +53,30 @@ class asymmetricalViolin {
 
         vis.xAxis = g.append('g')
             .attr('class', 'x-axis')
-            .attr('class', 'axis-label')
             .attr('transform', `translate(${vis.yAxisLabelOffset}, ${vis.plotHeight + vis.titleOffset})`)
             .call(d3.axisBottom(vis.xScale).tickSizeOuter(0));
 
         vis.yAxis = g.append('g')
             .attr('class', 'y-axis')
-            .attr('class', 'axis-label')
-            .attr('transform', `translate(${vis.yAxisLabelOffset/2}, ${vis.titleOffset})`)
+            .attr('transform', `translate(${vis.yAxisLabelOffset / 2}, ${vis.titleOffset})`)
             .call(d3.axisLeft(vis.yScale).tickFormat(formatter).ticks(4).tickSizeOuter(0))
 
-            vis.xAxis.append('text')
-        .attr('class', 'axis-label')
-        .attr('y', 48)
-        .attr('x', vis.plotWidth / 2)
-        .attr('fill', 'black')
-        .attr('text-anchor', 'middle')
-        .text("Post format");
+        vis.xAxis.append('text')
+            .attr('class', 'axis-label')
+            .attr('y', 48)
+            .attr('x', vis.plotWidth / 2)
+            .attr('fill', 'black')
+            .attr('text-anchor', 'middle')
+            .text("Post format");
 
         vis.yAxis.append('text')
-        .attr('class', 'axis-label')
-        .attr("transform", "rotate(-90)")
-        .attr('x', -(vis.plotHeight / 2 ))
-        .attr('y', -vis.yAxisLabelOffset)
-        .attr('fill', 'black')
-        .attr('text-anchor', 'middle')
-        .text("Engagement");
+            .attr('class', 'axis-label')
+            .attr("transform", "rotate(-90)")
+            .attr('x', -(vis.plotHeight / 2))
+            .attr('y', -vis.yAxisLabelOffset)
+            .attr('fill', 'black')
+            .attr('text-anchor', 'middle')
+            .text("Engagement");
 
 
         vis.histogram = d3.histogram()
@@ -89,11 +91,12 @@ class asymmetricalViolin {
                     acc.push({
                         rating: cur,
                         bins: vis.histogram(
-                        vis.data.filter(item => item.format == type && item.rating == cur).map(p => p.engCount))});
+                            vis.data.filter(item => item.format == type && item.rating == cur).map(p => p.engCount))
+                    });
                     return acc;
-                    }, []
-                );
-            processed.push({format: type, bins: ratingsHistogram});
+                }, []
+            );
+            processed.push({ format: type, bins: ratingsHistogram });
         });
 
         console.log(vis.data);
@@ -101,34 +104,23 @@ class asymmetricalViolin {
         vis.processed = processed;
 
         vis.maxByPage = Math.max(...Object.keys(processed)
-        .map(type => Math.max(...Object.keys(processed[type].bins)
-        .map(rating => d3.max(processed[type].bins[rating].bins.map(d => d.length))))));
+            .map(type => Math.max(...Object.keys(processed[type].bins)
+                .map(rating => d3.max(processed[type].bins[rating].bins.map(d => d.length))))));
 
         console.log(vis.maxByPage)
-        
+
         // how many posts are of a certain rating?
         vis.violinScale = d3.scaleLinear()
             .domain([0, vis.maxByPage])
-            .range([0, vis.xScale.bandwidth()/3*2]);
-    }
+            .range([0, vis.xScale.bandwidth() / 3 * 2]);
 
-    update() {
-        let vis = this;
-        vis.pageName = vis.data[0].page;
-        vis.render();
-    }
-
-    // https://www.d3-graph-gallery.com/graph/violin_basicHist.html
-    render() {
-        let vis = this;
+        // canvas setup
         const chart = d3.select(`${vis.config.parentElement} g.scatterplot`);
-        console.log('chart', chart);
-        const chartTitle = chart.selectAll('text.chartTitle').data([vis.pageName])
-        console.log('vis.width: ', vis.width)
+        const chartTitle = chart.selectAll('text.chartTitle').data([vis.pageName]);
 
         chartTitle.enter().append('text').merge(chartTitle)
             // .transition()
-            .text(vis.pageName)
+            .text(vis.chartName)
             .attr('class', 'chartTitle')
             .style('text-anchor', 'middle')
             .attr('x', vis.width / 2) // TODO: fix this positioning lol
@@ -136,39 +128,58 @@ class asymmetricalViolin {
 
         chartTitle.exit().remove();
 
-        const typeGroup = chart.selectAll('.type-group').data(vis.processed)
-        .enter()
-        .append('g')
-        .attr('class', 'type-group')
-        .attr('transform', `translate(${vis.yAxisLabelOffset + vis.xScale.bandwidth()/2}, ${vis.titleOffset})`);
+        let typeGroup = chart.selectAll('.type-group').data(vis.processed);
+        let typeGroupEnter = typeGroup.enter()
+            .append('g')
+            .attr('class', 'type-group')
+            .attr('transform', `translate(${vis.yAxisLabelOffset + vis.xScale.bandwidth() / 2}, ${vis.titleOffset})`);
 
         // now append a plot for each rating for each type
-        const ratingGroup = typeGroup.selectAll('.rating-group').data(d => [d])
-        .enter()
-        .append('g')
-        .attr('class', 'rating-group')
-        // move down to correct y coordinate
-        .attr('transform', d => `translate(${vis.xScale(vis.yValue(d))}, 0)`);
+        vis.ratingGroup = typeGroup.merge(typeGroupEnter).selectAll('.rating-group').data(d => [d]);
+        vis.ratingGroupEnter = vis.ratingGroup
+            .enter()
+            .append('g')
+            .attr('class', 'rating-group')
+            .attr("group-type", d => d.rating)
+            // move down to correct y coordinate
+            .attr('transform', d => `translate(${vis.xScale(vis.yValue(d))}, 0)`);
 
-        let ratingGroupBins = ratingGroup.selectAll('path').data(d => d.bins)
-        .enter();
+    }
 
-        ratingGroupBins.data(d => d.bins)
+    update() {
+        let vis = this;
+        vis.render();
+    }
+
+    // https://www.d3-graph-gallery.com/graph/violin_basicHist.html
+    render() {
+        let vis = this;
+
+        let ratingGroupBins = vis.ratingGroup.merge(vis.ratingGroupEnter).selectAll('path').data(d => d.bins);
+
+        let ratingGroupBinsDeeper = ratingGroupBins.data(d => d.bins);
+        ratingGroupBinsDeeper.enter()
         .append("path")
-        //.style('fill', d => vis.colourScale == null ? '' : vis.colourScale(vis.colourValue(d)))
-        .style('fill', "none")
-        .attr("transform", d => d.rating == 'mixture of true or false' || d.rating == 'mostly false' ? '' : `scale(-1, 1)`)
-        .style("stroke", d => vis.colourScale == null ? '' : vis.colourScale(vis.colourValue(d)))
-        
-        .datum(d => d.bins)     // So now we are working bin per bin
-        //.style('fill', d => vis.colourScale == null ? '' : vis.colourScale((' ' + currRating).slice(1)))
-        .attr("d", d3.line()//d3.area()
-            // .x0(d => vis.violinScale(-d.length))
-            // .x1(d => vis.violinScale(d.length))
-            .y(d => vis.yScale(d.x0))
-            .x(d => vis.violinScale(d.length))
-            // .y(d => vis.yScale(d.x0))
-            .curve(d3.curveCatmullRom)    // This makes the line smoother to give the violin appearance. Try d3.curveStep to see the difference
-        );
+        .attr("class", d => d.rating)
+            .merge(ratingGroupBins)
+            //.style('fill', d => vis.colourScale == null ? '' : vis.colourScale(vis.colourValue(d)))
+            .style('fill', "none")
+            .on("mouseover", function(d) { vis.onMouseover(d3.select(this).attr("class")); })
+            .on("mouseout", vis.onMouseout)
+            .attr("transform", d => d.rating == 'mixture of true or false' || d.rating == 'mostly false' ? '' : `scale(-1, 1)`)
+            .style("stroke", d => vis.colourScale == null ? '' : vis.colourScale(vis.colourValue(d)))
+            .style("stroke-opacity", d => vis.selectedRating == null || vis.selectedRating == d.rating ? 1 : 0.2)
+            .datum(d => d.bins)     // So now we are working bin per bin
+            //.style('fill', d => vis.colourScale == null ? '' : vis.colourScale((' ' + currRating).slice(1)))
+            .attr("d", d3.line()//d3.area()
+                // .x0(d => vis.violinScale(-d.length))
+                // .x1(d => vis.violinScale(d.length))
+                .y(d => vis.yScale(d.x0))
+                .x(d => vis.violinScale(d.length))
+                // .y(d => vis.yScale(d.x0))
+                .curve(d3.curveCatmullRom)    // This makes the line smoother to give the violin appearance. Try d3.curveStep to see the difference
+            );
+
+            
     }
 }

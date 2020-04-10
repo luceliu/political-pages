@@ -239,6 +239,18 @@ let onRatingMouseout = (d) => {
       return item; 
     });
   
+
+    let onViolinMouseover = d => pageScatterplots.forEach(psp => {
+      //console.log("selected" + d)
+      psp.selectedRating = d;
+      psp.render();
+    });
+
+    let onViolinMouseout = d => pageScatterplots.forEach(psp => {
+      psp.selectedRating = null;
+      psp.render();
+    });
+    
     perCategoryData.Left = engData.filter(d => d.page == "left");
     perCategoryData.Right = engData.filter(d => d.page == "right");
     perCategoryData.Mainstream = engData.filter(d => d.page == "mainstream");
@@ -251,6 +263,9 @@ let onRatingMouseout = (d) => {
       maxCount: maxEngCount,
       yValue: (d => d.format),
       yDomain: ['link', 'photo', 'video'],
+      onMouseover: onViolinMouseover,
+      onMouseout: onViolinMouseout,
+      chartName: leaning,
       colourScale: d3.scaleOrdinal()
       .domain(['no factual content *', 'mostly false', 'mixture of true and false', 'mostly true'])
       .range(['#634265', '#E05E5E', '#D3DCE7', '#67D99B']),
