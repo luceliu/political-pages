@@ -186,7 +186,7 @@ p {
 }
 
 .vis-title {
-  font-size: 0.75em;
+  font-size: 0.7em;
   font-family: Archivo, Helvetica, sans-serif;
   font-weight: 500;
   max-width: 36vw;
@@ -378,11 +378,16 @@ fill: #434244;
   width: 80vw;
   max-width: 700px;
   height: 650px;
+  margin-left: 5em;
 }
 
 #groupedBarVis {
   width: 100%;
   height: 100%;
+}
+
+#grouped-bar h3 {
+  margin: 16px 0px 24px 125px;
 }
 
 /** Tooltip **/ 

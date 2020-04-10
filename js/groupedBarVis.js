@@ -5,7 +5,7 @@ class groupedBarVis {
             containerWidth: _config.containerWidth || 580,
             containerHeight: _config.containerHeight || 680,
           }
-          this.config.margin = _config.margin || { top: 80, bottom: 156, right: 12, left: 125 }
+          this.config.margin = _config.margin || { top: 0, bottom: 156, right: 12, left: 125 }
           this.perCategoryData = _config.perCategoryData;
   
           this.initVis();
@@ -26,21 +26,7 @@ class groupedBarVis {
             .attr('class', 'vis-title')
             .style('fill', '#434244')
             .style('font-size', '24px')
-            .attr('width', '200px');
-
-        titleG.append('text')
-            .text("Breakdown of % engagement")
-            .attr('x', vis.width/4)
-
-        titleG.append('text')
-            .text("resulting from each type of post")
-            .attr('y', vis.config.margin.top-50)
-            .attr('x', vis.width/4)
-
-        titleG.append('text')
-            .text("grouped by political category")
-            .attr('y', vis.config.margin.top-20)
-            .attr('x', vis.width/4)
+            .attr('width', '200px')
 
         const chartG = g.append('g')
             .attr('transform', `translate(${vis.config.margin.left},${vis.config.margin.top})`);

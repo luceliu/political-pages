@@ -14,7 +14,7 @@
         <h1>Visualizing Facebook Posts from 9 U.S. Political Pages</h1>
         <p class="subtitle">By Luce Liu, Sherry Xie, Amy Zhu</p>
         <p>We're three UBC students who are interested in exploring patterns concerning truthfulness
-        and user engagement amongst political Facebook posts. The Facebooks posts explored here are sourced from nine
+        and user engagement amongst political Facebook posts. The dataset explored here consist of 2282 Facebook posts sourced from nine
         American political pages over the course of a week in September 2016. Six of the pages are hyperpartisan,
         and three are considered mainstream.</p>
         <p>The truthfulness ratings were provided by Buzzfeed News, as part of their analysis on the topic which you can read <a href="https://www.buzzfeednews.com/article/craigsilverman/partisan-fb-pages-analysis">here</a>.
@@ -43,11 +43,14 @@
     <div class="container">
         <h2>Post engagement by political category</h2>
         <p>What is the breakdown of post engagement across the political spectrum? Which audience engages
-            most with mostly false content? Does opinion/satirical get more engagement amongst certain political categories?
+            most with mostly false content? Does opinion-based/satirical content get more engagement amongst certain political categories?
         </p>
-        <div class="vis-container" id="grouped-bar">
-            <svg id="groupedBarVis"></svg>
-        </div>
+    </div>
+    <div class="vis-container" id="grouped-bar">
+        <h3 class="vis-title">
+            Breakdown of % engagement resulting from each type of post grouped by political category
+        </h3>
+        <svg id="groupedBarVis"></svg>
     </div>
     <div class="container">
         <h2>How accurate are each Page's posts?</h2>
