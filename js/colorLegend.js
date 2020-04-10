@@ -6,10 +6,12 @@ class colorLegend {
         containerWidth: _config.containerWidth || 180,
         containerHeight: _config.containerHeight || 126,
       }
-  
+
+      // set size of color square  
       this.squareSize = _config.squareSize;
       this.svg = d3.select(this.config.parentElement);
-
+      
+      // create color scale
       this.colorScale = d3.scaleOrdinal()
         .domain(['no factual content *', 'mostly false', 'mixture of true and false', 'mostly true'])
         .range(['#634265', '#E05E5E', '#D3DCE7', '#67D99B']);
