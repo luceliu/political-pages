@@ -79,14 +79,14 @@ p {
 }
 
 /** Color Legend **/ 
-#color-legend .tick {
+#color-legend-1 .tick, #color-legend-2 .tick {
   font-family: "Archivo", sans-serif;
   font-size: 17px;
   font-weight: 500;
   fill: #5E6064;
 }
 
-#color-legend {
+#color-legend-1, #color-legend-2 {
   background-color: white;
   padding: 18px;
   -webkit-box-shadow: 13px 17px 52px -12px rgba(0,0,0,0.25);
@@ -95,6 +95,10 @@ p {
   border-radius: 8px;
   height: 102px;
   width: 240px;
+}
+
+#color-legend-2 {
+  margin-top: 88px;
 }
 
 .color-legend-container {

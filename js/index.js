@@ -49,13 +49,17 @@ Promise.all([
   }
 
   let perPageData = processPerPageData(data);
-  console.log(perPageData);
 
-    // Initialize color legend
+    // Initialize color legends
     let categoryLegend = new colorLegend({ 
-        parentElement: '#color-legend',
+        parentElement: '#color-legend-1',
         squareSize: 18
     });
+    let categoryLegend2 = new colorLegend({ 
+      parentElement: '#color-legend-2',
+      squareSize: 18
+    });
+
   
     // Initialize bubble vis
     let postBubbles = new bubbleVis({ 
