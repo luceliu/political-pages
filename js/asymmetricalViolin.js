@@ -27,6 +27,7 @@ class asymmetricalViolin {
 
     initVis() {
         let vis = this;
+        
         vis.width = vis.config.containerWidth - vis.config.margin.left - vis.config.margin.right;
         vis.height = vis.config.containerHeight - vis.config.margin.top - vis.config.margin.bottom;
         vis.titleOffset = 50;
@@ -34,12 +35,12 @@ class asymmetricalViolin {
         vis.plotWidth = vis.width - vis.yAxisLabelOffset; // actual width of chart, i.e. excluding title & axes labels
         vis.plotHeight = 250;
         vis.POINT_RADIUS = 3;
+
         const svg = d3.select(`svg${vis.config.parentElement}`)
         const g = svg.append('g')
             .attr('transform', `translate(${vis.config.margin.left},${vis.config.margin.top})`)
             .attr('class', 'violin');
         vis.pageName = vis.data[0].page; // just grab from the first index since they're all the same
-        console.log(vis.data);
 
         vis.yScale = d3.scaleLog()
             .domain([1, vis.maxCount])
@@ -68,6 +69,7 @@ class asymmetricalViolin {
             .thresholds(vis.yScale.ticks(vis.binGranularity))
             .value(d => d)
 
+        // create histogram bins for each post format and rating
         let processed = [];
         ['link', 'photo', 'video'].forEach(type => {
             let ratingsHistogram = ["no factual content", "mostly false", "mixture of true and false", "mostly true"].reduce(

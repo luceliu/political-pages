@@ -96,7 +96,8 @@ class stackedBarVis {
             .call(g => g.select(".domain").remove()); // remove y-axis line
 
             g.selectAll(".y-axis .tick")
-            .on("mouseover", function(d) { vis.onMouseover({name: d})});
+            .on("mouseover", function(d) { vis.onMouseover({name: d})})
+            .on("mouseout", function(d) { vis.onMouseout()});
 
           vis.colorScale = d3.scaleOrdinal()
             .domain(truthRankings)
