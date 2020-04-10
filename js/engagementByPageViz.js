@@ -38,6 +38,7 @@ class engagementByPageViz {
         vis.xScale = d3.scaleLog()
             .domain([1, vis.maxCount])
             .range([0, vis.plotWidth])
+            .nice()
         
         vis.yScale = d3.scaleBand()
             .domain(vis.yDomain)
@@ -48,12 +49,19 @@ class engagementByPageViz {
         vis.xAxis = g.append('g')
             .attr('class', 'x-axis')
             .attr('transform', `translate(${vis.yAxisLabelOffset}, ${vis.plotHeight+vis.titleOffset})`)
-            .call(d3.axisBottom(vis.xScale).tickFormat(formatter).ticks(4))
+            .call(d3.axisBottom(vis.xScale).tickSizeInner(0).tickSizeOuter(0).tickFormat(formatter).ticks(4))
 
         vis.yAxis = g.append('g')
             .attr('class', 'y-axis')
             .attr('transform', `translate(${vis.yAxisLabelOffset}, ${vis.titleOffset})`)
-            .call(d3.axisLeft(vis.yScale))
+            .call(d3.axisLeft(vis.yScale).tickSizeInner(0).tickSizeOuter(0))
+
+        // give axis labels some breathing space
+        d3.selectAll(`${vis.config.parentElement} .x-axis text`)
+            .attr('transform', 'translate(0, 10)')
+
+        d3.selectAll(`${vis.config.parentElement} .y-axis text`)
+            .attr('transform', 'translate(-10, 0)')
     }
 
     update() {

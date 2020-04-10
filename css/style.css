@@ -46,8 +46,8 @@ p {
 
 .vis-container {
   margin: auto;
-  max-width: 100vw;
-  padding-left: 4vw;
+  max-width: 24em;
+  padding-left: 0vw;
   padding-right: 4vw;
   position: relative;
   overflow: hidden;
@@ -59,7 +59,7 @@ p {
   max-height: 90vh;
   width: 80vw;
   height: 800px;
-  margin-bottom: 72px;
+  margin-bottom: 64px;
 }
 
 .accuracy {
@@ -74,7 +74,7 @@ p {
 #bubbleVis {
   width: 80vw;
   height: 100vh;
-  margin-left: -9.5vw;
+  margin-left: -10%;
 }
 
 /** Color Legend **/ 
@@ -115,7 +115,7 @@ p {
 #falseToAllPostsRanking {
   font-family: Archivo, Helvetica, sans-serif; 
   height: 580px;
-  width: 50%
+  width: 48%
 }
 
 #falseToAllPostsRanking .name-label {
@@ -177,7 +177,7 @@ p {
 /* Stacked Bar Vis */
 #stackedBarVis {
   height: 540px;
-  width: 50%;
+  width: 52%;
   margin-right: 48px;
 }
 
@@ -186,18 +186,21 @@ p {
 }
 
 .vis-title {
-  font-size: 0.75em;
+  font-size: 24px;
   font-family: Archivo, Helvetica, sans-serif;
   font-weight: 500;
-  max-width: 36vw;
+  max-width: 420px;
   color: #3B3A3C;
   margin: 0;
+  text-align: center;
 }
 
 .axis-label {
   font-family: Archivo, Helvetica, sans-serif;
-  font-size: 18px;
+  font-size: 14px;
   color: #5D5D5D;
+  fill: #5D5D5D;
+  text-transform: uppercase;
 }
 
 .y-axis .tick {
@@ -381,12 +384,19 @@ fill: #434244;
 #grouped-bar {
   width: 80vw;
   max-width: 700px;
-  height: 650px;
+  height: 500px;
+  margin-top: 16px;
 }
 
 #groupedBarVis {
   width: 100%;
   height: 100%;
+}
+
+#grouped-bar .vis-title {
+  margin: auto;
+  margin-top: 16px;
+  margin-bottom: 24px;
 }
 
 /** Tooltip **/ 

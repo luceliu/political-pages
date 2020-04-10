@@ -125,6 +125,8 @@ class bubbleVis {
   render() {
     let vis = this;
 
+    vis.updateLayout('page-layout');
+
     // initialize nodes
     vis.nodes = vis.createNodes(vis.data);
 
