@@ -1,6 +1,22 @@
 
 /* Add or change the styles for all tasks in this css file */
 
+@font-face {
+  font-family: 'Schnyder Wide M Web';
+  src: url('../assets/SchnyderWideM-Demi-Web.woff2') format('woff2'),
+       url('../assets/SchnyderWideM-Demi-Web.woff') format('woff');
+  font-weight:  400;
+  font-style:   normal;
+  font-stretch: normal;
+}
+
+.SchnyderWideM-Demi-Web {
+  font-family: 'Schnyder Wide M Web';
+  font-weight:  500;
+  font-style:   normal;
+  font-stretch: normal;
+}
+
 html {
   font-family: "Merriweather",Helvetica,serif;
   margin: 0px;
@@ -18,31 +34,34 @@ a:hover {
 }
 
 h1, h2 {
-  font-family: "Merriweather",serif;
-  font-weight: 900;
-  font-size: 1.9em;
+  font-family: "Schnyder Wide M Web", serif;
+  font-weight: 400;
+  font-style: normal;
+  font-stretch: normal;
+  font-size: 2.0em;
   margin-top: 2em;
-  color: #3B3A3C;
+  color: rgb(26, 25, 26);
+  line-height: 125%;
 }
 
 h2 {
-  font-size: 1.2em;
+  font-size: 1.4em;
 }
 
 p {
   margin-top: 32px;
   font-family: "Archivo", sans-serif;
   font-weight: 400;
-  font-size: 22px;
-  color: #5E6064;
-  max-width: 580px;
+  font-size: 20px;
+  color: rgb(58, 58, 60);
+  max-width: 540px;
   line-height: 130%
 }
 
 .subtitle {
   margin-top: -24px;
-  color: #8D9097;
-  font-size: 22px;
+  color: rgb(134, 135, 143);
+  font-size: 20px;
   margin-bottom: 90px;
 }
 
@@ -209,7 +228,7 @@ p {
 }
 
 .vis-title {
-  font-size: 24px;
+  font-size: 22px;
   font-family: Archivo, Helvetica, sans-serif;
   font-weight: 500;
   max-width: 420px;
@@ -263,8 +282,8 @@ p {
   width: 80vw;
   height: 480px;
   margin: 0 auto;
-  text-align: 
-  left;
+  margin-top: 24px;
+  text-align: left;
 }
 #small-multiples-pages h3 {
   max-width: 100%;
@@ -274,8 +293,8 @@ p {
 #small-multiples-pages span {
   font-family: Archivo;
   font-style: normal;
-  font-weight: bold;
-  font-size: 24px;
+  font-weight: 500;
+  font-size: 20px;
   color: #434244;
 }
 
@@ -336,8 +355,8 @@ p {
 #page-select-1, #page-select-2 {
   font-family: Archivo;
   font-style: normal;
-  font-weight: bold;
-  font-size: 24px;
+  font-weight: 500;
+  font-size: 20px;
   color: #434244;
   line-height: 30px;
   margin: 0 10px;
@@ -345,7 +364,7 @@ p {
   box-sizing: border-box;
   border: 1px solid #979797;
   border-radius: 5px;
-  min-width: 270px;
+  min-width: 250px;
   -moz-appearance: none;
   -webkit-appearance: none;
   appearance: none;
