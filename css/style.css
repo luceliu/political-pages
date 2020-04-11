@@ -46,6 +46,7 @@ h1, h2 {
 
 h2 {
   font-size: 1.4em;
+  margin-bottom: -8px;
 }
 
 p {
@@ -55,7 +56,7 @@ p {
   font-size: 20px;
   color: rgb(58, 58, 60);
   max-width: 540px;
-  line-height: 130%
+  line-height: 135%
 }
 
 .subtitle {
@@ -88,6 +89,7 @@ p {
   width: 80vw;
   height: 800px;
   margin-bottom: 64px;
+  margin-top: 32px;
 }
 
 .accuracy {
@@ -568,6 +570,7 @@ p {
   display: flex;
   flex-direction: row;
   width: 100%;
+  margin-top: 32px;
 }
 
 .tab-legend {
