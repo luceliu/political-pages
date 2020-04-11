@@ -9,6 +9,14 @@ html {
   padding-bottom: 80px;
 }
 
+a {
+  color: rgba(122, 153, 232, 0.8);
+}
+
+a:hover {
+  color:rgba(73, 95, 150, 0.8);
+}
+
 h1, h2 {
   font-family: "Merriweather",serif;
   font-weight: 900;
