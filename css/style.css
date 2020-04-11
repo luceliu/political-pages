@@ -179,6 +179,16 @@ p {
   z-index: 100;
 }
 
+#grouped-bar-legend {
+  right: 8vw;
+}
+
+@media only screen and (min-width: 1200px) {
+  #grouped-bar-legend {
+    right: 13vw;
+  }
+}
+
 /* Stacked Bar Vis */
 #stackedBarVis {
   height: 540px;
@@ -407,6 +417,13 @@ p {
   max-width: 700px;
   height: 540px;
   margin-top: 16px;
+  margin-left: 14vw;
+}
+
+@media only screen and (max-width: 1200px) {
+  #grouped-bar {
+    margin-left: 5vw;
+  }
 }
 
 #groupedBarVis {
