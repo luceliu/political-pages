@@ -214,7 +214,7 @@ p {
 
 @media only screen and (min-width: 1200px) {
   #grouped-bar-legend {
-    right: 13vw;
+    right: 25%;
   }
 }
 
@@ -441,12 +441,35 @@ p {
 }
 
 /* Grouped Bar */
+
+.grouped-bar-container {
+  display: flex;
+  flex-direction: row;
+  padding: 0rem 3rem;
+  justify-content: space-evenly;
+}
+
+.grouped-bar-container .vis-container {
+  margin: inherit !important;
+}
+
+.grouped-bar-container .right-column {
+  position: relative;
+  right: 0vw;
+}
+
+@media only screen and (min-width: 1200px) {
+  .grouped-bar-container #grouped-bar-legend {
+    right: 0%;
+  }
+}
+
 #grouped-bar {
   width: 80vw;
   max-width: 700px;
   height: 540px;
   margin-top: 16px;
-  margin-left: 14vw;
+  min-width: 586px;
 }
 
 @media only screen and (max-width: 1200px) {
