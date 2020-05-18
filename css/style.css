@@ -26,11 +26,12 @@ html {
 }
 
 a {
-  color: rgba(122, 153, 232, 0.8);
+  color: blue;
+  text-decoration: none;
 }
 
 a:hover {
-  color:rgba(73, 95, 150, 0.8);
+  color: red;
 }
 
 h1, h2 {
@@ -105,6 +106,10 @@ p {
   width: 80vw;
   height: 100vh;
   margin-left: -10%;
+}
+
+#layout-tabs {
+  margin-top: 80px;
 }
 
 /** Color Legend **/
