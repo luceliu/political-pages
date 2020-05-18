@@ -22,7 +22,7 @@
         <h2>Exploring post engagement</h2>
         <p>Does non-factual content get more engagement? How is engagement distributed across the political spectrum?
         </p>
-        <p>Each bubble represents a post, where the size of the bubble indicates the combined number of 
+        <p>Each bubble represents a post, where the size of the bubble indicates the combined number of
         likes, reactions, and shares for that post. Click on a bubble to see the original post.</p>
     </div>
     <div class="right-column">
@@ -61,7 +61,7 @@
     </div>
     <div class="accuracy">
         <svg id="stackedBarVis"></svg>
-        <svg id="falseToAllPostsRanking"></svg>   
+        <svg id="falseToAllPostsRanking"></svg>
     </div>
     <div class="container">
         <h2>Post engagement by Page</h2>
@@ -103,24 +103,38 @@
         <h2>Engagement and post format</h2>
         <p>How much engagement is typical for posts of different ratings? Which ratings and formats produce more highly-engaged-with posts?</p>
         <p>Each coloured curve is half a violin chart; stronger curves represent more posts.</p>
+        <div class="tabs" id="violin-plot-tabs">
+            <button class="violin-tab tab-legend" id="mostly false">
+                <div class="false-legend"></div>Mostly false
+            </button>
+            <button class="violin-tab tab-legend" id="mixture of true and false">
+                <div class="mixture-legend"></div> Mixture of true and false
+            </button>
+            <button class="violin-tab tab-legend" id="mostly true">
+                <div class="true-legend"></div>Mostly true
+            </button>
+            <button class="violin-tab tab-legend" id="no factual content">
+                <div class="no-factual-legend"></div>No factual content
+            </button>
+        </div>
     </div>
     <div class="container" id="small-multiples-categories">
-        <h3 class="vis-title">Comparing engagement by post format across political categories</h3>
-        <div class="violin">
-                <div class="violin-y-axis">
-                        <p class="axis-label">
-                            Engagement count
-                        </p>
-                    </div>
-            <svg id="engagementByPageLeft"></svg>
-            <svg id="engagementByPageMainstream"></svg>
-            <svg id="engagementByPageRight"></svg>
-        </div>
-        <div class="violin-x-axis">
-            <p class="axis-label">
-                Post format
-            </p>
-        </div>
+      <h3 class="vis-title">Comparing engagement by post format across political categories</h3>
+      <div class="violin">
+              <div class="violin-y-axis">
+                      <p class="axis-label">
+                          Engagement count
+                      </p>
+                  </div>
+          <svg id="engagementByPageLeft"></svg>
+          <svg id="engagementByPageMainstream"></svg>
+          <svg id="engagementByPageRight"></svg>
+      </div>
+      <div class="violin-x-axis">
+          <p class="axis-label">
+              Post format
+          </p>
+      </div>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>

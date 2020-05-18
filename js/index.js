@@ -48,11 +48,11 @@ Promise.all([
   let perPageData = processPerPageData(data);
 
     // Initialize color legends
-    let categoryLegend = new colorLegend({ 
+    let categoryLegend = new colorLegend({
         parentElement: '#color-legend-1',
         squareSize: 18
     });
-    let categoryLegend2 = new colorLegend({ 
+    let categoryLegend2 = new colorLegend({
       parentElement: '#color-legend-2',
       squareSize: 18
     });
@@ -100,7 +100,7 @@ Promise.all([
 
   pageRankings = createRankedVis(data, perPageData, pageCategories, handlers);
   truthPercentage = createTruthPercentage(data, perPageData, pageCategories);
-  
+
   truthPercentage.onMouseover = onMouseover;
   truthPercentage.onMouseout = onMouseout;
 
@@ -139,7 +139,7 @@ createBubbleViz = (data) => {
       const layoutId = d3.select(selectedButton).attr('id');
       postBubbles.update(layoutId);
     });
-}
+  }
 
 createRankedVis = (data, perPageData, pageCategories, handlers) => {
   let pageRankings = new circleJuxtaposeVis({
@@ -157,7 +157,7 @@ createRankedVis = (data, perPageData, pageCategories, handlers) => {
 
   pageRankings.render();
 
-  // Event listeners for page ranking viz 
+  // Event listeners for page ranking viz
   d3.select('#rank-layout-tabs')
     .selectAll('.tab-legend')
     .on('click', (d, i, nodes) => {
@@ -361,4 +361,25 @@ createViolinPlots = (data) => {
     psp.update();
     psp.render();
   });
+
+  // Event listeners for violin plot
+  d3.select('#violin-plot-tabs')
+    .selectAll('.violin-tab')
+    .on('click', (d, i, nodes) => {
+      const selectedButton = nodes[i]
+      const isActive = d3.select(selectedButton).classed("active");
+      if (isActive) {
+        d3.selectAll('.violin-tab').classed('active', false);
+        pageScatterplots.forEach(psp => {
+          psp.update(null);
+        });
+      } else {
+        d3.selectAll('.violin-tab').classed('active', false);
+        d3.select(selectedButton).classed('active', true);
+        const selectedTruthCategory = d3.select(selectedButton).attr('id');
+        pageScatterplots.forEach(psp => {
+          psp.update(selectedTruthCategory);
+        });
+      }
+    });
 }

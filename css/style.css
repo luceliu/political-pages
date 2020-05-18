@@ -66,7 +66,7 @@ p {
   margin-bottom: 90px;
 }
 
-.container { 
+.container {
   max-width: 24em;
   margin: auto;
   position: relative;
@@ -107,7 +107,7 @@ p {
   margin-left: -10%;
 }
 
-/** Color Legend **/ 
+/** Color Legend **/
 #color-legend-1 .tick, #color-legend-2 .tick {
   font-family: "Archivo", sans-serif;
   font-size: 17px;
@@ -132,7 +132,7 @@ p {
 
 .color-legend-container {
   margin-top: 48px;
-  display: flex; 
+  display: flex;
   flex-direction: column;
   align-items: flex-start;
 }
@@ -147,7 +147,7 @@ p {
 /** Circle Juxtapose Vis **/
 /* TODO fix structure */
 #falseToAllPostsRanking {
-  font-family: Archivo, Helvetica, sans-serif; 
+  font-family: Archivo, Helvetica, sans-serif;
   height: 580px;
   width: 48%
 }
@@ -165,7 +165,7 @@ p {
   cursor: pointer;
 }
 
-.key-text {  
+.key-text {
   font-family: Archivo, Helvetica, sans-serif;
   font-weight: 500;
   fill: #3B3A3C;
@@ -410,7 +410,7 @@ p {
   height: 464px;
   max-width: 32em;
   margin: 0 auto;
-  text-align: 
+  text-align:
   left;
 }
 #small-multiples-categories h3 {
@@ -466,7 +466,7 @@ p {
   margin-bottom: 24px;
 }
 
-/** Tooltip **/ 
+/** Tooltip **/
 
 .tooltip {
   background-color: white;
@@ -507,13 +507,14 @@ p {
   margin: 0 0 0 0;
 }
 
-/** Tabs **/ 
+/** Tabs **/
 
 .tabs {
   margin-top: 24px;
   display: flex;
   flex-direction: column;
   width: 270px;
+  padding: 4px 4px;
 }
 
 .tabs button {
@@ -523,7 +524,7 @@ p {
   font-size: 18px;
   background-color: inherit;
   color: #3B3A3C;
-  padding: 16px;  
+  padding: 16px;
   border: none;
   cursor: pointer;
   opacity: 0.6;
@@ -532,7 +533,7 @@ p {
 }
 
 .tabs button:hover {
-  background-color: #f3f6f9;  
+  background-color: #f3f6f9;
 }
 
 .tabs button:after {
@@ -560,7 +561,7 @@ p {
   transition: width .3s;
 }
 
-.tabs .active { 
+.tabs .active {
   background-color: #f3f6f9;
   opacity: 1;
   outline: none;
@@ -589,18 +590,26 @@ p {
 }
 
 .mixture-legend {
-  background-color:rgb(211, 220, 231); 
+  background-color:rgb(211, 220, 231);
 }
 
 .true-legend {
   background-color: rgb(103, 217, 155);
-} 
+}
 
 .no-factual-legend {
   background-color: rgb(99, 66, 101);
 }
 
 /** Violin plot **/
+
+#violin-plot-tabs {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  margin-top: 32px;
+}
+
 .violin .y-axis .tick {
   font-size: 14px;
   font-weight: 400;

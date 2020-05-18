@@ -27,7 +27,7 @@ class asymmetricalViolin {
 
     initVis() {
         let vis = this;
-        
+
         vis.width = vis.config.containerWidth - vis.config.margin.left - vis.config.margin.right;
         vis.height = vis.config.containerHeight - vis.config.margin.top - vis.config.margin.bottom;
         vis.titleOffset = 50;
@@ -56,7 +56,7 @@ class asymmetricalViolin {
             .attr('class', 'x-axis')
             .attr('transform', `translate(${vis.yAxisLabelOffset}, ${vis.plotHeight + vis.titleOffset})`)
             .call(d3.axisBottom(vis.xScale).tickSizeOuter(0));
-        
+
         vis.xAxis.selectAll('.domain').remove();
 
         vis.yAxis = g.append('g')
@@ -105,7 +105,7 @@ class asymmetricalViolin {
             .text(vis.chartName)
             .attr('class', 'chartTitle')
             .style('text-anchor', 'middle')
-            .attr('x', vis.width / 2) 
+            .attr('x', vis.width / 2)
             .attr('y', 24)
 
         chartTitle.exit().remove();
@@ -129,8 +129,9 @@ class asymmetricalViolin {
 
     }
 
-    update() {
+    update(selectedTruthCategory) {
         let vis = this;
+        vis.selectedRating = selectedTruthCategory;
         vis.render();
     }
 
@@ -146,8 +147,8 @@ class asymmetricalViolin {
         .append("path")
         .attr("class", d => d.rating)
             .style('fill', "none")
-            .on("mouseover", function(d) { 
-                vis.onMouseover(d3.select(this).attr("class")); 
+            .on("mouseover", function(d) {
+                vis.onMouseover(d3.select(this).attr("class"));
             })
             .on("mouseout", vis.onMouseout)
             .attr("transform", d => d.rating == 'mixture of true or false' || d.rating == 'mostly false' ? '' : `scale(-1, 1)`)
@@ -165,6 +166,6 @@ class asymmetricalViolin {
             .transition()
             .style("stroke-opacity", d => vis.selectedRating == null || vis.selectedRating == d.rating ? 1 : 0.2)
 
-            
+
     }
 }
